@@ -6,6 +6,8 @@ infix fun Double.between(values: Pair<Double, Double>): Boolean {
     return values.first <= this && this <= values.second
 }
 
+fun Double.toRadians() = Math.toRadians(this)
+
 val Double.fractional
     get() = this - this.toInt()
 
