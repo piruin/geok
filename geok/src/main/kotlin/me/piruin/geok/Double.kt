@@ -23,6 +23,8 @@
 
 package me.piruin.geok
 
+import kotlin.math.pow
+
 infix fun Double.and(second: Double) = Pair(this, second)
 
 infix fun Double.between(values: Pair<Double, Double>): Boolean {
@@ -38,6 +40,6 @@ val Double.wholeNum
     get() = (this - this.fractional).toInt()
 
 fun Double.round(digitLength: Int): Double {
-    val pow = 10.0.times(digitLength)
+    val pow = 10.0.pow(digitLength)
     return Math.round(this * pow) / pow
 }

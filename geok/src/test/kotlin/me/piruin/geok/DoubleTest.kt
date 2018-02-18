@@ -32,6 +32,8 @@ class DoubleTest {
     @Test
     fun roundDigit() {
         1816560.792879214.round(1) `should equal` 1816560.8
+        1816560.792879214.round(2) `should equal` 1816560.79
+        1816560.792879214.round(3) `should equal` 1816560.793
     }
 
     @Test

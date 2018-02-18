@@ -23,14 +23,13 @@
 
 package me.piruin.geok
 
-data class Datum(val equatorialRad: Double, val polarRad: Double, val flat: Double) {
+import org.amshove.kluent.`should equal`
+import org.junit.Test
 
-    override fun toString(): String {
-        return "Equatorial Radius (meters) = $equatorialRad, Polar Radius (meters) = $polarRad," +
-          " Flattening = ${1.0 / flat} 1/Flattening = $flat"
-    }
+class UtmTest {
 
-    companion object {
-        val WSG48 = Datum(6378137.0, 6356752.314247833, 298.257223563)
+    @Test
+    fun toLatLng() {
+        Utm(48, 'N', 269542.0, 1817061.8).toLatLng() `should equal`  LatLng(16.423976, 102.841838)
     }
 }

@@ -88,6 +88,5 @@ data class LatLng(val latitude: Double,
 
         return Utm(utmZone.toInt(), if (latRad > 0) 'N' else 'S', easting.round(1), northing.round(1))
     }
-
 }
 
