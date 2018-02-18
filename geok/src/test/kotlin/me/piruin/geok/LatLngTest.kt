@@ -47,6 +47,11 @@ class LatLngTest {
     }
 
     @Test
+    fun toStringNotShowElevationWhenNaN() {
+        LatLng(16.423976, 102.841838).toString() `should equal` "16.423976, 102.841838"
+    }
+
+    @Test
     fun toUtm() {
         LatLng(16.423976, 102.841838).toUtm() `should equal` Utm(48, 'N', 269542.0, 1817061.8)
     }

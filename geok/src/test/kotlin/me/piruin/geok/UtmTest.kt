@@ -30,6 +30,6 @@ class UtmTest {
 
     @Test
     fun toLatLng() {
-        Utm(48, 'N', 269542.0, 1817061.8).toLatLng() `should equal`  LatLng(16.423976, 102.841838)
+        Utm(48, 'N', 269542.0, 1817061.8).toLatLng() `should equal` LatLng(16.423976, 102.841838)
     }
 }
