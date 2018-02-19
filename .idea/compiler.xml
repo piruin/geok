@@ -2,8 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="geok-project_main" target="1.8" />
-      <module name="geok-project_test" target="1.8" />
       <module name="geok_main" target="1.8" />
       <module name="geok_test" target="1.8" />
     </bytecodeTargetLevel>
