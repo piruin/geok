@@ -1,7 +1,13 @@
-package me.piruin.geok
+package me.piruin.geok.geometry
+
+import me.piruin.geok.Datum
+import me.piruin.geok.LatLng
+import me.piruin.geok.toRadians
 
 class Polygon(val boundary: MutableList<LatLng>,
-              val holes: MutableList<Polygon> = arrayListOf()) {
+              val holes: MutableList<Polygon> = arrayListOf()) : Geometry {
+
+    override val type: String = "Polygon"
 
     constructor(vararg latlngs: LatLng) : this(latlngs.toMutableList())
 

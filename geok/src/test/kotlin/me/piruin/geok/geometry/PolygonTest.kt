@@ -1,5 +1,7 @@
-package me.piruin.geok
+package me.piruin.geok.geometry
 
+import me.piruin.geok.LatLng
+import me.piruin.geok.Utm
 import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should equal`
 import org.junit.Test
