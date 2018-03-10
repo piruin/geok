@@ -33,8 +33,8 @@ import org.junit.Test
 class LatLngSerializerTest {
 
     private val gson: Gson = GsonBuilder()
-            .adapterFor<LatLng>(LatLngSerializer())
-            .create()
+      .adapterFor<LatLng>(LatLngSerializer())
+      .create()
 
     @Test
     fun serialiazeLatLng() {
@@ -62,5 +62,23 @@ class LatLngSerializerTest {
         val deserialize = gson.parse<LatLng>("[102.5,0.5]")!!
 
         deserialize `should equal` LatLng(0.5, 102.5)
+    }
+
+    @Test
+    fun serializeLatLngList() {
+        val latlngList = arrayListOf(
+          LatLng(0.0, 100.0),
+          LatLng(1.0, 101.0))
+
+        gson.toJson(latlngList) `should be equal to` "[[100.0,0.0],[101.0,1.0]]"
+    }
+
+    @Test
+    fun deserializeLatLngList() {
+        val deserialize = gson.parse<List<LatLng>>("[[100.0,0.0],[101.0,1.0]]")
+
+        deserialize `should equal` arrayListOf(
+          LatLng(0.0, 100.0),
+          LatLng(1.0, 101.0))
     }
 }
