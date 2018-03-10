@@ -27,8 +27,8 @@ import me.piruin.geok.Datum
 import me.piruin.geok.LatLng
 import me.piruin.geok.toRadians
 
-class Polygon(val boundary: MutableList<LatLng>,
-              val holes: MutableList<Polygon> = arrayListOf()) : Geometry {
+data class Polygon(var boundary: MutableList<LatLng>,
+    var holes: MutableList<MutableList<LatLng>> = arrayListOf()) : Geometry {
 
     override val type: String = "Polygon"
 
@@ -38,47 +38,19 @@ class Polygon(val boundary: MutableList<LatLng>,
       this(xyPair.map { LatLng(it.second, it.first) }.toMutableList())
 
     val isClosed: Boolean
-        get() = boundary[0] == boundary.last()
+        get() = boundary.isClosed
 
-    fun contain(coordinate: LatLng): Boolean {
+    fun contains(coordinate: LatLng): Boolean {
         if (boundary.contains(coordinate)) {
             return true
         }
-        return holes.any { it.contain(coordinate) }
+        return holes.any { it.contains(coordinate) }
     }
 
     fun area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
-        if (boundary.size < 3) {
-            return 0.0
-        }
-
-        val diameter = earthRadius * 2
-        val circumference = diameter * Math.PI
-        val ySegment = ArrayList<Double>()
-        val xSegment = ArrayList<Double>()
-
-        // calculateArea segment x and y in degrees for each point
-        val latitudeRef = boundary[0].latitude
-        val longitudeRef = boundary[0].longitude
-        for (i in 1 until boundary.size) {
-            val latitude = boundary[i].latitude
-            val longitude = boundary[i].longitude
-            ySegment.add((latitude - latitudeRef) * circumference / 360.0)
-            xSegment.add((longitude - longitudeRef) * circumference * Math.cos(latitude.toRadians()) / 360.0)
-        }
-        // calculateArea areas for each triangle segment
-        val triangleArea = ArrayList<Double>()
-        for (i in 1 until xSegment.size) {
-            val x1 = xSegment[i - 1]
-            val y1 = ySegment[i - 1]
-            val x2 = xSegment[i]
-            val y2 = ySegment[i]
-            triangleArea.add((y1 * x2 - x1 * y2) / 2)
-        }
-        // get abolute value of area, it can't be negative
-        var areasSum = Math.abs(triangleArea.sum())
-        holes.forEach { areasSum -= it.area() }
-        return areasSum
+        var area = boundary.area(earthRadius)
+        holes.forEach { area -= it.area(earthRadius) }
+        return area
     }
 
     val centroid: LatLng
@@ -97,4 +69,38 @@ class Polygon(val boundary: MutableList<LatLng>,
             centroid[1] = centroid[1] / tmpBoundary.size
             return LatLng(centroid[0], centroid[1])
         }
+}
+
+val List<LatLng>.isClosed: Boolean
+    get() = this[0] == this.last()
+
+fun List<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
+    if (this.size < 3) {
+        return 0.0
+    }
+    val diameter = earthRadius * 2
+    val circumference = diameter * Math.PI
+    val ySegment = ArrayList<Double>()
+    val xSegment = ArrayList<Double>()
+
+    // calculateArea segment x and y in degrees for each point
+    val latitudeRef = this[0].latitude
+    val longitudeRef = this[0].longitude
+    for (i in 1 until size) {
+        val latitude = this[i].latitude
+        val longitude = this[i].longitude
+        ySegment.add((latitude - latitudeRef) * circumference / 360.0)
+        xSegment.add((longitude - longitudeRef) * circumference * Math.cos(latitude.toRadians()) / 360.0)
+    }
+    // calculateArea areas for each triangle segment
+    val triangleArea = ArrayList<Double>()
+    for (i in 1 until xSegment.size) {
+        val x1 = xSegment[i - 1]
+        val y1 = ySegment[i - 1]
+        val x2 = xSegment[i]
+        val y2 = ySegment[i]
+        triangleArea.add((y1 * x2 - x1 * y2) / 2)
+    }
+    // get abolute value of area, it can't be negative
+    return Math.abs(triangleArea.sum())
 }

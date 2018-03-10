@@ -43,8 +43,8 @@ class PolygonTest {
 
     @Test
     fun contain() {
-        polygon.contain(LatLng(16.4268129901041, 102.8380009059)) `should be` true
-        polygon.contain(LatLng(16.4268502721458, 102.8378330329)) `should be` true
+        polygon.contains(LatLng(16.4268129901041, 102.8380009059)) `should be` true
+        polygon.contains(LatLng(16.4268502721458, 102.8378330329)) `should be` true
     }
 
     @Test
