@@ -8,14 +8,20 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
-import com.google.gson.reflect.TypeToken
 import me.piruin.geok.LatLng
 import me.piruin.geok.geometry.Polygon
 import java.lang.reflect.Type
 
 class PolygonSerializer : JsonSerializer<Polygon>,
   JsonDeserializer<Polygon> {
-    override fun serialize(src: Polygon, typeOfSrc: Type, ctx: JsonSerializationContext): JsonElement {
+
+    private val listLatLngType = typeOf<MutableList<LatLng>>()
+
+    override fun serialize(
+        src: Polygon,
+        typeOfSrc: Type,
+        ctx: JsonSerializationContext
+    ): JsonElement {
         return JsonObject().apply {
             add("type", JsonPrimitive(src.type))
             add("coordinates", JsonArray().apply {
@@ -25,9 +31,11 @@ class PolygonSerializer : JsonSerializer<Polygon>,
         }
     }
 
-    private val listLatLngType = object : TypeToken<MutableList<LatLng>>() {}.type
-
-    override fun deserialize(json: JsonElement, typeOfT: Type, ctx: JsonDeserializationContext): Polygon {
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        ctx: JsonDeserializationContext
+    ): Polygon {
         val obj = json.asJsonObject
         val coordinates = obj.getAsJsonArray("coordinates")
 
