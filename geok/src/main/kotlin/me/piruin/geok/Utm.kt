@@ -64,7 +64,7 @@ data class Utm(val zone: Int, val hemisphere: Char, val easting: Double, val nor
         }
         val mu = M / (a * (1.0 - esq * (1.0 / 4.0 + esq * (3.0 / 64.0 + 5.0 * esq / 256.0))))
         var phi1 = mu + e1 * (3.0 / 2.0 - (27.0 * e1 * e1 / 32.0)) * Math.sin(2.0 * mu) + e1 * e1 *
-          (21.0 / 16.0 - 55.0 * e1 * e1 / 32.0) * Math.sin(4.0 * mu)//Footprint Latitude
+                (21.0 / 16.0 - 55.0 * e1 * e1 / 32.0) * Math.sin(4.0 * mu)//Footprint Latitude
         phi1 = phi1 + e1 * e1 * e1 * (Math.sin(6.0 * mu) * 151.0 / 96.0 + e1 * Math.sin(8.0 * mu) * 1097.0 / 512.0)
 
         val C1 = e0sq * Math.pow(Math.cos(phi1), 2.0)
@@ -74,16 +74,16 @@ data class Utm(val zone: Int, val hemisphere: Char, val easting: Double, val nor
         val D = (x - 500000.0) / (N1 * k0)
 
         var phi = (D * D) * (1.0 / 2.0 - D * D
-          * (5.0 + 3.0 * T1 + 10.0 * C1 - 4.0 * C1 * C1 - 9.0 * e0sq) / 24.0)
+                * (5.0 + 3.0 * T1 + 10.0 * C1 - 4.0 * C1 * C1 - 9.0 * e0sq) / 24.0)
         phi += Math.pow(D, 6.0) *
-          (61.0 + 90.0 * T1 + 298.0 * C1 + 45.0 * T1 * T1 - 252.0 * e0sq - 3.0 * C1 * C1) / 720.0
+                (61.0 + 90.0 * T1 + 298.0 * C1 + 45.0 * T1 * T1 - 252.0 * e0sq - 3.0 * C1 * C1) / 720.0
         phi = phi1 - (N1 * Math.tan(phi1) / R1) * phi
 
         val drad = Math.PI / 180.0
         var latd = phi / drad
 
         var lng = D * (1 + D * D * ((-1 - 2 * T1 - C1) / 6 + D * D *
-          (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * e0sq + 24 * T1 * T1) / 120)) / Math.cos(phi1)
+                (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * e0sq + 24 * T1 * T1) / 120)) / Math.cos(phi1)
         val lngd = zcm + lng / drad
 
         return LatLng(latd.round(6), lngd.round(6))

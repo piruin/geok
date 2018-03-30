@@ -2,10 +2,17 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok/geok.iml" filepath="$PROJECT_DIR$/.idea/modules/geok/geok.iml" group="geok" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok/geok.iml" filepath="$PROJECT_DIR$/.idea/modules/geok/geok.iml" group="geok" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-gson.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-gson.iml" group="geok-gson" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_main.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_main.iml" group="geok-gson" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_main.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_main.iml" group="geok-gson" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_test.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_test.iml" group="geok-gson" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_test.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_test.iml" group="geok-gson" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-project.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/geok-project.iml" filepath="$PROJECT_DIR$/geok-project.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok/geok_main.iml" filepath="$PROJECT_DIR$/.idea/modules/geok/geok_main.iml" group="geok" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok/geok_test.iml" filepath="$PROJECT_DIR$/.idea/modules/geok/geok_test.iml" group="geok" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok/geok~1.iml" filepath="$PROJECT_DIR$/.idea/modules/geok/geok~1.iml" group="geok" />
     </modules>
   </component>
 </project>

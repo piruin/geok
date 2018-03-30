@@ -21,52 +21,31 @@
  *
  */
 
-package me.piruin.geok
+package me.piruin.geok.gson
 
-import junit.framework.Assert.assertEquals
-import org.amshove.kluent.`should equal`
-import org.junit.Test
+import com.google.gson.JsonArray
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
+import me.piruin.geok.LatLng
+import java.lang.reflect.Type
 
-class DoubleTest {
+class LatLngSerializer : JsonSerializer<LatLng>, JsonDeserializer<LatLng> {
 
-    @Test
-    fun roundDigit() {
-        1816560.792879214.round(1) `should equal` 1816560.8
-        1816560.792879214.round(2) `should equal` 1816560.79
-        1816560.792879214.round(3) `should equal` 1816560.793
+    override fun serialize(src: LatLng, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+        return JsonArray(2).apply {
+            add(src.longitude)
+            add(src.latitude)
+        }
     }
 
-    @Test
-    fun wholeNumber() {
-        102.841838.wholeNum `should equal` 102
-    }
-
-    @Test
-    fun fragtional() {
-        16.423976.fractional.shouldEqual(0.423976)
-        102.84183.fractional.shouldEqual(0.841838)
-    }
-
-    @Test
-    fun round() {
-        Math.round(102.841838) `should equal` 103
-    }
-
-    @Test
-    fun floor() {
-        Math.floor(102.841838) `should equal` 102.0
-    }
-
-    @Test
-    fun div() {
-        3 / 4 `should equal` 0
-        3.0 / 4.0 `should equal` 0.75
-    }
-
-    fun Double.shouldEqual(
-            expected: Double,
-            delta: Double = 0.00001
-    ): Double {
-        return this.apply { assertEquals(this, expected, delta) }
+    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): LatLng? {
+        val jsonArray = json.asJsonArray
+        return when (jsonArray) {
+            null -> null
+            else -> LatLng(jsonArray[1].asDouble, jsonArray[0].asDouble)
+        }
     }
 }

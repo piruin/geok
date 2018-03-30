@@ -21,52 +21,34 @@
  *
  */
 
-package me.piruin.geok
+package me.piruin.geok.geometry
 
-import junit.framework.Assert.assertEquals
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class DoubleTest {
+class FeatureTest {
 
     @Test
-    fun roundDigit() {
-        1816560.792879214.round(1) `should equal` 1816560.8
-        1816560.792879214.round(2) `should equal` 1816560.79
-        1816560.792879214.round(3) `should equal` 1816560.793
+    fun polygonFeature() {
+        val polygon = Polygon(
+                100.0 to 0.0,
+                101.0 to 0.0,
+                101.0 to 1.0,
+                100.0 to 1.0,
+                100.0 to 0.0
+        )
+
+        val feature = Feature(polygon, Properties())
+
+        with(feature) {
+            type `should equal` "Feature"
+            geometry `should equal` polygon
+            properties `should equal` Properties()
+        }
     }
 
-    @Test
-    fun wholeNumber() {
-        102.841838.wholeNum `should equal` 102
-    }
-
-    @Test
-    fun fragtional() {
-        16.423976.fractional.shouldEqual(0.423976)
-        102.84183.fractional.shouldEqual(0.841838)
-    }
-
-    @Test
-    fun round() {
-        Math.round(102.841838) `should equal` 103
-    }
-
-    @Test
-    fun floor() {
-        Math.floor(102.841838) `should equal` 102.0
-    }
-
-    @Test
-    fun div() {
-        3 / 4 `should equal` 0
-        3.0 / 4.0 `should equal` 0.75
-    }
-
-    fun Double.shouldEqual(
-            expected: Double,
-            delta: Double = 0.00001
-    ): Double {
-        return this.apply { assertEquals(this, expected, delta) }
-    }
+    data class Properties(
+            val prob0: String = "value0",
+            val prob1: Double = 0.0
+    )
 }

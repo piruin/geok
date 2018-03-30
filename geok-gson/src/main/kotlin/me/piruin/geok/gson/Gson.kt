@@ -21,52 +21,17 @@
  *
  */
 
-package me.piruin.geok
+package me.piruin.geok.gson
 
-import junit.framework.Assert.assertEquals
-import org.amshove.kluent.`should equal`
-import org.junit.Test
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
-class DoubleTest {
+inline fun <reified T> Gson.parse(json: String): T? = fromJson(json, object : TypeToken<T>() {}.type)
 
-    @Test
-    fun roundDigit() {
-        1816560.792879214.round(1) `should equal` 1816560.8
-        1816560.792879214.round(2) `should equal` 1816560.79
-        1816560.792879214.round(3) `should equal` 1816560.793
-    }
-
-    @Test
-    fun wholeNumber() {
-        102.841838.wholeNum `should equal` 102
-    }
-
-    @Test
-    fun fragtional() {
-        16.423976.fractional.shouldEqual(0.423976)
-        102.84183.fractional.shouldEqual(0.841838)
-    }
-
-    @Test
-    fun round() {
-        Math.round(102.841838) `should equal` 103
-    }
-
-    @Test
-    fun floor() {
-        Math.floor(102.841838) `should equal` 102.0
-    }
-
-    @Test
-    fun div() {
-        3 / 4 `should equal` 0
-        3.0 / 4.0 `should equal` 0.75
-    }
-
-    fun Double.shouldEqual(
-            expected: Double,
-            delta: Double = 0.00001
-    ): Double {
-        return this.apply { assertEquals(this, expected, delta) }
-    }
+inline fun <reified T> GsonBuilder.adapterFor(adapter: Any): GsonBuilder {
+    return registerTypeAdapter(object : TypeToken<T>() {}.type, adapter)
 }
+
+inline fun <reified T> typeOf(): Type = object : TypeToken<T>() {}.type
