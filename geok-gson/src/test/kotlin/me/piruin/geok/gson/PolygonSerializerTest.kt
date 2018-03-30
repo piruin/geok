@@ -65,9 +65,24 @@ class PolygonSerializerTest {
 
         val polygon = Polygon(boundary, hole)
 
-        gson.toJson(polygon) `should be equal to` """
-            {"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]]}
-            """.trimIndent()
+        gson.toJson(polygon) `should be equal to` """{
+            "type":"Polygon","coordinates":[
+                [
+                    [100.0,0.0],
+                    [101.0,0.0],
+                    [101.0,1.0],
+                    [100.0,1.0],
+                    [100.0,0.0]
+                ],
+                [
+                    [100.2,0.2],
+                    [100.8,0.2],
+                    [100.8,0.8],
+                    [100.2,0.8],
+                    [100.2,0.2]
+                ]
+            ]
+        }""".trimWhitespace()
     }
 
     @Test
@@ -92,9 +107,24 @@ class PolygonSerializerTest {
         val expected = Polygon(boundary, hole)
 
         val polygon = gson.parse<Polygon>(
-                """
-            {"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]],[[100.2,0.2],[100.8,0.2],[100.8,0.8],[100.2,0.8],[100.2,0.2]]]}
-            """.trimIndent()
+                """{
+            "type":"Polygon","coordinates":[
+                [
+                    [100.0,0.0],
+                    [101.0,0.0],
+                    [101.0,1.0],
+                    [100.0,1.0],
+                    [100.0,0.0]
+                ],
+                [
+                    [100.2,0.2],
+                    [100.8,0.2],
+                    [100.8,0.8],
+                    [100.2,0.8],
+                    [100.2,0.2]
+                ]
+            ]
+        }""".trimWhitespace()
         )
 
         polygon `should equal` expected

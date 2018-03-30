@@ -52,13 +52,18 @@ class FeatureSerializerTest {
     fun featureCollectionToJson() {
         val collection = FeatureCollection()
         collection.features.apply {
-            add(Feature(LatLng(14.07776, 100.601282), People("John Snow", 15)))
-            add(Feature(LatLng(14.08101, 100.620148), People("Arya Stark", 13)))
+            add(Feature(LatLng(14.07776, 100.601282), People("John", 15)))
+            add(Feature(LatLng(14.08101, 100.620148), People("Arya", 13)))
         }
 
         gson.toJson(collection) `should be equal to` """
-            {"type":"FeatureCollection","features":[{"type":"Feature","geometry":[100.601282,14.07776],"properties":{"name":"John Snow","age":15}},{"type":"Feature","geometry":[100.620148,14.08101],"properties":{"name":"Arya Stark","age":13}}]}
-            """.trimIndent()
+            {
+                "type":"FeatureCollection","features":[
+                    {"type":"Feature","geometry":[100.601282,14.07776],"properties":{"name":"John","age":15}},
+                    {"type":"Feature","geometry":[100.620148,14.08101],"properties":{"name":"Arya","age":13}}
+                ]
+            }
+            """.trimWhitespace()
     }
 
     class People(val name: String, val age: Int)
