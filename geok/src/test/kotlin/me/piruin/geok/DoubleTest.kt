@@ -63,7 +63,10 @@ class DoubleTest {
         3.0 / 4.0 `should equal` 0.75
     }
 
-    fun Double.shouldEqual(expected: Double, delta: Double = 0.00001): Double {
+    fun Double.shouldEqual(
+            expected: Double,
+            delta: Double = 0.00001
+    ): Double {
         return this.apply { assertEquals(this, expected, delta) }
     }
 }

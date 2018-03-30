@@ -25,9 +25,7 @@ package me.piruin.geok
 
 import me.piruin.geok.geometry.Geometry
 
-data class LatLng(val latitude: Double,
-                  val longitude: Double,
-                  val elevation: Double? = null) : Geometry {
+data class LatLng(val latitude: Double, val longitude: Double, val elevation: Double? = null) : Geometry {
 
     override val type: String = "Point"
 
@@ -76,7 +74,7 @@ data class LatLng(val latitude: Double,
         val A = (longitude - zcm).toRadians() * Math.cos(latRad)
 
         var easting = scale * N * A * (1 + A * A * ((1 - T + C) / 6 + A * A
-          * (5 - 18 * T + T * T + 72 * C - 58 * e0sq) / 120))//Easting relative to Central meridian
+                * (5 - 18 * T + T * T + 72 * C - 58 * e0sq) / 120))//Easting relative to Central meridian
         easting += 500000
 
         var M = latRad * (1.0 - esq * (1.0 / 4.0 + esq * (3.0 / 64.0 + 5 * esq / 256)))
@@ -86,8 +84,8 @@ data class LatLng(val latitude: Double,
         M *= a//Arc length along standard meridian
 
         var northing = scale * (M + N * Math.tan(latRad)
-          * (A * A * (1.0 / 2.0 + A * A * ((5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
-          * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720))))//Northing from equator
+                * (A * A * (1.0 / 2.0 + A * A * ((5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
+                * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720))))//Northing from equator
         if (this.latitude < 0) {
             northing += 10000000.0
         }

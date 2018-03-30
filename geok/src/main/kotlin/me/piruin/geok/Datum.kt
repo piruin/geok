@@ -27,7 +27,7 @@ data class Datum(val equatorialRad: Double, val polarRad: Double, val flat: Doub
 
     override fun toString(): String {
         return "Equatorial Radius (meters) = $equatorialRad, Polar Radius (meters) = $polarRad," +
-          " Flattening = ${1.0 / flat} 1/Flattening = $flat"
+                " Flattening = ${1.0 / flat} 1/Flattening = $flat"
     }
 
     companion object {

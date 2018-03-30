@@ -28,10 +28,10 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
-inline fun <reified T> Gson.parse(json: String): T? = this.fromJson(json, object : TypeToken<T>() {}.type)
+inline fun <reified T> Gson.parse(json: String): T? = fromJson(json, object : TypeToken<T>() {}.type)
 
 inline fun <reified T> GsonBuilder.adapterFor(adapter: Any): GsonBuilder {
-    return this.registerTypeAdapter(object : TypeToken<T>() {}.type, adapter)
+    return registerTypeAdapter(object : TypeToken<T>() {}.type, adapter)
 }
 
 inline fun <reified T> typeOf(): Type = object : TypeToken<T>() {}.type

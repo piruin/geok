@@ -12,16 +12,11 @@ import me.piruin.geok.LatLng
 import me.piruin.geok.geometry.Polygon
 import java.lang.reflect.Type
 
-class PolygonSerializer : JsonSerializer<Polygon>,
-  JsonDeserializer<Polygon> {
+class PolygonSerializer : JsonSerializer<Polygon>, JsonDeserializer<Polygon> {
 
     private val listLatLngType = typeOf<MutableList<LatLng>>()
 
-    override fun serialize(
-        src: Polygon,
-        typeOfSrc: Type,
-        ctx: JsonSerializationContext
-    ): JsonElement {
+    override fun serialize(src: Polygon, typeOfSrc: Type, ctx: JsonSerializationContext): JsonElement {
         return JsonObject().apply {
             add("type", JsonPrimitive(src.type))
             add("coordinates", JsonArray().apply {
@@ -31,11 +26,7 @@ class PolygonSerializer : JsonSerializer<Polygon>,
         }
     }
 
-    override fun deserialize(
-        json: JsonElement,
-        typeOfT: Type,
-        ctx: JsonDeserializationContext
-    ): Polygon {
+    override fun deserialize(json: JsonElement, typeOfT: Type, ctx: JsonDeserializationContext): Polygon {
         val obj = json.asJsonObject
         val coordinates = obj.getAsJsonArray("coordinates")
 

@@ -27,15 +27,17 @@ import me.piruin.geok.Datum
 import me.piruin.geok.LatLng
 import me.piruin.geok.toRadians
 
-data class Polygon(var boundary: MutableList<LatLng>,
-    var holes: MutableList<MutableList<LatLng>> = arrayListOf()) : Geometry {
+data class Polygon(
+        var boundary: MutableList<LatLng>,
+        var holes: MutableList<MutableList<LatLng>> = arrayListOf()
+) : Geometry {
 
     override val type: String = "Polygon"
 
     constructor(vararg latlngs: LatLng) : this(latlngs.toMutableList())
 
     constructor(vararg xyPair: Pair<Double, Double>) :
-      this(xyPair.map { LatLng(it.second, it.first) }.toMutableList())
+            this(xyPair.map { LatLng(it.second, it.first) }.toMutableList())
 
     val isClosed: Boolean
         get() = boundary.isClosed
@@ -90,7 +92,9 @@ fun List<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
         val latitude = this[i].latitude
         val longitude = this[i].longitude
         ySegment.add((latitude - latitudeRef) * circumference / 360.0)
-        xSegment.add((longitude - longitudeRef) * circumference * Math.cos(latitude.toRadians()) / 360.0)
+        xSegment.add(
+                (longitude - longitudeRef) * circumference * Math.cos(latitude.toRadians()) / 360.0
+        )
     }
     // calculateArea areas for each triangle segment
     val triangleArea = ArrayList<Double>()
