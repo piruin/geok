@@ -34,20 +34,23 @@ import java.lang.reflect.Type
 
 class LatLngSerializer : JsonSerializer<LatLng>, JsonDeserializer<LatLng> {
 
-    override fun serialize(src: LatLng?,
-                           typeOfSrc: Type?,
-                           context: JsonSerializationContext?): JsonElement {
+    override fun serialize(
+        src: LatLng,
+        typeOfSrc: Type,
+        context: JsonSerializationContext
+    ): JsonElement {
         return JsonArray(2).apply {
-            add(src?.longitude)
-            add(src?.latitude)
+            add(src.longitude)
+            add(src.latitude)
         }
     }
 
-    override fun deserialize(json: JsonElement?,
-        typeOfT: Type?,
-        context: JsonDeserializationContext?
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        context: JsonDeserializationContext
     ): LatLng? {
-        val jsonArray = json?.asJsonArray
+        val jsonArray = json.asJsonArray
         return when (jsonArray) {
             null -> null
             else -> LatLng(jsonArray[1].asDouble, jsonArray[0].asDouble)

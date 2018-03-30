@@ -81,4 +81,21 @@ class LatLngSerializerTest {
           LatLng(0.0, 100.0),
           LatLng(1.0, 101.0))
     }
+
+    @Test
+    fun serializeObjWithLatLgn() {
+        val place = Place("NECTEC", LatLng(14.07776, 100.601282))
+
+        gson.toJson(
+          place) `should equal` """{"name":"NECTEC","coordinates":[100.601282,14.07776]}"""
+    }
+
+    @Test
+    fun serializeObjWithNullLatLgn() {
+        val place = Place("NECTEC")
+
+        gson.toJson(place) `should equal` """{"name":"NECTEC"}"""
+    }
+
+    class Place(val name: String, val coordinates: LatLng? = null)
 }
