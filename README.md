@@ -1,7 +1,25 @@
 # GEOK
 [![Build Status](https://travis-ci.org/piruin/geok.svg?branch=master)](https://travis-ci.org/piruin/geok)
+[![Download](https://api.bintray.com/packages/blazei/maven/geok-gson/images/download.svg) ](https://bintray.com/blazei/maven/geok-gson/_latestVersion)
 
 Small geometry library for Java and Kotlin
+
+## Download
+
+```groovy
+repositories {
+    maven { url  "https://dl.bintray.com/blazei/maven" }
+}
+
+dependencies {
+    def geokVersion = '1.+' //see download badge or latest released tag
+    
+    ...
+    implementation "me.piruin:geok:$geokVersion"
+    implementation "me.piruin.geok-gson:$geokVersion" //for support geojson with gson library
+    ...
+}
+```
 
 ## License
 
