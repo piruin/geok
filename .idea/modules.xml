@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_main.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_main.iml" group="geok-gson" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_test.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-gson/geok-gson_test.iml" group="geok-gson" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-project.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/geok-project.iml" filepath="$PROJECT_DIR$/geok-project.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-project_main.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-project_main.iml" group="geok-project" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok-project_test.iml" filepath="$PROJECT_DIR$/.idea/modules/geok-project_test.iml" group="geok-project" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/geok/geok_main.iml" filepath="$PROJECT_DIR$/.idea/modules/geok/geok_main.iml" group="geok" />
