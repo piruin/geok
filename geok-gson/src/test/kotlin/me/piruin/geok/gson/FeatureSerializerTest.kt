@@ -49,7 +49,9 @@ class FeatureSerializerTest {
         )
 
         gson.toJson(feature) `should be equal to` """
-    {"type":"Feature","geometry": {"type":"Point", "coordinates":[100.601282,14.07776] },"properties":{"name":"JohnSnow","age":15}}
+    {"type":"Feature",
+    "geometry": {"type":"Point", "coordinates":[100.601282,14.07776] },
+    "properties":{"name":"JohnSnow","age":15}}
 """.trimWhitespace()
     }
 
@@ -62,19 +64,27 @@ class FeatureSerializerTest {
         }
 
         gson.toJson(collection) `should be equal to` """
-            {
-                "type":"FeatureCollection","features":[
-                    {"type":"Feature","geometry":{"type":"Point","coordinates":[100.601282,14.07776] },"properties":{"name":"John","age":15}},
-                    {"type":"Feature","geometry":{"type":"Point","coordinates":[100.620148,14.08101]},"properties":{"name":"Arya","age":13}}
-                ]
-            }
+{
+    "type":"FeatureCollection","features":[
+        {  "type":"Feature",
+          "geometry":{"type":"Point","coordinates":[100.601282,14.07776] },
+          "properties":{"name":"John","age":15}
+        },
+        { "type":"Feature",
+          "geometry":{"type":"Point","coordinates":[100.620148,14.08101]},
+          "properties":{"name":"Arya","age":13}
+        }
+    ]
+}
             """.trimWhitespace()
     }
 
     @Test
     fun PointFromJson() {
         val json = """
-{"type":"Feature","geometry":{ "coordinates":[100.601282,14.07776], "type":"Point"},"properties":{"name":"John Snow","age":15}}
+{  "type":"Feature",
+  "geometry":{ "coordinates":[100.601282,14.07776], "type":"Point"},
+  "properties":{"name":"John Snow","age":15}}
 """.trimIndent()
 
         val feature = gson.parse<Feature<People>>(json)!!

@@ -25,5 +25,4 @@ class GeometrySerializer : JsonSerializer<Geometry>, JsonDeserializer<Geometry> 
             else -> throw IllegalArgumentException("Not support geometry type")
         }
     }
-
 }
