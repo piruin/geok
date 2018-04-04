@@ -23,11 +23,7 @@
 
 package me.piruin.geok
 
-import me.piruin.geok.geometry.Geometry
-
-data class LatLng(val latitude: Double, val longitude: Double, val elevation: Double? = null) : Geometry {
-
-    override val type: String = "Point"
+data class LatLng(val latitude: Double, val longitude: Double, val elevation: Double? = null) {
 
     init {
         assert(latitude between (-90.0 and 90.0)) { "latitude should between -90.0 and 90 [$latitude]" }

@@ -23,7 +23,7 @@
 
 package me.piruin.geok.geometry
 
-class FeatureCollection {
+class FeatureCollection<T> {
     val type = "FeatureCollection"
-    val features = mutableListOf<Feature<*>>()
+    val features = mutableListOf<Feature<T>>()
 }
