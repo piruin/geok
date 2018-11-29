@@ -23,7 +23,18 @@
 
 package me.piruin.geok.gson
 
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import me.piruin.geok.LatLng
+import me.piruin.geok.geometry.Geometry
+import me.piruin.geok.geometry.Polygon
 import java.lang.reflect.Type
 
 internal inline fun <reified T> typeOf(): Type = object : TypeToken<T>() {}.type
+
+fun GsonBuilder.registerGeokTypeAdapter(): GsonBuilder {
+    registerTypeAdapter(typeOf<LatLng>(), LatLngSerializer())
+    registerTypeAdapter(typeOf<Geometry>(), GeometrySerializer())
+    registerTypeAdapter(typeOf<Polygon>(), PolygonSerializer())
+    return this
+}

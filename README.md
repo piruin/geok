@@ -21,6 +21,16 @@ dependencies {
 }
 ```
 
+## Gson Support
+
+```
+  private val gson: Gson = GsonBuilder()
+            .registerGeokTypeAdapter() // call this
+            .create()
+```
+
+
+
 ## License
 
     Copyright (c) 2018 Piruin Panichphol

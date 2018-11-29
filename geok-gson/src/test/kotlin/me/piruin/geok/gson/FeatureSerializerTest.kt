@@ -25,10 +25,8 @@ package me.piruin.geok.gson
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import me.piruin.geok.LatLng
 import me.piruin.geok.geometry.Feature
 import me.piruin.geok.geometry.FeatureCollection
-import me.piruin.geok.geometry.Geometry
 import me.piruin.geok.geometry.Point
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should equal`
@@ -37,8 +35,7 @@ import org.junit.Test
 class FeatureSerializerTest {
 
     private val gson: Gson = GsonBuilder()
-            .adapterFor<Geometry>(GeometrySerializer())
-            .adapterFor<LatLng>(LatLngSerializer())
+            .registerGeokTypeAdapter()
             .create()
 
     @Test
