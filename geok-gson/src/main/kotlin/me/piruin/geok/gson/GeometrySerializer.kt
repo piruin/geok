@@ -17,7 +17,6 @@ class GeometrySerializer : JsonSerializer<Geometry>, JsonDeserializer<Geometry> 
     }
 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Geometry {
-        println("$json $typeOfT")
         val obj = json.asJsonObject
         return when (obj.get("type").asString) {
             "Point" -> context.deserialize(json, typeOf<Point>())
