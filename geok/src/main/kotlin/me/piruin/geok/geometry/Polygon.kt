@@ -38,7 +38,7 @@ data class Polygon(
     constructor(vararg xyPair: Pair<Double, Double>) :
             this(xyPair.map { LatLng(it.second, it.first) }.toMutableList())
 
-    override val type: String = "Polygon"
+    override val type: String = javaClass.simpleName
     val bbox: BBox?
 
     init {

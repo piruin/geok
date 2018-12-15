@@ -25,7 +25,6 @@ package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
-import java.lang.IllegalStateException
 
 data class FeatureCollection<T>(
         val features: List<Feature<T>>
@@ -45,8 +44,9 @@ data class FeatureCollection<T>(
     private fun List<Feature<T>>.toLatLngs(): List<LatLng> {
         return flatMap {
             when (it.geometry) {
-                is Polygon -> it.geometry.boundary
                 is Point -> listOf(it.geometry.coordinates)
+                is LineString -> it.geometry.coordinates
+                is Polygon -> it.geometry.boundary
                 else -> throw IllegalStateException("Not support ${it.type}")
             }
         }
