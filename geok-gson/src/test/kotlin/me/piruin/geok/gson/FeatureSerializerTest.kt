@@ -99,50 +99,50 @@ class FeatureSerializerTest {
         )
 
         gson.toJson(collection) `should equal json` """
-{
-  "type": "FeatureCollection",
-  "bbox":[100.601282, 14.07776, 100.620148, 14.08101],
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [100.601282, 14.07776]
-      },
-      "properties": {
-        "name": "John",
-        "age": 15
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [100.620148, 14.08101]
-      },
-      "properties": {
-        "name": "Arya",
-        "age": 13
-      }
-    }
-  ]
-}""".trimWhitespace()
+            {
+              "type": "FeatureCollection",
+              "bbox":[100.601282, 14.07776, 100.620148, 14.08101],
+              "features": [
+                {
+                  "type": "Feature",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [100.601282, 14.07776]
+                  },
+                  "properties": {
+                    "name": "John",
+                    "age": 15
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "geometry": {
+                    "type": "Point",
+                    "coordinates": [100.620148, 14.08101]
+                  },
+                  "properties": {
+                    "name": "Arya",
+                    "age": 13
+                  }
+                }
+              ]
+            }""".trimWhitespace()
     }
 
     @Test
     fun PointFromJson() {
         val feature = gson.parse<Feature<People>>("""
-{
-  "type": "Feature",
-  "geometry": {
-    "coordinates": [100.601282, 14.07776],
-    "type": "Point"
-  },
-  "properties": {
-    "name": "John Snow",
-    "age": 15
-  }
-}""".trimIndent())!!
+            {
+              "type": "Feature",
+              "geometry": {
+                "coordinates": [100.601282, 14.07776],
+                "type": "Point"
+              },
+              "properties": {
+                "name": "John Snow",
+                "age": 15
+              }
+            }""".trimIndent())!!
 
         feature.geometry `should equal` Point(14.07776, 100.601282)
     }

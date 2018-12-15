@@ -2,9 +2,10 @@ package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
 
-class MultiPolygon(geometries: List<Polygon>) : MultiGeometry<Polygon>(geometries) {
+data class MultiPolygon(val geometries: List<Polygon>) : MultiGeometry {
 
     constructor(vararg polygons: Polygon) : this(polygons.toList())
 
-    val bbox: BBox? = BBox.combine(geometries.mapNotNull { it.bbox })
+    override val type: String = javaClass.simpleName
+    override val bbox: BBox = BBox.combine(geometries.mapNotNull { it.bbox })
 }

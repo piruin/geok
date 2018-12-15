@@ -25,6 +25,7 @@ package me.piruin.geok.gson
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.LatLng
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should equal`
@@ -40,7 +41,7 @@ class LatLngSerializerTest {
     fun serialiazeLatLng() {
         val latlng = LatLng(10.0, 120.0)
 
-        gson.toJson(latlng) `should be equal to` "[120.0,10.0]"
+        gson.toJson(latlng) `should equal json` "[120.0,10.0]"
     }
 
     @Test
@@ -71,7 +72,7 @@ class LatLngSerializerTest {
                 LatLng(1.0, 101.0)
         )
 
-        gson.toJson(latlngList) `should be equal to` "[[100.0,0.0],[101.0,1.0]]"
+        gson.toJson(latlngList) `should equal json` "[[100.0,0.0],[101.0,1.0]]"
     }
 
     @Test
@@ -88,9 +89,11 @@ class LatLngSerializerTest {
     fun serializeObjWithLatLgn() {
         val place = Place("NECTEC", LatLng(14.07776, 100.601282))
 
-        gson.toJson(place) `should equal` """
-            {"name":"NECTEC","coordinates":[100.601282,14.07776]}
-            """.trimIndent()
+        gson.toJson(place) `should equal json` """
+            {
+                "name":"NECTEC",
+                "coordinates":[100.601282,14.07776]
+            }""".trimIndent()
     }
 
     @Test

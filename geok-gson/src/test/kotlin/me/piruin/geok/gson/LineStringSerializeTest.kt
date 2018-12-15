@@ -21,26 +21,26 @@ class LineStringSerializeTest {
         )
 
         gson.toJson(lineString) `should equal json` """
-{
-  "type": "LineString",
-  "coordinates": [
-    [100.0, 0.0],
-    [101.0, 1.0]
-  ]
-}
-""".trimIndent()
+            {
+              "type": "LineString",
+              "coordinates": [
+                [100.0, 0.0],
+                [101.0, 1.0]
+              ]
+            }
+            """.trimIndent()
     }
 
     @Test
     fun deserialize() {
         val lineString = gson.parse<LineString>("""
-{
-  "type": "LineString",
-  "coordinates": [
-    [100.0, 0.0],
-    [101.0, 1.0]
-  ]
-}""".trimIndent())
+            {
+              "type": "LineString",
+              "coordinates": [
+                [100.0, 0.0],
+                [101.0, 1.0]
+              ]
+            }""".trimIndent())
 
         lineString `should equal` LineString(
                 100.0 to 0.0,

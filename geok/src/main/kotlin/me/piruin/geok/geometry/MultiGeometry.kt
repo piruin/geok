@@ -1,9 +1,7 @@
 package me.piruin.geok.geometry
 
-abstract class MultiGeometry<T : Geometry>(val geometries: List<T>) {
+import me.piruin.geok.BBox
 
-    constructor(vararg geometry: T) : this(geometry.toList())
-
-    val type: String = javaClass.simpleName
+interface MultiGeometry : Geometry {
+    val bbox: BBox
 }
-

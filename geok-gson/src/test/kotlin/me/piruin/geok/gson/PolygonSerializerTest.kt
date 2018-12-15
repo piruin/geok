@@ -2,9 +2,9 @@ package me.piruin.geok.gson
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.LatLng
 import me.piruin.geok.geometry.Polygon
-import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
@@ -24,15 +24,38 @@ class PolygonSerializerTest {
                 100.0 to 0.0
         )
 
-        gson.toJson(polygon) `should be equal to`
-                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
+        gson.toJson(polygon) `should equal json` """
+            {
+              "type":"Polygon",
+              "bbox":[100.0,0.0,101.0,1.0],
+              "coordinates":[
+                [
+                  [100.0,0.0],
+                  [101.0,0.0],
+                  [101.0,1.0],
+                  [100.0,1.0],
+                  [100.0,0.0]
+                ]
+              ]
+            }""".trimIndent()
     }
 
     @Test
     fun deserialize() {
-        val polygon = gson.parse<Polygon>(
-                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
-        )
+        val polygon = gson.parse<Polygon>("""
+            {
+              "type":"Polygon",
+              "bbox":[100.0,0.0,101.0,1.0],
+              "coordinates":[
+                [
+                  [100.0,0.0],
+                  [101.0,0.0],
+                  [101.0,1.0],
+                  [100.0,1.0],
+                  [100.0,0.0]
+                ]
+              ]
+            }""".trimIndent())
 
         polygon `should equal` Polygon(
                 100.0 to 0.0,
@@ -64,24 +87,27 @@ class PolygonSerializerTest {
 
         val polygon = Polygon(boundary, hole)
 
-        gson.toJson(polygon) `should be equal to` """{
-            "type":"Polygon","coordinates":[
-                [
-                    [100.0,0.0],
-                    [101.0,0.0],
-                    [101.0,1.0],
-                    [100.0,1.0],
-                    [100.0,0.0]
-                ],
-                [
-                    [100.2,0.2],
-                    [100.8,0.2],
-                    [100.8,0.8],
-                    [100.2,0.8],
-                    [100.2,0.2]
+        gson.toJson(polygon) `should equal json` """
+            {
+                "type":"Polygon",
+                "bbox":[100.0,0.0,101.0,1.0],
+                "coordinates":[
+                    [
+                        [100.0,0.0],
+                        [101.0,0.0],
+                        [101.0,1.0],
+                        [100.0,1.0],
+                        [100.0,0.0]
+                    ],
+                    [
+                        [100.2,0.2],
+                        [100.8,0.2],
+                        [100.8,0.8],
+                        [100.2,0.8],
+                        [100.2,0.2]
+                    ]
                 ]
-            ]
-        }""".trimWhitespace()
+            }""".trimWhitespace()
     }
 
     @Test
@@ -105,26 +131,25 @@ class PolygonSerializerTest {
 
         val expected = Polygon(boundary, hole)
 
-        val polygon = gson.parse<Polygon>(
-                """{
-            "type":"Polygon","coordinates":[
-                [
-                    [100.0,0.0],
-                    [101.0,0.0],
-                    [101.0,1.0],
-                    [100.0,1.0],
-                    [100.0,0.0]
-                ],
-                [
-                    [100.2,0.2],
-                    [100.8,0.2],
-                    [100.8,0.8],
-                    [100.2,0.8],
-                    [100.2,0.2]
+        val polygon = gson.parse<Polygon>("""
+            {
+                "type":"Polygon","coordinates":[
+                    [
+                        [100.0,0.0],
+                        [101.0,0.0],
+                        [101.0,1.0],
+                        [100.0,1.0],
+                        [100.0,0.0]
+                    ],
+                    [
+                        [100.2,0.2],
+                        [100.8,0.2],
+                        [100.8,0.8],
+                        [100.2,0.8],
+                        [100.2,0.2]
+                    ]
                 ]
-            ]
-        }""".trimWhitespace()
-        )
+            }""".trimWhitespace())
 
         polygon `should equal` expected
     }

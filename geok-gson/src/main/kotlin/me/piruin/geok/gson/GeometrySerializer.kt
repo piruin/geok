@@ -7,6 +7,9 @@ import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import me.piruin.geok.geometry.Geometry
 import me.piruin.geok.geometry.LineString
+import me.piruin.geok.geometry.MultiLineString
+import me.piruin.geok.geometry.MultiPoint
+import me.piruin.geok.geometry.MultiPolygon
 import me.piruin.geok.geometry.Point
 import me.piruin.geok.geometry.Polygon
 import java.lang.reflect.Type
@@ -23,6 +26,9 @@ class GeometrySerializer : JsonSerializer<Geometry>, JsonDeserializer<Geometry> 
             Point::class.java.simpleName -> context.deserialize(json, typeOf<Point>())
             Polygon::class.java.simpleName -> context.deserialize(json, typeOf<Polygon>())
             LineString::class.java.simpleName -> context.deserialize(json, typeOf<LineString>())
+            MultiPoint::class.java.simpleName -> context.deserialize(json, typeOf<MultiPoint>())
+            MultiPolygon::class.java.simpleName -> context.deserialize(json, typeOf<MultiPolygon>())
+            MultiLineString::class.java.simpleName -> context.deserialize(json, typeOf<MultiLineString>())
             else -> throw IllegalArgumentException("Not support geometry type")
         }
     }
