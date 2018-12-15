@@ -23,8 +23,8 @@
 
 package me.piruin.geok
 
-import junit.framework.Assert.assertEquals
 import org.amshove.kluent.`should equal`
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class DoubleTest {
@@ -62,11 +62,8 @@ class DoubleTest {
         3 / 4 `should equal` 0
         3.0 / 4.0 `should equal` 0.75
     }
+}
 
-    fun Double.shouldEqual(
-            expected: Double,
-            delta: Double = 0.00001
-    ): Double {
-        return this.apply { assertEquals(this, expected, delta) }
-    }
+fun Double.shouldEqual(expected: Double, delta: Double = 0.00001): Double {
+    return this.apply { assertEquals(this, expected, delta) }
 }
