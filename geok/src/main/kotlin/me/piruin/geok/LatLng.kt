@@ -30,6 +30,8 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         assert(longitude between (-180.0 and 180.0)) { "longitude should between -180.0 and 180 [$longitude]" }
     }
 
+    fun distanceTo(latlng: LatLng) = distanceCalculator().between(this, latlng)
+
     override fun toString(): String {
         return "$latitude, $longitude" + if (elevation != null) ", $elevation" else ""
     }
@@ -88,3 +90,19 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         return Utm(utmZone.toInt(), if (latRad > 0) 'N' else 'S', easting.round(1), northing.round(1))
     }
 }
+
+val Iterable<LatLng>.length: Double
+    get() {
+        var distance = 0.0
+        val iterator = iterator()
+        if (!iterator.hasNext())
+            return distance
+
+        var current = iterator.next()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            distance += current.distanceTo(next)
+            current = next
+        }
+        return distance
+    }

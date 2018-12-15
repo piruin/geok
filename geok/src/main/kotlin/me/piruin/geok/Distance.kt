@@ -25,7 +25,7 @@ interface DistanceCalculator {
     /**
      * Calculate distance between Latlng
      *
-     * @return distance in KM
+     * @return distance in Meters
      */
     fun between(latLng1: LatLng, latlng2: LatLng): Double
 }
@@ -34,8 +34,8 @@ fun distanceCalculator(datum: Datum = Datum.WSG48): DistanceCalculator = Ellipso
 
 private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
 
-    private val a = datum.equatorialRad / 1000
-    private val b = datum.polarRad / 1000
+    private val a = datum.equatorialRad
+    private val b = datum.polarRad
     private val f = 1.0 / datum.flat
 
     override fun between(latLng1: LatLng, latlng2: LatLng): Double {
@@ -106,5 +106,3 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
         return this.b * a * (sigma - deltaSigma)
     }
 }
-
-fun LatLng.distanceTo(latlng: LatLng) = distanceCalculator().between(this, latlng)
