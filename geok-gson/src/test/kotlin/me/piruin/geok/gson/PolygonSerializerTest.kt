@@ -25,7 +25,7 @@ class PolygonSerializerTest {
         )
 
         gson.toJson(polygon) `should be equal to`
-                """{"type":"Polygon","bbox":[100.0,0.0,101.0,1.0],"coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
+                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
     }
 
     @Test
@@ -65,7 +65,7 @@ class PolygonSerializerTest {
         val polygon = Polygon(boundary, hole)
 
         gson.toJson(polygon) `should be equal to` """{
-            "type":"Polygon","bbox":[100.0,0.0,101.0,1.0],"coordinates":[
+            "type":"Polygon","coordinates":[
                 [
                     [100.0,0.0],
                     [101.0,0.0],

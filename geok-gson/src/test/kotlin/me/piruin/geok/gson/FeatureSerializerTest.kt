@@ -25,10 +25,11 @@ package me.piruin.geok.gson
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.geometry.Feature
 import me.piruin.geok.geometry.FeatureCollection
 import me.piruin.geok.geometry.Point
-import org.amshove.kluent.`should be equal to`
+import me.piruin.geok.geometry.Polygon
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
@@ -45,11 +46,49 @@ class FeatureSerializerTest {
                 People("JohnSnow", 15)
         )
 
-        gson.toJson(feature) `should be equal to` """
-    {"type":"Feature",
-    "geometry": {"type":"Point", "coordinates":[100.601282,14.07776] },
-    "properties":{"name":"JohnSnow","age":15}}
+        gson.toJson(feature) `should equal json` """
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [100.601282, 14.07776]
+  },
+  "properties": {
+    "name": "JohnSnow",
+    "age": 15
+  }
+}
 """.trimWhitespace()
+    }
+
+    @Test
+    fun polygonFeature() {
+        val polygon = Polygon(
+                100.0 to 0.0,
+                101.0 to 0.0,
+                101.0 to 1.0,
+                100.0 to 1.0,
+                100.0 to 0.0
+        )
+        val feature = Feature(
+                polygon,
+                People("JohnSnow", 15)
+        )
+
+        gson.toJson(feature) `should equal json` """
+{
+  "type": "Feature",
+  "bbox": [100.0, 0.0, 101.0, 1.0],
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]
+  },
+  "properties": {
+    "name": "JohnSnow",
+    "age": 15
+  }
+}
+        """.trimIndent()
     }
 
     @Test
@@ -60,31 +99,51 @@ class FeatureSerializerTest {
             add(Feature(Point(14.08101, 100.620148), People("Arya", 13)))
         }
 
-        gson.toJson(collection) `should be equal to` """
+        gson.toJson(collection) `should equal json` """
 {
-    "type":"FeatureCollection","features":[
-        {  "type":"Feature",
-          "geometry":{"type":"Point","coordinates":[100.601282,14.07776] },
-          "properties":{"name":"John","age":15}
-        },
-        { "type":"Feature",
-          "geometry":{"type":"Point","coordinates":[100.620148,14.08101]},
-          "properties":{"name":"Arya","age":13}
-        }
-    ]
-}
-            """.trimWhitespace()
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.601282, 14.07776
+        ]
+      },
+      "properties": {
+        "name": "John",
+        "age": 15
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [100.620148, 14.08101]
+      },
+      "properties": {
+        "name": "Arya",
+        "age": 13
+      }
+    }
+  ]
+}""".trimWhitespace()
     }
 
     @Test
     fun PointFromJson() {
-        val json = """
-{  "type":"Feature",
-  "geometry":{ "coordinates":[100.601282,14.07776], "type":"Point"},
-  "properties":{"name":"John Snow","age":15}}
-""".trimIndent()
-
-        val feature = gson.parse<Feature<People>>(json)!!
+        val feature = gson.parse<Feature<People>>("""
+{
+  "type": "Feature",
+  "geometry": {
+    "coordinates": [100.601282, 14.07776],
+    "type": "Point"
+  },
+  "properties": {
+    "name": "John Snow",
+    "age": 15
+  }
+}""".trimIndent())!!
 
         feature.geometry `should equal` Point(14.07776, 100.601282)
     }

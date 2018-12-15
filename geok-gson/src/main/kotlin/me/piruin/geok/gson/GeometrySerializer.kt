@@ -19,8 +19,8 @@ class GeometrySerializer : JsonSerializer<Geometry>, JsonDeserializer<Geometry> 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Geometry {
         val obj = json.asJsonObject
         return when (obj.get("type").asString) {
-            "Point" -> context.deserialize(json, typeOf<Point>())
-            "Polygon" -> context.deserialize(json, typeOf<Polygon>())
+            Point::class.java.simpleName -> context.deserialize(json, typeOf<Point>())
+            Polygon::class.java.simpleName -> context.deserialize(json, typeOf<Polygon>())
             else -> throw IllegalArgumentException("Not support geometry type")
         }
     }
