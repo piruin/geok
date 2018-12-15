@@ -23,21 +23,27 @@
 
 package me.piruin.geok.geometry
 
+import me.piruin.geok.BBox
 import me.piruin.geok.Datum
 import me.piruin.geok.LatLng
 import me.piruin.geok.toRadians
 
 data class Polygon(
-        var boundary: MutableList<LatLng>,
-        var holes: MutableList<MutableList<LatLng>> = arrayListOf()
+        var boundary: List<LatLng>,
+        var holes: MutableList<List<LatLng>> = mutableListOf()
 ) : Geometry {
 
     override val type: String = "Polygon"
+    val bbox: BBox?
 
     constructor(vararg latlngs: LatLng) : this(latlngs.toMutableList())
 
     constructor(vararg xyPair: Pair<Double, Double>) :
             this(xyPair.map { LatLng(it.second, it.first) }.toMutableList())
+
+    init {
+        bbox = BBox.from(boundary)
+    }
 
     val isClosed: Boolean
         get() = boundary.isClosed

@@ -23,6 +23,7 @@
 
 package me.piruin.geok.geometry
 
+import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
 import me.piruin.geok.Utm
 import org.amshove.kluent.`should be`
@@ -55,6 +56,16 @@ class PolygonTest {
     @Test
     fun area() {
         polygon.area().roundToInt() `should equal` 268
+    }
+
+    @Test
+    fun bbox() {
+        polygon.bbox `should equal` BBox(
+                left = 102.8378020293,
+                bottom = 16.4266819930293,
+                right = 102.8380009059,
+                top = 16.4268937418855
+        )
     }
 
     @Test

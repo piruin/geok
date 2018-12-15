@@ -2,16 +2,21 @@ package me.piruin.geok
 
 import me.piruin.geok.geometry.Polygon
 
-class BBox(
+data class BBox(
         var left: Double,
         var bottom: Double,
         var right: Double,
         var top: Double) {
 
+    init {
+        require(left <= right) { "left[$left] must less than or eq right[$right] "}
+        require(bottom <= top) { "bottom[$bottom] must less than or eq top[$top]"}
+    }
+
     companion object {
 
-        fun fromLatLngs(latLngs: List<LatLng>): BBox {
-            var point = mutableListOf(0.0, 0.0, 0.0, 0.0)
+        fun from(latLngs: List<LatLng>): BBox {
+            val point = latLngs[0].toBboxPoint()
             latLngs.forEach {
                 if (it.longitude < point[0])
                     point[0] = it.longitude
@@ -25,6 +30,10 @@ class BBox(
             return BBox(point[0], point[1], point[2], point[3])
         }
 
-        fun fromPolygon(polygon: Polygon) = fromLatLngs(polygon.boundary)
+        fun from(vararg latLngs: LatLng) = from(latLngs.toList())
+
+        fun from(polygon: Polygon) = from(polygon.boundary)
     }
 }
+
+private fun LatLng.toBboxPoint() = mutableListOf(longitude, latitude, longitude, latitude)

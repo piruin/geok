@@ -23,20 +23,32 @@
 
 package me.piruin.geok.gson
 
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
+import com.google.gson.JsonArray
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
-import me.piruin.geok.geometry.Geometry
-import me.piruin.geok.geometry.Polygon
 import java.lang.reflect.Type
 
-internal inline fun <reified T> typeOf(): Type = object : TypeToken<T>() {}.type
+class BBoxSerializer : JsonSerializer<BBox>, JsonDeserializer<BBox> {
 
-fun GsonBuilder.registerGeokTypeAdapter(): GsonBuilder {
-    registerTypeAdapter(typeOf<LatLng>(), LatLngSerializer())
-    registerTypeAdapter(typeOf<BBox>(), BBoxSerializer())
-    registerTypeAdapter(typeOf<Geometry>(), GeometrySerializer())
-    registerTypeAdapter(typeOf<Polygon>(), PolygonSerializer())
-    return this
+    override fun serialize(src: BBox, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+        return JsonArray(2).apply {
+            add(src.left)
+            add(src.bottom)
+            add(src.right)
+            add(src.top)
+        }
+    }
+
+    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): BBox? {
+        val jsonArray = json.asJsonArray
+        return when (jsonArray) {
+            null -> null
+            else -> BBox(jsonArray[0].asDouble, jsonArray[1].asDouble, jsonArray[2].asDouble, jsonArray[3].asDouble)
+        }
+    }
 }

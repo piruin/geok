@@ -19,6 +19,7 @@ class PolygonSerializer : JsonSerializer<Polygon>, JsonDeserializer<Polygon> {
     override fun serialize(src: Polygon, typeOfSrc: Type, ctx: JsonSerializationContext): JsonElement {
         return JsonObject().apply {
             add("type", JsonPrimitive(src.type))
+            add("bbox", ctx.serialize(src.bbox))
             add("coordinates", JsonArray().apply {
                 add(ctx.serialize(src.boundary))
                 src.holes.forEach { add(ctx.serialize(it)) }

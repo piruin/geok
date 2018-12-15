@@ -11,8 +11,7 @@ import org.junit.Test
 class PolygonSerializerTest {
 
     private val gson: Gson = GsonBuilder()
-            .adapterFor<LatLng>(LatLngSerializer())
-            .adapterFor<Polygon>(PolygonSerializer())
+            .registerGeokTypeAdapter()
             .create()
 
     @Test
@@ -26,7 +25,7 @@ class PolygonSerializerTest {
         )
 
         gson.toJson(polygon) `should be equal to`
-                """{"type":"Polygon","coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
+                """{"type":"Polygon","bbox":[100.0,0.0,101.0,1.0],"coordinates":[[[100.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]]}"""
     }
 
     @Test
@@ -46,7 +45,7 @@ class PolygonSerializerTest {
 
     @Test
     fun serializeWithHole() {
-        val boundary = mutableListOf(
+        val boundary = listOf(
                 LatLng(0.0, 100.0),
                 LatLng(0.0, 101.0),
                 LatLng(1.0, 101.0),
@@ -54,7 +53,7 @@ class PolygonSerializerTest {
                 LatLng(0.0, 100.0)
         )
         val hole = mutableListOf(
-                mutableListOf(
+                listOf(
                         LatLng(0.2, 100.2),
                         LatLng(0.2, 100.8),
                         LatLng(0.8, 100.8),
@@ -66,7 +65,7 @@ class PolygonSerializerTest {
         val polygon = Polygon(boundary, hole)
 
         gson.toJson(polygon) `should be equal to` """{
-            "type":"Polygon","coordinates":[
+            "type":"Polygon","bbox":[100.0,0.0,101.0,1.0],"coordinates":[
                 [
                     [100.0,0.0],
                     [101.0,0.0],
@@ -87,7 +86,7 @@ class PolygonSerializerTest {
 
     @Test
     fun deserializeWithHole() {
-        val boundary = mutableListOf(
+        val boundary = listOf(
                 LatLng(0.0, 100.0),
                 LatLng(0.0, 101.0),
                 LatLng(1.0, 101.0),
@@ -95,7 +94,7 @@ class PolygonSerializerTest {
                 LatLng(0.0, 100.0)
         )
         val hole = mutableListOf(
-                mutableListOf(
+                listOf(
                         LatLng(0.2, 100.2),
                         LatLng(0.2, 100.8),
                         LatLng(0.8, 100.8),
