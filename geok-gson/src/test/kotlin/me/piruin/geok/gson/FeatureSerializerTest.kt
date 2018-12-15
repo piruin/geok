@@ -93,22 +93,21 @@ class FeatureSerializerTest {
 
     @Test
     fun featureCollectionToJson() {
-        val collection = FeatureCollection<People>()
-        collection.features.apply {
-            add(Feature(Point(14.07776, 100.601282), People("John", 15)))
-            add(Feature(Point(14.08101, 100.620148), People("Arya", 13)))
-        }
+        val collection = FeatureCollection(
+                Feature(Point(14.07776, 100.601282), People("John", 15)),
+                Feature(Point(14.08101, 100.620148), People("Arya", 13))
+        )
 
         gson.toJson(collection) `should equal json` """
 {
   "type": "FeatureCollection",
+  "bbox":[100.601282, 14.07776, 100.620148, 14.08101],
   "features": [
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [100.601282, 14.07776
-        ]
+        "coordinates": [100.601282, 14.07776]
       },
       "properties": {
         "name": "John",

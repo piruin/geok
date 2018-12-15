@@ -25,9 +25,9 @@ package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
 
-class Feature<T>(val geometry: Geometry, var properties: T?) {
+data class Feature<T>(val geometry: Geometry, var properties: T?) {
     val type = "Feature"
-    val bbox : BBox? = when (geometry) {
+    val bbox: BBox? = when (geometry) {
         is Polygon -> geometry.bbox
         else -> null
     }

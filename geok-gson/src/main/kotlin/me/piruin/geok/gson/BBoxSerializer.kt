@@ -30,13 +30,12 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import me.piruin.geok.BBox
-import me.piruin.geok.LatLng
 import java.lang.reflect.Type
 
 class BBoxSerializer : JsonSerializer<BBox>, JsonDeserializer<BBox> {
 
     override fun serialize(src: BBox, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
-        return JsonArray(2).apply {
+        return JsonArray(4).apply {
             add(src.left)
             add(src.bottom)
             add(src.right)

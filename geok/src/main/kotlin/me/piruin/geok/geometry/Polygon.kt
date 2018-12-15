@@ -33,13 +33,12 @@ data class Polygon(
         var holes: MutableList<List<LatLng>> = mutableListOf()
 ) : Geometry {
 
-    override val type: String = "Polygon"
-    val bbox: BBox?
-
     constructor(vararg latlngs: LatLng) : this(latlngs.toMutableList())
-
     constructor(vararg xyPair: Pair<Double, Double>) :
             this(xyPair.map { LatLng(it.second, it.first) }.toMutableList())
+
+    override val type: String = "Polygon"
+    val bbox: BBox?
 
     init {
         bbox = BBox.from(boundary)

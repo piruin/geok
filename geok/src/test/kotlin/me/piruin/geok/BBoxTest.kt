@@ -32,7 +32,7 @@ class BBoxTest {
                 LatLng(20.0, 10.0),
                 LatLng(-20.0, -10.0)
         )
-        val bbox = BBox.from(polygon)
+        val bbox = BBox.from(polygon.boundary)
 
         with(bbox) {
             left `should be equal to` -10.0

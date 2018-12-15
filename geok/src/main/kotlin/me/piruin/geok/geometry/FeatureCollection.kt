@@ -23,7 +23,32 @@
 
 package me.piruin.geok.geometry
 
-class FeatureCollection<T> {
+import me.piruin.geok.BBox
+import me.piruin.geok.LatLng
+import java.lang.IllegalStateException
+
+data class FeatureCollection<T>(
+        val features: List<Feature<T>>
+) {
+    constructor(vararg features: Feature<T>) : this(features.toList())
+
     val type = "FeatureCollection"
-    val features = mutableListOf<Feature<T>>()
+    val bbox: BBox?
+
+    init {
+        require(features.isNotEmpty()) { "Feature Collection should not empty" }
+
+        val latLng = features.toLatLngs()
+        bbox = if (latLng.size > 1) BBox.from(latLng) else null
+    }
+
+    private fun List<Feature<T>>.toLatLngs(): List<LatLng> {
+        return flatMap {
+            when (it.geometry) {
+                is Polygon -> it.geometry.boundary
+                is Point -> listOf(it.geometry.coordinates)
+                else -> throw IllegalStateException("Not support ${it.type}")
+            }
+        }
+    }
 }

@@ -1,7 +1,5 @@
 package me.piruin.geok
 
-import me.piruin.geok.geometry.Polygon
-
 data class BBox(
         var left: Double,
         var bottom: Double,
@@ -9,8 +7,8 @@ data class BBox(
         var top: Double) {
 
     init {
-        require(left <= right) { "left[$left] must less than or eq right[$right] "}
-        require(bottom <= top) { "bottom[$bottom] must less than or eq top[$top]"}
+        require(left <= right) { "left[$left] must less than or eq right[$right] " }
+        require(bottom <= top) { "bottom[$bottom] must less than or eq top[$top]" }
     }
 
     companion object {
@@ -31,8 +29,6 @@ data class BBox(
         }
 
         fun from(vararg latLngs: LatLng) = from(latLngs.toList())
-
-        fun from(polygon: Polygon) = from(polygon.boundary)
     }
 }
 
