@@ -9,8 +9,8 @@ class DistanceTest {
         val latlng1 = LatLng(40.6892, -74.0444)
         val latlng2 = LatLng(39.7802, -74.9453)
 
-        val dis = distanceCalculator()
+        val distance = distanceCalculator()
 
-        dis.between(latlng1, latlng2).shouldEqual(126.73841, 0.0001)
+        distance.between(latlng1, latlng2).shouldEqual(126.74, 0.01)
     }
 }
