@@ -65,5 +65,5 @@ class DoubleTest {
 }
 
 fun Double.shouldEqual(expected: Double, delta: Double = 0.00001): Double {
-    return this.apply { assertEquals(this, expected, delta) }
+    return this.apply { assertEquals(expected, this, delta) }
 }

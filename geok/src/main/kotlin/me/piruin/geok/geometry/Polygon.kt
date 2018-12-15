@@ -26,6 +26,7 @@ package me.piruin.geok.geometry
 import me.piruin.geok.BBox
 import me.piruin.geok.Datum
 import me.piruin.geok.LatLng
+import me.piruin.geok.length
 import me.piruin.geok.toRadians
 
 data class Polygon(
@@ -59,6 +60,14 @@ data class Polygon(
         holes.forEach { area -= it.area(earthRadius) }
         return area
     }
+
+    val perimeter: Double
+        get() {
+            val tmpBoundary = this.boundary.toMutableList()
+            if (!boundary.isClosed)
+                tmpBoundary.add(tmpBoundary.get(0))
+            return tmpBoundary.length
+        }
 
     val centroid: LatLng
         get() {
