@@ -22,7 +22,7 @@ class MultiLineStringSerializer : JsonSerializer<MultiLineString>, JsonDeseriali
             add("type", JsonPrimitive(src.type))
             add("bbox", ctx.serialize(src.bbox))
             add("coordinates", JsonArray().apply {
-                src.geometries.forEach {
+                src.lines.forEach {
                     add(ctx.serialize(it.coordinates))
                 }
             })

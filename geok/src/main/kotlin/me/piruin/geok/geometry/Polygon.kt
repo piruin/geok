@@ -39,10 +39,10 @@ data class Polygon(
             this(xyPair.map { LatLng(it.second, it.first) }.toMutableList())
 
     override val type: String = javaClass.simpleName
-    val bbox: BBox?
+    val bbox: BBox = BBox.from(boundary)
 
     init {
-        bbox = BBox.from(boundary)
+        require(boundary.size >= 3) { "Boundary of poly should have at least 3 point" }
     }
 
     val isClosed: Boolean

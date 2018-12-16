@@ -22,7 +22,7 @@ class MultiPointSerializer : JsonSerializer<MultiPoint>, JsonDeserializer<MultiP
             add("type", JsonPrimitive(src.type))
             add("bbox", ctx.serialize(src.bbox))
             add("coordinates", JsonArray().apply {
-                src.geometries.forEach {
+                src.points.forEach {
                     add(ctx.serialize(it.coordinates))
                 }
             })
