@@ -26,9 +26,8 @@ package me.piruin.geok.geometry
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
 
-data class FeatureCollection<T>(
-        val features: List<Feature<T>>
-) {
+data class FeatureCollection<T>(val features: List<Feature<T>>) {
+
     constructor(vararg features: Feature<T>) : this(features.toList())
 
     val type = "FeatureCollection"
@@ -47,6 +46,9 @@ data class FeatureCollection<T>(
                 is Point -> listOf(it.geometry.coordinates)
                 is LineString -> it.geometry.coordinates
                 is Polygon -> it.geometry.boundary
+                is MultiPoint -> it.geometry.points.map { it.coordinates }
+                is MultiLineString -> it.geometry.lines.flatMap { it.coordinates }
+                is MultiPolygon -> it.geometry.polygons.flatMap { it.boundary }
                 else -> throw IllegalStateException("Not support ${it.type}")
             }
         }

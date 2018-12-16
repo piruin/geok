@@ -25,10 +25,15 @@ package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
 
-data class Feature<T>(val geometry: Geometry, var properties: T?) {
+data class Feature<T>(val geometry: Geometry, var properties: T? = null) {
+
     val type = "Feature"
     val bbox: BBox? = when (geometry) {
+        is LineString -> geometry.bbox
         is Polygon -> geometry.bbox
+        is MultiGeometry -> geometry.bbox
         else -> null
     }
 }
+
+fun <T> Geometry.toFeature(properties: T? = null) = Feature<T>(this, properties)

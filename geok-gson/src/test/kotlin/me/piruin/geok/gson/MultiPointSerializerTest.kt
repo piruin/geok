@@ -24,12 +24,12 @@ class MultiPointSerializerTest {
 
     @Test
     fun serialize() {
-        val multiPoint = MultiPoint(
+        val points = MultiPoint(
                 Point(100.0 to 0.0),
                 Point(101.0 to 1.0)
         )
 
-        gson.toJson(multiPoint) `should equal json` json
+        gson.toJson(points) `should equal json` json
     }
 
     @Test

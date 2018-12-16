@@ -24,6 +24,7 @@
 package me.piruin.geok.geometry
 
 import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should not be`
 import org.junit.Test
 
 class FeatureTest {
@@ -43,6 +44,7 @@ class FeatureTest {
         with(feature) {
             type `should equal` "Feature"
             geometry `should equal` polygon
+            bbox `should not be` null
             properties `should equal` Properties()
         }
     }

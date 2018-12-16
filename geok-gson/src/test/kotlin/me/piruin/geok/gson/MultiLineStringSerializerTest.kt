@@ -25,12 +25,12 @@ class MultiLineStringSerializerTest {
 
     @Test
     fun serialize() {
-        val lineString = MultiLineString(
+        val lines = MultiLineString(
                 LineString(100.0 to 0.0, 101.0 to 1.0),
                 LineString(102.0 to 2.0, 103.0 to 3.0)
         )
 
-        gson.toJson(lineString) `should equal json` json
+        gson.toJson(lines) `should equal json` json
     }
 
     @Test

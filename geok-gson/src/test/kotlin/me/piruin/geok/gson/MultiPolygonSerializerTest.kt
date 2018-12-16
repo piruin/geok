@@ -8,7 +8,7 @@ import me.piruin.geok.geometry.Polygon
 import org.amshove.kluent.`should equal`
 import org.junit.Test
 
-class MultiGeometrySerializerTest {
+class MultiPolygonSerializerTest {
 
     val gson: Gson = GsonBuilder()
             .registerGeokTypeAdapter()
@@ -56,8 +56,6 @@ class MultiGeometrySerializerTest {
                 100.0 to 1.0,
                 100.0 to 0.0
         ))
-
-        println(gson.toJson(polygons))
 
         gson.toJson(polygons) `should equal json` json
     }
