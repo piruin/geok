@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
 import me.piruin.geok.geometry.Geometry
+import me.piruin.geok.geometry.MultiLineString
 import me.piruin.geok.geometry.MultiPoint
 import me.piruin.geok.geometry.MultiPolygon
 import me.piruin.geok.geometry.Polygon
@@ -41,6 +42,7 @@ fun GsonBuilder.registerGeokTypeAdapter(): GsonBuilder {
     registerTypeAdapter(typeOf<Geometry>(), GeometrySerializer())
     registerTypeAdapter(typeOf<Polygon>(), PolygonSerializer())
     registerTypeAdapter(typeOf<MultiPoint>(), MultiPointSerializer())
+    registerTypeAdapter(typeOf<MultiLineString>(), MultiLineStringSerializer())
     registerTypeAdapter(typeOf<MultiPolygon>(), MultiPolygonSerializer())
     return this
 }
