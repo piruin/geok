@@ -2,7 +2,8 @@
 [![Build Status](https://travis-ci.org/piruin/geok.svg?branch=master)](https://travis-ci.org/piruin/geok)
 [![Download](https://api.bintray.com/packages/blazei/maven/geok-gson/images/download.svg) ](https://bintray.com/blazei/maven/geok-gson/_latestVersion)
 
-Small geometry library for Java and Kotlin
+Small geometry library for Java and Kotlin. Contains useful basic utilities that require on most application.
+Designed to support data exchange between client (such as Android) and Restful api server with [GeoJSON](http://geojson.org/) Spec
 
 ## Download
 
@@ -21,15 +22,96 @@ dependencies {
 }
 ```
 
-## Gson Support
+## Usage
 
+### LatLng
+
+LatLng is base class of this library to build up any Geometry you want. It come with utilities such as
+- `toUtm()` -- convert to Utm type that widely use on GPS handheld system (also support create Latlng form Utm)
+- `distanceTo(latlng: LatLng)` -- calculate distance between 2 Latlng in meter
+
+### Geometry
+
+List of Supported Geometry type
+- `Point`
+- `LineString`
+- `Polygon`
+- `MultiPoint`
+- `MultiLineString`
+- `MultiPolygon`
+
+#### Point
+
+```kotlin
+  val point = Point(100.0 to 0.0)
 ```
+
+#### LineString
+
+```kotlin
+  val lineString = LineString(
+      100.0 to 0.0,
+      101.0 to 1.0
+  )
+```
+LineString come with
+- `length` -- calculate length of LineString in meter
+
+#### Polygon
+
+```kotlin
+    val polygon = Polygon(
+            LatLng(16.4268129901041, 102.8380009059),
+            LatLng(16.4266819930293, 102.8379568936),
+            LatLng(16.4267047695460, 102.8378494011),
+            LatLng(16.4268502721458, 102.8378330329),
+            LatLng(16.4268937418855, 102.8378020293),
+            LatLng(16.4268129901041, 102.8380009059)
+    )
+```
+
+Polygon come with utilities such as
+- `area` -- calculate area of polygon in sq.meter
+- `centroid` -- calculate centroid point of Polygon
+- `perimeter` -- calculate perimeter of Polygon's boundary in meter
+- `contains(latlng: LatLng)`` -- check whether latlng is in bound of polygon
+
+> Object creation support both LatLng styles and pair of X, Y value
+
+### BBox
+
+Every geometry except `Point` automatically generate `BBox` on create instance.
+You can also create your BBox's instance with
+
+```kotlin
+  val bbox = BBox.from(listOf<LatLng>())
+```
+
+### GeoJson
+
+All `Geometry` of GEOK is designed to fully support GeoJSON,
+You can easily use [Gson](https://github.com/google/gson) to serialize/deserialize them with `geok-gson` module
+
+```kotlin
   private val gson: Gson = GsonBuilder()
             .registerGeokTypeAdapter() // call this
             .create()
 ```
 
+#### Feature
 
+Follow GeoJSON specification, You can use `Feature` to contain extra properties along with Geometry data.
+
+```kotlin
+ val feature = Feature(Polygon(
+                100.0 to 0.0,
+                101.0 to 0.0,
+                101.0 to 1.0,
+                100.0 to 1.0,
+                100.0 to 0.0), Properties())
+```
+
+And you may pack many `Feature` together with `FeatureCollection`
 
 ## License
 
