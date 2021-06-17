@@ -25,6 +25,8 @@ package me.piruin.geok
 
 data class LatLng(val latitude: Double, val longitude: Double, val elevation: Double? = null) {
 
+    constructor(xyPair: Pair<Double, Double>) : this(xyPair.second, xyPair.first)
+
     init {
         assert(latitude between (-90.0 and 90.0)) { "latitude should between -90.0 and 90 [$latitude]" }
         assert(longitude between (-180.0 and 180.0)) { "longitude should between -180.0 and 180 [$longitude]" }
@@ -106,3 +108,15 @@ val Iterable<LatLng>.length: Double
         }
         return distance
     }
+
+fun Iterable<LatLng>.sortedClockwise(): Iterable<LatLng> {
+    val x = this.map { it.longitude }.average()
+    val y = this.map { it.latitude }.average()
+    return this.sortedBy { Math.atan2(it.longitude - x, it.latitude - y) }
+}
+
+fun Iterable<LatLng>.sortedCounterClockwise(): Iterable<LatLng> {
+    val x = this.map { it.longitude }.average()
+    val y = this.map { it.latitude }.average()
+    return this.sortedBy { Math.atan2(it.latitude - y, it.longitude - x) }
+}

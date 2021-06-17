@@ -47,6 +47,46 @@ class LatLngTest {
     }
 
     @Test
+    fun sortedClockwise() {
+        val cw = listOf(
+            LatLng(1.0 to 0.0),
+            LatLng(1.0 to 1.0),
+            LatLng(2.0 to 1.0),
+            LatLng(2.0 to 0.0)
+        )
+
+        val ccw = listOf(
+            LatLng(1.0 to 0.0),
+            LatLng(2.0 to 0.0),
+            LatLng(2.0 to 1.0),
+            LatLng(1.0 to 1.0)
+        )
+
+        ccw.sortedClockwise() `should equal` cw
+        cw.sortedCounterClockwise() `should equal` ccw
+    }
+
+    @Test
+    fun sortedClockwiseNegativeValue() {
+        val cw = listOf(
+            LatLng(-1.0 to 0.0),
+            LatLng(-1.0 to 1.0),
+            LatLng(1.0 to 1.0),
+            LatLng(1.0 to 0.0)
+        )
+
+        val ccw = listOf(
+            LatLng(-1.0 to 0.0),
+            LatLng(1.0 to 0.0),
+            LatLng(1.0 to 1.0),
+            LatLng(-1.0 to 1.0)
+        )
+
+        ccw.sortedClockwise() `should equal` cw
+        cw.sortedCounterClockwise() `should equal` ccw
+    }
+
+    @Test
     fun toStringNotShowElevationWhenNaN() {
         LatLng(16.423976, 102.841838).toString() `should equal` "16.423976, 102.841838"
     }
