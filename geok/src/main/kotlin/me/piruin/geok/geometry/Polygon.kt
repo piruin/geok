@@ -28,6 +28,8 @@ import me.piruin.geok.Datum
 import me.piruin.geok.LatLng
 import me.piruin.geok.length
 import me.piruin.geok.toRadians
+import kotlin.math.abs
+import kotlin.math.cos
 
 data class Polygon(
     var boundary: List<LatLng>,
@@ -65,7 +67,7 @@ data class Polygon(
         get() {
             val tmpBoundary = this.boundary.toMutableList()
             if (!boundary.isClosed)
-                tmpBoundary.add(tmpBoundary.get(0))
+                tmpBoundary.add(tmpBoundary[0])
             return tmpBoundary.length
         }
 
@@ -74,7 +76,7 @@ data class Polygon(
             val tmpBoundary = this.boundary.toMutableList()
             val centroid = doubleArrayOf(0.0, 0.0)
             if (!isClosed)
-                tmpBoundary.add(tmpBoundary.get(0))
+                tmpBoundary.add(tmpBoundary[0])
 
             for (point in tmpBoundary) {
                 centroid[0] += point.latitude
@@ -107,7 +109,7 @@ fun List<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
         val longitude = this[i].longitude
         ySegment.add((latitude - latitudeRef) * circumference / 360.0)
         xSegment.add(
-            (longitude - longitudeRef) * circumference * Math.cos(latitude.toRadians()) / 360.0
+            (longitude - longitudeRef) * circumference * cos(latitude.toRadians()) / 360.0
         )
     }
     // calculateArea areas for each triangle segment
@@ -120,5 +122,5 @@ fun List<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
         triangleArea.add((y1 * x2 - x1 * y2) / 2)
     }
     // get abolute value of area, it can't be negative
-    return Math.abs(triangleArea.sum())
+    return abs(triangleArea.sum())
 }

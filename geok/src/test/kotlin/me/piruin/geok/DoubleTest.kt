@@ -26,6 +26,8 @@ package me.piruin.geok
 import org.amshove.kluent.`should be equal to`
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import kotlin.math.floor
+import kotlin.math.roundToLong
 
 class DoubleTest {
 
@@ -49,12 +51,12 @@ class DoubleTest {
 
     @Test
     fun round() {
-        Math.round(102.841838) `should be equal to` 103
+        102.841838.roundToLong() `should be equal to` 103
     }
 
     @Test
     fun floor() {
-        Math.floor(102.841838) `should be equal to` 102.0
+        floor(102.841838) `should be equal to` 102.0
     }
 
     @Test

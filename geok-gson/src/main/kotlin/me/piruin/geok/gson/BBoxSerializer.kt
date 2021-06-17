@@ -44,8 +44,7 @@ class BBoxSerializer : JsonSerializer<BBox>, JsonDeserializer<BBox> {
     }
 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): BBox? {
-        val jsonArray = json.asJsonArray
-        return when (jsonArray) {
+        return when (val jsonArray = json.asJsonArray) {
             null -> null
             else -> BBox(jsonArray[0].asDouble, jsonArray[1].asDouble, jsonArray[2].asDouble, jsonArray[3].asDouble)
         }

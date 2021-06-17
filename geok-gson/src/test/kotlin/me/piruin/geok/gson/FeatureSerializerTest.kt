@@ -130,7 +130,7 @@ class FeatureSerializerTest {
     }
 
     @Test
-    fun PointFromJson() {
+    fun pointFromJson() {
         val feature = gson.parse<Feature<People>>(
             """
             {

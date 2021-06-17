@@ -7,7 +7,7 @@ import org.junit.Test
 
 class FeatureCollectionTest {
 
-    val collection = FeatureCollection<Any>(
+    private val collection = FeatureCollection<Any>(
         Point(
             100.0 to 0.0
         ).toFeature(),

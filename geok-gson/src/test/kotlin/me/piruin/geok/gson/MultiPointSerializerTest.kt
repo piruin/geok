@@ -10,11 +10,11 @@ import org.junit.Test
 
 class MultiPointSerializerTest {
 
-    val gson: Gson = GsonBuilder()
+    private val gson: Gson = GsonBuilder()
         .registerGeokTypeAdapter()
         .create()
 
-    val json = """
+    private val json = """
         {
             "type": "MultiPoint",
             "coordinates": [

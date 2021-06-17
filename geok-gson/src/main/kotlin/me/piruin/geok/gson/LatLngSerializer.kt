@@ -42,8 +42,7 @@ class LatLngSerializer : JsonSerializer<LatLng>, JsonDeserializer<LatLng> {
     }
 
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): LatLng? {
-        val jsonArray = json.asJsonArray
-        return when (jsonArray) {
+        return when (val jsonArray = json.asJsonArray) {
             null -> null
             else -> LatLng(jsonArray[1].asDouble, jsonArray[0].asDouble)
         }

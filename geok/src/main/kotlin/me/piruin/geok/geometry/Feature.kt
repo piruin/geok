@@ -36,4 +36,4 @@ data class Feature<T>(val geometry: Geometry, var properties: T? = null) {
     }
 }
 
-fun <T> Geometry.toFeature(properties: T? = null) = Feature<T>(this, properties)
+fun <T> Geometry.toFeature(properties: T? = null) = Feature(this, properties)

@@ -17,6 +17,14 @@
 
 package me.piruin.geok
 
+import kotlin.math.abs
+import kotlin.math.atan
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
+
 /**
  * From ported from java version at tanrabad/survey
  */
@@ -45,12 +53,12 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
         val lon2 = latlng2.longitude
 
         val l = Math.toRadians(lon2 - lon1)
-        val u1 = Math.atan((1 - f) * Math.tan(Math.toRadians(lat1)))
-        val u2 = Math.atan((1 - f) * Math.tan(Math.toRadians(lat2)))
-        val sinU1 = Math.sin(u1)
-        val cosU1 = Math.cos(u1)
-        val sinU2 = Math.sin(u2)
-        val cosU2 = Math.cos(u2)
+        val u1 = atan((1 - f) * tan(Math.toRadians(lat1)))
+        val u2 = atan((1 - f) * tan(Math.toRadians(lat2)))
+        val sinU1 = sin(u1)
+        val cosU1 = cos(u1)
+        val sinU2 = sin(u2)
+        val cosU2 = cos(u2)
 
         var cosSqAlpha: Double
         var sinSigma: Double
@@ -63,9 +71,9 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
         var iterLimit = 100.0
 
         do {
-            val sinLambda = Math.sin(lambda)
-            val cosLambda = Math.cos(lambda)
-            sinSigma = Math.sqrt(
+            val sinLambda = sin(lambda)
+            val cosLambda = cos(lambda)
+            sinSigma = sqrt(
                 cosU2 * sinLambda *
                     (cosU2 * sinLambda) +
                     (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda) *
@@ -76,7 +84,7 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
                 return 0.0
 
             cosSigma = sinU1 * sinU2 + cosU1 * cosU2 * cosLambda
-            sigma = Math.atan2(sinSigma, cosSigma)
+            sigma = atan2(sinSigma, cosSigma)
 
             val sinAlpha = cosU1 * cosU2 * sinLambda / sinSigma
             cosSqAlpha = 1 - sinAlpha * sinAlpha
@@ -98,7 +106,7 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
                             )
                         )
                 )
-        } while (Math.abs(lambda - lambdaP) > 1e-12 && --iterLimit > 0)
+        } while (abs(lambda - lambdaP) > 1e-12 && --iterLimit > 0)
 
         if (iterLimit == 0.0) {
             return 0.0

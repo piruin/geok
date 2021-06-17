@@ -10,11 +10,11 @@ import org.junit.Test
 
 class MultiPolygonSerializerTest {
 
-    val gson: Gson = GsonBuilder()
+    private val gson: Gson = GsonBuilder()
         .registerGeokTypeAdapter()
         .create()
 
-    val json = """
+    private val json = """
         {
           "type": "MultiPolygon",
           "bbox": [100.0, 0.0, 103.0, 3.0],

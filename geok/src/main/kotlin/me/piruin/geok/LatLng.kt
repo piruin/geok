@@ -23,6 +23,14 @@
 
 package me.piruin.geok
 
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
+
 data class LatLng(val latitude: Double, val longitude: Double, val elevation: Double? = null) {
 
     constructor(xyPair: Pair<Double, Double>) : this(xyPair.second, xyPair.first)
@@ -51,14 +59,14 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         val a = datum.equatorialRad
         val f = 1.0 / datum.flat // polar flattening.
         val b = datum.polarRad
-        val e = Math.sqrt(1 - (b / a) * (b / a)) // eccentricity
+        val e = sqrt(1 - (b / a) * (b / a)) // eccentricity
 
         val scale = 0.9996 // scale on central meridian
 
         val latRad = latitude.toRadians() // Convert latitude to radians
-        val utmZone = 1 + Math.floor((longitude + 180) / 6) // calculate utm zone
+        val utmZone = 1 + floor((longitude + 180) / 6) // calculate utm zone
         var latZone = when { // Latitude zone: A-B S of -80, C-W -80 to +72, X 72-84, Y,Z N of 84
-            latitude > -80 && latitude < 72 -> (Math.floor((latitude + 80) / 8) + 2).toInt()
+            latitude > -80 && latitude < 72 -> (floor((latitude + 80) / 8) + 2).toInt()
             latitude > 72 && latitude < 84 -> 21
             latitude > 84 -> 23
             else -> 0
@@ -67,11 +75,11 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         val zcm = 3 + 6 * (utmZone - 1) - 180 // Central meridian of zone
         val esq = (1 - (b / a) * (b / a)) // e squared for use in expansions
         val e0sq = e * e / (1 - e * e) // e0 squared - always even powers
-        val N = a / Math.sqrt(1 - Math.pow(e * Math.sin(latRad), 2.0))
+        val N = a / sqrt(1 - (e * sin(latRad)).pow(2.0))
 
-        val T = Math.pow(Math.tan(latRad), 2.0)
-        val C = e0sq * Math.pow(Math.cos(latRad), 2.0)
-        val A = (longitude - zcm).toRadians() * Math.cos(latRad)
+        val T = tan(latRad).pow(2.0)
+        val C = e0sq * cos(latRad).pow(2.0)
+        val A = (longitude - zcm).toRadians() * cos(latRad)
 
         var easting = scale * N * A * (
             1 + A * A * (
@@ -82,13 +90,13 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         easting += 500000
 
         var M = latRad * (1.0 - esq * (1.0 / 4.0 + esq * (3.0 / 64.0 + 5 * esq / 256)))
-        M -= Math.sin(2.0 * latRad) * (esq * (3.0 / 8.0 + esq * (3.0 / 32.0 + 45 * esq / 1024)))
-        M += Math.sin(4.0 * latRad) * (esq * esq * (15.0 / 256.0 + esq * 45.0 / 1024))
-        M -= Math.sin(6.0 * latRad) * (esq * esq * esq * (35.0 / 3072))
+        M -= sin(2.0 * latRad) * (esq * (3.0 / 8.0 + esq * (3.0 / 32.0 + 45 * esq / 1024)))
+        M += sin(4.0 * latRad) * (esq * esq * (15.0 / 256.0 + esq * 45.0 / 1024))
+        M -= sin(6.0 * latRad) * (esq * esq * esq * (35.0 / 3072))
         M *= a // Arc length along standard meridian
 
         var northing = scale * (
-            M + N * Math.tan(latRad) *
+            M + N * tan(latRad) *
                 (
                     A * A * (
                         1.0 / 2.0 + A * A * (
@@ -124,11 +132,11 @@ val Iterable<LatLng>.length: Double
 fun Iterable<LatLng>.sortedClockwise(): Iterable<LatLng> {
     val x = this.map { it.longitude }.average()
     val y = this.map { it.latitude }.average()
-    return this.sortedBy { Math.atan2(it.longitude - x, it.latitude - y) }
+    return this.sortedBy { atan2(it.longitude - x, it.latitude - y) }
 }
 
 fun Iterable<LatLng>.sortedCounterClockwise(): Iterable<LatLng> {
     val x = this.map { it.longitude }.average()
     val y = this.map { it.latitude }.average()
-    return this.sortedBy { Math.atan2(it.latitude - y, it.longitude - x) }
+    return this.sortedBy { atan2(it.latitude - y, it.longitude - x) }
 }

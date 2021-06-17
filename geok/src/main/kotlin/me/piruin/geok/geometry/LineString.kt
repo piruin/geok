@@ -8,7 +8,7 @@ data class LineString(val coordinates: List<LatLng>) : Geometry {
 
     constructor(vararg xyPair: Pair<Double, Double>) : this(xyPair.map { LatLng(it.second, it.first) })
 
-    override val type = javaClass.simpleName
+    override val type: String = javaClass.simpleName
     val bbox: BBox = BBox.from(coordinates)
 
     init {
