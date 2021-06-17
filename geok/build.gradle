@@ -1,4 +1,6 @@
-apply plugin: 'kotlin'
+plugins {
+    id "kotlin"
+}
 
 group 'me.piruin'
 version rootProject.version
@@ -11,8 +13,6 @@ compileTestKotlin {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
     testImplementation "junit:junit:4.12"
     testImplementation "org.amshove.kluent:kluent:1.66"
 }

@@ -1,4 +1,6 @@
-apply plugin: 'kotlin'
+plugins {
+    id "kotlin"
+}
 
 group 'me.piruin'
 version rootProject.version
@@ -12,7 +14,6 @@ compileTestKotlin {
 
 dependencies {
     implementation project(":geok")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.google.code.gson:gson:2.8.2"
 
     testImplementation "junit:junit:4.12"
