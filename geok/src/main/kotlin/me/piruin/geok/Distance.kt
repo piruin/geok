@@ -65,7 +65,8 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
         do {
             val sinLambda = Math.sin(lambda)
             val cosLambda = Math.cos(lambda)
-            sinSigma = Math.sqrt(cosU2 * sinLambda *
+            sinSigma = Math.sqrt(
+                cosU2 * sinLambda *
                     (cosU2 * sinLambda) +
                     (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda) *
                     (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda)
@@ -83,10 +84,20 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
 
             val c = f / 16 * cosSqAlpha * (4 + f * (4 - 3 * cosSqAlpha))
             lambdaP = lambda
-            lambda = l + ((1 - c) * f * sinAlpha
-                    * (sigma + (c * sinSigma
-                    * (cos2SigmaM + (c * cosSigma
-                    * (-1 + 2.0 * cos2SigmaM * cos2SigmaM))))))
+            lambda = l + (
+                (1 - c) * f * sinAlpha
+                    * (
+                        sigma + (
+                            c * sinSigma
+                                * (
+                                    cos2SigmaM + (
+                                        c * cosSigma
+                                            * (-1 + 2.0 * cos2SigmaM * cos2SigmaM)
+                                        )
+                                    )
+                            )
+                        )
+                )
         } while (Math.abs(lambda - lambdaP) > 1e-12 && --iterLimit > 0)
 
         if (iterLimit == 0.0) {
@@ -98,10 +109,18 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
         val a = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)))
         val b = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)))
 
-        val deltaSigma = (b * sinSigma
-                * (cos2SigmaM + b / 4 * (cosSigma * (-1 + 2.0 * cos2SigmaM * cos2SigmaM) - (b / 6 * cos2SigmaM
-                * (-3 + 4.0 * sinSigma * sinSigma)
-                * (-3 + 4.0 * cos2SigmaM * cos2SigmaM)))))
+        val deltaSigma = (
+            b * sinSigma
+                * (
+                    cos2SigmaM + b / 4 * (
+                        cosSigma * (-1 + 2.0 * cos2SigmaM * cos2SigmaM) - (
+                            b / 6 * cos2SigmaM
+                                * (-3 + 4.0 * sinSigma * sinSigma) *
+                                (-3 + 4.0 * cos2SigmaM * cos2SigmaM)
+                            )
+                        )
+                    )
+            )
 
         return this.b * a * (sigma - deltaSigma)
     }

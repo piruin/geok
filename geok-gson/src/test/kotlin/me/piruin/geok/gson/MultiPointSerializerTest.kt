@@ -11,8 +11,8 @@ import org.junit.Test
 class MultiPointSerializerTest {
 
     val gson: Gson = GsonBuilder()
-            .registerGeokTypeAdapter()
-            .create()
+        .registerGeokTypeAdapter()
+        .create()
 
     val json = """
         {
@@ -20,13 +20,14 @@ class MultiPointSerializerTest {
             "coordinates": [
                 [100.0, 0.0], [101.0, 1.0]
             ]
-        }""".trimIndent()
+        }
+    """.trimIndent()
 
     @Test
     fun serialize() {
         val points = MultiPoint(
-                Point(100.0 to 0.0),
-                Point(101.0 to 1.0)
+            Point(100.0 to 0.0),
+            Point(101.0 to 1.0)
         )
 
         gson.toJson(points) `should equal json` json
@@ -35,8 +36,8 @@ class MultiPointSerializerTest {
     @Test
     fun deserialize() {
         gson.parse<MultiPoint>(json) `should equal` MultiPoint(
-                Point(100.0 to 0.0),
-                Point(101.0 to 1.0)
+            Point(100.0 to 0.0),
+            Point(101.0 to 1.0)
         )
     }
 }

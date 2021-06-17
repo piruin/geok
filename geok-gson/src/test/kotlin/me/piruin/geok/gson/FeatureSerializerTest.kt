@@ -36,14 +36,14 @@ import org.junit.Test
 class FeatureSerializerTest {
 
     private val gson: Gson = GsonBuilder()
-            .registerGeokTypeAdapter()
-            .create()
+        .registerGeokTypeAdapter()
+        .create()
 
     @Test
     fun featureToJson() {
         val feature = Feature(
-                Point(14.07776, 100.601282),
-                People("JohnSnow", 15)
+            Point(14.07776, 100.601282),
+            People("JohnSnow", 15)
         )
 
         gson.toJson(feature) `should equal json` """
@@ -64,15 +64,15 @@ class FeatureSerializerTest {
     @Test
     fun polygonFeature() {
         val polygon = Polygon(
-                100.0 to 0.0,
-                101.0 to 0.0,
-                101.0 to 1.0,
-                100.0 to 1.0,
-                100.0 to 0.0
+            100.0 to 0.0,
+            101.0 to 0.0,
+            101.0 to 1.0,
+            100.0 to 1.0,
+            100.0 to 0.0
         )
         val feature = Feature(
-                polygon,
-                People("JohnSnow", 15)
+            polygon,
+            People("JohnSnow", 15)
         )
 
         gson.toJson(feature) `should equal json` """
@@ -94,8 +94,8 @@ class FeatureSerializerTest {
     @Test
     fun featureCollectionToJson() {
         val collection = FeatureCollection(
-                Feature(Point(14.07776, 100.601282), People("John", 15)),
-                Feature(Point(14.08101, 100.620148), People("Arya", 13))
+            Feature(Point(14.07776, 100.601282), People("John", 15)),
+            Feature(Point(14.08101, 100.620148), People("Arya", 13))
         )
 
         gson.toJson(collection) `should equal json` """
@@ -131,7 +131,8 @@ class FeatureSerializerTest {
 
     @Test
     fun PointFromJson() {
-        val feature = gson.parse<Feature<People>>("""
+        val feature = gson.parse<Feature<People>>(
+            """
             {
               "type": "Feature",
               "geometry": {
@@ -142,7 +143,9 @@ class FeatureSerializerTest {
                 "name": "John Snow",
                 "age": 15
               }
-            }""".trimIndent())!!
+            }
+            """.trimIndent()
+        )!!
 
         feature.geometry `should equal` Point(14.07776, 100.601282)
     }

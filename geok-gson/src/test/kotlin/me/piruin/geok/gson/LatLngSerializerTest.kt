@@ -34,8 +34,8 @@ import org.junit.Test
 class LatLngSerializerTest {
 
     private val gson: Gson = GsonBuilder()
-            .adapterFor<LatLng>(LatLngSerializer())
-            .create()
+        .adapterFor<LatLng>(LatLngSerializer())
+        .create()
 
     @Test
     fun serialiazeLatLng() {
@@ -68,8 +68,8 @@ class LatLngSerializerTest {
     @Test
     fun serializeLatLngList() {
         val latlngList = arrayListOf(
-                LatLng(0.0, 100.0),
-                LatLng(1.0, 101.0)
+            LatLng(0.0, 100.0),
+            LatLng(1.0, 101.0)
         )
 
         gson.toJson(latlngList) `should equal json` "[[100.0,0.0],[101.0,1.0]]"
@@ -80,8 +80,8 @@ class LatLngSerializerTest {
         val deserialize = gson.parse<List<LatLng>>("[[100.0,0.0],[101.0,1.0]]")
 
         deserialize `should equal` arrayListOf(
-                LatLng(0.0, 100.0),
-                LatLng(1.0, 101.0)
+            LatLng(0.0, 100.0),
+            LatLng(1.0, 101.0)
         )
     }
 
@@ -93,7 +93,8 @@ class LatLngSerializerTest {
             {
                 "name":"NECTEC",
                 "coordinates":[100.601282,14.07776]
-            }""".trimIndent()
+            }
+        """.trimIndent()
     }
 
     @Test

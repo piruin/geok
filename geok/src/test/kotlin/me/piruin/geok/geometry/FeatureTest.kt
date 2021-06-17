@@ -32,11 +32,11 @@ class FeatureTest {
     @Test
     fun polygonFeature() {
         val polygon = Polygon(
-                100.0 to 0.0,
-                101.0 to 0.0,
-                101.0 to 1.0,
-                100.0 to 1.0,
-                100.0 to 0.0
+            100.0 to 0.0,
+            101.0 to 0.0,
+            101.0 to 1.0,
+            100.0 to 1.0,
+            100.0 to 0.0
         )
 
         val feature = Feature(polygon, Properties())
@@ -50,7 +50,7 @@ class FeatureTest {
     }
 
     data class Properties(
-            val prob0: String = "value0",
-            val prob1: Double = 0.0
+        val prob0: String = "value0",
+        val prob1: Double = 0.0
     )
 }

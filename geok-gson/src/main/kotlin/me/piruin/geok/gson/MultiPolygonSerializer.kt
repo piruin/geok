@@ -21,14 +21,19 @@ class MultiPolygonSerializer : JsonSerializer<MultiPolygon>, JsonDeserializer<Mu
         return JsonObject().apply {
             add("type", JsonPrimitive(src.type))
             add("bbox", ctx.serialize(src.bbox))
-            add("coordinates", JsonArray().apply {
-                src.polygons.forEach {
-                    add(JsonArray().apply {
-                        add(ctx.serialize(it.boundary))
-                        it.holes.forEach { add(ctx.serialize(it)) }
-                    })
+            add(
+                "coordinates",
+                JsonArray().apply {
+                    src.polygons.forEach {
+                        add(
+                            JsonArray().apply {
+                                add(ctx.serialize(it.boundary))
+                                it.holes.forEach { add(ctx.serialize(it)) }
+                            }
+                        )
+                    }
                 }
-            })
+            )
         }
     }
 

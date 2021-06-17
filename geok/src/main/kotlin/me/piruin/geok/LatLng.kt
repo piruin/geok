@@ -49,43 +49,55 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         assert(latitude between (-80.0 to 84.0)) { "latitude $latitude is outside utm grid" }
 
         val a = datum.equatorialRad
-        val f = 1.0 / datum.flat //polar flattening.
+        val f = 1.0 / datum.flat // polar flattening.
         val b = datum.polarRad
-        val e = Math.sqrt(1 - (b / a) * (b / a))//eccentricity
+        val e = Math.sqrt(1 - (b / a) * (b / a)) // eccentricity
 
-        val scale = 0.9996 //scale on central meridian
+        val scale = 0.9996 // scale on central meridian
 
-        val latRad = latitude.toRadians()//Convert latitude to radians
-        val utmZone = 1 + Math.floor((longitude + 180) / 6)//calculate utm zone
-        var latZone = when { //Latitude zone: A-B S of -80, C-W -80 to +72, X 72-84, Y,Z N of 84
+        val latRad = latitude.toRadians() // Convert latitude to radians
+        val utmZone = 1 + Math.floor((longitude + 180) / 6) // calculate utm zone
+        var latZone = when { // Latitude zone: A-B S of -80, C-W -80 to +72, X 72-84, Y,Z N of 84
             latitude > -80 && latitude < 72 -> (Math.floor((latitude + 80) / 8) + 2).toInt()
             latitude > 72 && latitude < 84 -> 21
             latitude > 84 -> 23
             else -> 0
         }
 
-        val zcm = 3 + 6 * (utmZone - 1) - 180//Central meridian of zone
-        val esq = (1 - (b / a) * (b / a))//e squared for use in expansions
-        val e0sq = e * e / (1 - e * e)// e0 squared - always even powers
+        val zcm = 3 + 6 * (utmZone - 1) - 180 // Central meridian of zone
+        val esq = (1 - (b / a) * (b / a)) // e squared for use in expansions
+        val e0sq = e * e / (1 - e * e) // e0 squared - always even powers
         val N = a / Math.sqrt(1 - Math.pow(e * Math.sin(latRad), 2.0))
 
         val T = Math.pow(Math.tan(latRad), 2.0)
         val C = e0sq * Math.pow(Math.cos(latRad), 2.0)
         val A = (longitude - zcm).toRadians() * Math.cos(latRad)
 
-        var easting = scale * N * A * (1 + A * A * ((1 - T + C) / 6 + A * A
-                * (5 - 18 * T + T * T + 72 * C - 58 * e0sq) / 120))//Easting relative to Central meridian
+        var easting = scale * N * A * (
+            1 + A * A * (
+                (1 - T + C) / 6 + A * A
+                    * (5 - 18 * T + T * T + 72 * C - 58 * e0sq) / 120
+                )
+            ) // Easting relative to Central meridian
         easting += 500000
 
         var M = latRad * (1.0 - esq * (1.0 / 4.0 + esq * (3.0 / 64.0 + 5 * esq / 256)))
         M -= Math.sin(2.0 * latRad) * (esq * (3.0 / 8.0 + esq * (3.0 / 32.0 + 45 * esq / 1024)))
         M += Math.sin(4.0 * latRad) * (esq * esq * (15.0 / 256.0 + esq * 45.0 / 1024))
         M -= Math.sin(6.0 * latRad) * (esq * esq * esq * (35.0 / 3072))
-        M *= a//Arc length along standard meridian
+        M *= a // Arc length along standard meridian
 
-        var northing = scale * (M + N * Math.tan(latRad)
-                * (A * A * (1.0 / 2.0 + A * A * ((5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
-                * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720))))//Northing from equator
+        var northing = scale * (
+            M + N * Math.tan(latRad) *
+                (
+                    A * A * (
+                        1.0 / 2.0 + A * A * (
+                            (5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
+                                * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720
+                            )
+                        )
+                    )
+            ) // Northing from equator
         if (this.latitude < 0) {
             northing += 10000000.0
         }
