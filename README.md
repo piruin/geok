@@ -1,6 +1,6 @@
 # GEOK
 [![Build Status](https://travis-ci.org/piruin/geok.svg?branch=master)](https://travis-ci.org/piruin/geok)
-[![Download](https://api.bintray.com/packages/blazei/maven/geok-gson/images/download.svg) ](https://bintray.com/blazei/maven/geok-gson/_latestVersion)
+[![Download](https://jitpack.io/v/piruin/geok.svg)](https://jitpack.io/#piruin/geok)
 
 Small geometry library for Java and Kotlin. Contains useful basic utilities that require on most application.
 Designed to support data exchange between client (such as Android) and Restful api server with [GeoJSON](http://geojson.org/) Spec
@@ -9,15 +9,15 @@ Designed to support data exchange between client (such as Android) and Restful a
 
 ```groovy
 repositories {
-    maven { url  "https://dl.bintray.com/blazei/maven" }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     def geokVersion = '1.+' //see download badge or latest released tag
     
     ...
-    implementation "me.piruin:geok:$geokVersion"
-    implementation "me.piruin.geok-gson:$geokVersion" //for support geojson with gson library
+    implementation "com.github.piruin:geok:$geokVersion"
+    implementation "com.github.piruin.geok-gson:$geokVersion" //for support geojson with gson library
     ...
 }
 ```
