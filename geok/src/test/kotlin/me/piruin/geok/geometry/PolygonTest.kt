@@ -26,8 +26,8 @@ package me.piruin.geok.geometry
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
 import me.piruin.geok.Utm
+import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
-import org.amshove.kluent.`should equal`
 import org.junit.Ignore
 import org.junit.Test
 import kotlin.math.roundToInt
@@ -56,12 +56,12 @@ class PolygonTest {
 
     @Test
     fun area() {
-        polygon.area().roundToInt() `should equal` 268
+        polygon.area().roundToInt() `should be equal to` 268
     }
 
     @Test
     fun bbox() {
-        polygon.bbox `should equal` BBox(
+        polygon.bbox `should be equal to` BBox(
             left = 102.8378020293,
             bottom = 16.4266819930293,
             right = 102.8380009059,
@@ -98,6 +98,6 @@ class PolygonTest {
             98.3432525117 to 7.82002427060229
         )
 
-        boundary.centroid.toUtm() `should equal` Utm(47, 'N', 427634.2, 864397.6)
+        boundary.centroid.toUtm() `should be equal to` Utm(47, 'N', 427634.2, 864397.6)
     }
 }

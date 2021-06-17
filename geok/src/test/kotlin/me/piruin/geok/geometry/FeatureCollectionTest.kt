@@ -1,7 +1,7 @@
 package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should not be`
 import org.junit.Test
 
@@ -46,7 +46,7 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox() {
-        collection.bbox `should equal` BBox(left = 100.0, bottom = 0.0, right = 103.0, top = 3.0)
+        collection.bbox `should be equal to` BBox(left = 100.0, bottom = 0.0, right = 103.0, top = 3.0)
         collection.features.filterNot { it.geometry is Point }.forEach {
             it.bbox `should not be` null
         }

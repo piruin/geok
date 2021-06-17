@@ -23,7 +23,7 @@
 
 package me.piruin.geok
 
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -31,14 +31,14 @@ class DoubleTest {
 
     @Test
     fun roundDigit() {
-        1816560.792879214.round(1) `should equal` 1816560.8
-        1816560.792879214.round(2) `should equal` 1816560.79
-        1816560.792879214.round(3) `should equal` 1816560.793
+        1816560.792879214.round(1) `should be equal to` 1816560.8
+        1816560.792879214.round(2) `should be equal to` 1816560.79
+        1816560.792879214.round(3) `should be equal to` 1816560.793
     }
 
     @Test
     fun wholeNumber() {
-        102.841838.wholeNum `should equal` 102
+        102.841838.wholeNum `should be equal to` 102
     }
 
     @Test
@@ -49,18 +49,18 @@ class DoubleTest {
 
     @Test
     fun round() {
-        Math.round(102.841838) `should equal` 103
+        Math.round(102.841838) `should be equal to` 103
     }
 
     @Test
     fun floor() {
-        Math.floor(102.841838) `should equal` 102.0
+        Math.floor(102.841838) `should be equal to` 102.0
     }
 
     @Test
     fun div() {
-        3 / 4 `should equal` 0
-        3.0 / 4.0 `should equal` 0.75
+        (3 / 4).`should be equal to`(0)
+        (3.0 / 4.0).`should be equal to`(0.75)
     }
 }
 

@@ -23,7 +23,7 @@
 
 package me.piruin.geok.geometry
 
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should not be`
 import org.junit.Test
 
@@ -42,10 +42,10 @@ class FeatureTest {
         val feature = Feature(polygon, Properties())
 
         with(feature) {
-            type `should equal` "Feature"
-            geometry `should equal` polygon
+            type `should be equal to` "Feature"
+            geometry `should be equal to` polygon
             bbox `should not be` null
-            properties `should equal` Properties()
+            properties `should be equal to` Properties()
         }
     }
 

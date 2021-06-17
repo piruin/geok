@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.geometry.LineString
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
 class LineStringSerializeTest {
@@ -45,7 +45,7 @@ class LineStringSerializeTest {
             """.trimIndent()
         )
 
-        lineString `should equal` LineString(
+        lineString `should be equal to` LineString(
             100.0 to 0.0,
             101.0 to 1.0
         )

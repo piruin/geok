@@ -23,7 +23,7 @@
 
 package me.piruin.geok
 
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
 class LatLngTest {
@@ -62,8 +62,8 @@ class LatLngTest {
             LatLng(1.0 to 1.0)
         )
 
-        ccw.sortedClockwise() `should equal` cw
-        cw.sortedCounterClockwise() `should equal` ccw
+        ccw.sortedClockwise() `should be equal to` cw
+        cw.sortedCounterClockwise() `should be equal to` ccw
     }
 
     @Test
@@ -82,17 +82,17 @@ class LatLngTest {
             LatLng(-1.0 to 1.0)
         )
 
-        ccw.sortedClockwise() `should equal` cw
-        cw.sortedCounterClockwise() `should equal` ccw
+        ccw.sortedClockwise() `should be equal to` cw
+        cw.sortedCounterClockwise() `should be equal to` ccw
     }
 
     @Test
     fun toStringNotShowElevationWhenNaN() {
-        LatLng(16.423976, 102.841838).toString() `should equal` "16.423976, 102.841838"
+        LatLng(16.423976, 102.841838).toString() `should be equal to` "16.423976, 102.841838"
     }
 
     @Test
     fun toUtm() {
-        LatLng(16.423976, 102.841838).toUtm() `should equal` Utm(48, 'N', 269542.0, 1817061.8)
+        LatLng(16.423976, 102.841838).toUtm() `should be equal to` Utm(48, 'N', 269542.0, 1817061.8)
     }
 }

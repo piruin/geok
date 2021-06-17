@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.LatLng
 import me.piruin.geok.geometry.Polygon
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
 class PolygonSerializerTest {
@@ -61,7 +61,7 @@ class PolygonSerializerTest {
             """.trimIndent()
         )
 
-        polygon `should equal` Polygon(
+        polygon `should be equal to` Polygon(
             100.0 to 0.0,
             101.0 to 0.0,
             101.0 to 1.0,
@@ -157,6 +157,6 @@ class PolygonSerializerTest {
             }""".trimWhitespace()
         )
 
-        polygon `should equal` expected
+        polygon `should be equal to` expected
     }
 }

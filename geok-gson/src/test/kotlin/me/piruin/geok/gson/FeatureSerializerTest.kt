@@ -30,7 +30,7 @@ import me.piruin.geok.geometry.Feature
 import me.piruin.geok.geometry.FeatureCollection
 import me.piruin.geok.geometry.Point
 import me.piruin.geok.geometry.Polygon
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
 class FeatureSerializerTest {
@@ -147,7 +147,7 @@ class FeatureSerializerTest {
             """.trimIndent()
         )!!
 
-        feature.geometry `should equal` Point(14.07776, 100.601282)
+        feature.geometry `should be equal to` Point(14.07776, 100.601282)
     }
 
     class People(val name: String, val age: Int)

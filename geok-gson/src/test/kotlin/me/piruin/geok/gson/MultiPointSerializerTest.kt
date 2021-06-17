@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.geometry.MultiPoint
 import me.piruin.geok.geometry.Point
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
 class MultiPointSerializerTest {
@@ -35,7 +35,7 @@ class MultiPointSerializerTest {
 
     @Test
     fun deserialize() {
-        gson.parse<MultiPoint>(json) `should equal` MultiPoint(
+        gson.parse<MultiPoint>(json) `should be equal to` MultiPoint(
             Point(100.0 to 0.0),
             Point(101.0 to 1.0)
         )
