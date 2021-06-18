@@ -89,7 +89,7 @@ class LatLngTest {
 
     @Test
     fun toStringNotShowElevationWhenNaN() {
-        LatLng(16.423976, 102.841838).toString() `should be equal to` "16.423976, 102.841838"
+        LatLng(16.423976, 102.841838).toString() `should be equal to` "[102.841838, 16.423976]"
     }
 
     @Test
@@ -98,7 +98,7 @@ class LatLngTest {
     }
 
     @Test
-    fun insertPoint() {
+    fun intersectionPoint() {
         val line1 = LatLng(0.0 to 2.0) to LatLng(2.0 to 0.0)
         val line2 = LatLng(0.0 to 0.0) to LatLng(2.0 to 2.0)
 
@@ -106,7 +106,7 @@ class LatLngTest {
     }
 
     @Test
-    fun insertPointOfParallel() {
+    fun intersectionPointOfParallel() {
         val line1 = LatLng(0.0 to 2.0) to LatLng(2.0 to 2.0)
         val line2 = LatLng(0.0 to 0.0) to LatLng(2.0 to 0.0)
 
@@ -133,5 +133,96 @@ class LatLngTest {
 
         val onlinePoint = LatLng(0.0 to 0.5)
         onlinePoint insideOf boundary `should be` true
+
+        boundary.forEach { it insideOf boundary `should be` true }
+    }
+
+    @Test
+    fun lineIntersectionPointsWithPolygon() {
+        val boundary = listOf(
+            LatLng(0.0 to 0.0),
+            LatLng(0.0 to 2.0),
+            LatLng(2.0 to 2.0),
+            LatLng(2.0 to 0.0),
+            LatLng(0.0 to 0.0),
+        )
+        val line = LatLng(-1.0 to -1.0) to LatLng(3.0 to 3.0)
+        val expected = listOf(LatLng(0.0 to 0.0), LatLng(2.0 to 2.0))
+
+        line intersectionPointsWith boundary `should be equal to` expected
+    }
+
+    @Test
+    fun forEachLine() {
+        val boundary = listOf(
+            LatLng(0.0 to 0.0),
+            LatLng(0.0 to 2.0),
+            LatLng(2.0 to 2.0),
+            LatLng(2.0 to 0.0),
+            LatLng(0.0 to 0.0),
+        )
+
+        var index = 0
+        boundary.forEachLine { line ->
+            when (index++) {
+                0 -> line `should be equal to` (LatLng(0.0 to 0.0) to LatLng(0.0 to 2.0))
+                1 -> line `should be equal to` (LatLng(0.0 to 2.0) to LatLng(2.0 to 2.0))
+                2 -> line `should be equal to` (LatLng(2.0 to 2.0) to LatLng(2.0 to 0.0))
+                3 -> line `should be equal to` (LatLng(2.0 to 0.0) to LatLng(0.0 to 0.0))
+                4 -> throw AssertionError()
+            }
+        }
+    }
+
+    @Test
+    fun intersectionPointPolygon() {
+        val polygon1 = listOf(
+            LatLng(0.0 to 1.0),
+            LatLng(1.0 to 2.0),
+            LatLng(3.0 to 2.0),
+            LatLng(4.0 to 1.0),
+            LatLng(3.0 to 0.0),
+            LatLng(1.0 to 0.0),
+        )
+
+        val polygon2 = listOf(
+            LatLng(2.0 to 1.0),
+            LatLng(3.0 to 1.9),
+            LatLng(3.9 to 1.0),
+            LatLng(3.0 to 0.1)
+        )
+
+        polygon1 intersectionPointsWith polygon2 `should be equal to` listOf(
+            LatLng(2.0 to 1.0),
+            LatLng(3.0 to 1.9),
+            LatLng(3.9 to 1.0),
+            LatLng(3.0 to 0.1),
+        )
+    }
+
+    @Test
+    fun intersectionPointPolygon2() {
+        val polygon1 = listOf(
+            LatLng(0.0 to 1.0),
+            LatLng(1.0 to 2.0),
+            LatLng(3.0 to 2.0),
+            LatLng(4.0 to 1.0),
+            LatLng(3.0 to 0.0),
+            LatLng(1.0 to 0.0),
+        )
+
+        val polygon2 = listOf(
+            LatLng(1.2 to 1.0),
+            LatLng(0.8 to 3.0),
+            LatLng(3.2 to 3.0),
+            LatLng(3.2 to 1.0)
+        )
+
+        polygon1 intersectionPointsWith polygon2 `should be equal to` listOf(
+            LatLng(1.2 to 1.0),
+            LatLng(1.0 to 2.0),
+            LatLng(3.0 to 2.0),
+            LatLng(3.2 to 1.0),
+        )
     }
 }

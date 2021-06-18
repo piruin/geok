@@ -42,7 +42,7 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
     fun distanceTo(latlng: LatLng) = distanceCalculator().between(this, latlng)
 
     override fun toString(): String {
-        return "$latitude, $longitude" + if (elevation != null) ", $elevation" else ""
+        return "[$longitude, $latitude" + if (elevation != null) ", $elevation]" else "]"
     }
 
     /**
@@ -95,16 +95,16 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         M *= a // Arc length along standard meridian
 
         var northing = scale * (
-                M + N * tan(latRad) *
-                        (
-                                A * A * (
-                                        1.0 / 2.0 + A * A * (
-                                                (5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
-                                                        * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720
-                                                )
-                                        )
-                                )
-                ) // Northing from equator
+            M + N * tan(latRad) *
+                (
+                    A * A * (
+                        1.0 / 2.0 + A * A * (
+                            (5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
+                                * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720
+                            )
+                        )
+                    )
+            ) // Northing from equator
         if (this.latitude < 0) {
             northing += 10000000.0
         }
@@ -115,6 +115,9 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
      * from https://www.swtestacademy.com/intersection-convex-polygons-algorithm/ `IsPointInsidePoly()`
      */
     infix fun insideOf(points: List<LatLng>): Boolean {
+        if (points.contains(this)) // Point of Polygon consider to be inside
+            return true
+
         var i = 0
         var j = points.size - 1
         var result = false
