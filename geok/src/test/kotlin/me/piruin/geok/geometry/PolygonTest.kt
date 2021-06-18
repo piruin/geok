@@ -26,8 +26,10 @@ package me.piruin.geok.geometry
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
 import me.piruin.geok.Utm
+import me.piruin.geok.distance
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
+import org.amshove.kluent.`should not be equal to`
 import org.junit.Test
 import kotlin.math.roundToInt
 
@@ -69,6 +71,11 @@ class PolygonTest {
     }
 
     @Test
+    fun perimeter() {
+        polygon.perimeter `should be equal to` polygon.boundary.distance
+    }
+
+    @Test
     fun centroid() {
         val shape = Polygon(
             98.3432525117 to 7.82002427060229,
@@ -96,5 +103,22 @@ class PolygonTest {
             98.3432525117 to 7.82002427060229
         )
         shape.centroid.toUtm() `should be equal to` Utm(47, 'N', 427636.0, 864394.9)
+    }
+
+    @Test
+    fun autoClosePolygon() {
+        val boundary = listOf(
+            LatLng(16.4268129901041, 102.8380009059),
+            LatLng(16.4266819930293, 102.8379568936),
+            LatLng(16.4267047695460, 102.8378494011),
+            LatLng(16.4268502721458, 102.8378330329),
+            LatLng(16.4268937418855, 102.8378020293),
+            // LatLng(16.4268129901041, 102.8380009059) left boundary open
+        )
+        val polygon = Polygon(boundary)
+
+        polygon.isClosed `should be` true
+        polygon.boundary `should not be equal to` boundary
+        polygon.perimeter `should not be equal to` boundary.distance
     }
 }

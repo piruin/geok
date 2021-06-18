@@ -29,8 +29,8 @@ import me.piruin.geok.LatLng
 import me.piruin.geok.area
 import me.piruin.geok.centroid
 import me.piruin.geok.close
+import me.piruin.geok.distance
 import me.piruin.geok.isClosed
-import me.piruin.geok.length
 import me.piruin.geok.open
 import me.piruin.geok.safeSortedClockwise
 
@@ -76,7 +76,7 @@ data class Polygon(
     val perimeter: Double
         get() {
             val bound = if (!boundary.isClosed) boundary.close() else boundary
-            return bound.length
+            return bound.distance
         }
 
     val centroid: LatLng

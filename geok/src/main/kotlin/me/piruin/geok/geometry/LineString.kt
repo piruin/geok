@@ -2,7 +2,7 @@ package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
-import me.piruin.geok.length
+import me.piruin.geok.distance
 
 data class LineString(val coordinates: List<LatLng>) : Geometry {
 
@@ -15,6 +15,10 @@ data class LineString(val coordinates: List<LatLng>) : Geometry {
         require(coordinates.size > 1) { "LineString coordinates size should more than 1" }
     }
 
+    @Deprecated("Replace with distance", replaceWith = ReplaceWith("distance"))
     val length: Double
-        get() = coordinates.length
+        get() = coordinates.distance
+
+    val distance: Double
+        get() = coordinates.distance
 }

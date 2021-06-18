@@ -55,6 +55,7 @@ fun <T> Iterable<T>.count(): Int {
 val Iterable<LatLng>.isClosed: Boolean
     get() = count() > 0 && first() == last()
 
+@Deprecated("Replace with distance", replaceWith = ReplaceWith("distance", "me.piruin.geok.distance"))
 val Iterable<LatLng>.length: Double
     get() {
         var distance = 0.0
@@ -71,10 +72,24 @@ val Iterable<LatLng>.length: Double
         return distance
     }
 
+val Iterable<LatLng>.distance: Double
+    get() {
+        return foldIndexed(0.0) { index, distance, current ->
+            distance + current.distanceTo(elementAtOrNull(index + 1) ?: current)
+        }
+    }
+
 val Iterable<LatLng>.centroid: LatLng
     get() {
-        val lng = map { it.longitude }.average()
-        val lat = map { it.latitude }.average()
+        var latlngs = this
+        if (isClosed) {
+            latlngs = when (this) {
+                is Collection -> open()
+                else -> toList().open()
+            }
+        }
+        val lat = latlngs.map { it.latitude }.average()
+        val lng = latlngs.map { it.longitude }.average()
         return LatLng(lat, lng)
     }
 
