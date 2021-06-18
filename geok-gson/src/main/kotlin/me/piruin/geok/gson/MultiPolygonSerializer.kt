@@ -47,7 +47,7 @@ class MultiPolygonSerializer : JsonSerializer<MultiPolygon>, JsonDeserializer<Mu
             it.forEachIndexed { index, jsonElement ->
                 when (index) {
                     0 -> polygon = Polygon(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
-                    else -> polygon?.holes?.add(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
+                    else -> polygon?.addHole(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
                 }
             }
             polygon!!

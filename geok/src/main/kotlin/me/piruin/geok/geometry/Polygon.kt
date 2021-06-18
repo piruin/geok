@@ -26,25 +26,30 @@ package me.piruin.geok.geometry
 import me.piruin.geok.BBox
 import me.piruin.geok.Datum
 import me.piruin.geok.LatLng
+import me.piruin.geok.area
+import me.piruin.geok.centroid
+import me.piruin.geok.close
+import me.piruin.geok.isClosed
 import me.piruin.geok.length
-import me.piruin.geok.toRadians
-import kotlin.math.abs
-import kotlin.math.cos
+import me.piruin.geok.open
+import me.piruin.geok.safeSortedClockwise
 
 data class Polygon(
     var boundary: List<LatLng>,
-    var holes: MutableList<List<LatLng>> = mutableListOf()
+    var holes: List<List<LatLng>> = listOf()
 ) : Geometry {
 
+    constructor(boundary: List<LatLng>, vararg holes: List<LatLng>) : this(boundary, holes.toList())
     constructor(vararg latlngs: LatLng) : this(latlngs.toList())
-    constructor(vararg xyPair: Pair<Double, Double>) :
-        this(xyPair.map { LatLng(it.second, it.first) }.toList())
+    constructor(vararg xyPair: Pair<Double, Double>) : this(xyPair.map { LatLng(it.second, it.first) }.toList())
 
     override val type: String = javaClass.simpleName
     val bbox: BBox = BBox.from(boundary)
 
     init {
-        require(boundary.size >= 3) { "Boundary of poly should have at least 3 point" }
+        require(boundary.size >= 3) { "Boundary of polygon should have at least 3 point" }
+        this.boundary = boundary.safeSortedClockwise()
+        this.holes = holes.map { it.safeSortedClockwise() }
     }
 
     val isClosed: Boolean
@@ -57,6 +62,11 @@ data class Polygon(
         return holes.any { it.contains(coordinate) }
     }
 
+    fun addHole(vararg holes: List<LatLng>) {
+        val holesList = holes.map { it.safeSortedClockwise() }
+        this.holes = this.holes.toMutableList().apply { addAll(holesList) }
+    }
+
     fun area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
         var area = boundary.area(earthRadius)
         holes.forEach { area -= it.area(earthRadius) }
@@ -65,62 +75,13 @@ data class Polygon(
 
     val perimeter: Double
         get() {
-            val tmpBoundary = this.boundary.toMutableList()
-            if (!boundary.isClosed)
-                tmpBoundary.add(tmpBoundary[0])
-            return tmpBoundary.length
+            val bound = if (!boundary.isClosed) boundary.close() else boundary
+            return bound.length
         }
 
     val centroid: LatLng
         get() {
-            val tmpBoundary = this.boundary.toMutableList()
-            val centroid = doubleArrayOf(0.0, 0.0)
-            if (!isClosed)
-                tmpBoundary.add(tmpBoundary[0])
-
-            for (point in tmpBoundary) {
-                centroid[0] += point.latitude
-                centroid[1] += point.longitude
-            }
-
-            centroid[0] = centroid[0] / tmpBoundary.size
-            centroid[1] = centroid[1] / tmpBoundary.size
-            return LatLng(centroid[0], centroid[1])
+            val bound = if (boundary.isClosed) boundary.open() else boundary
+            return bound.centroid
         }
-}
-
-val List<LatLng>.isClosed: Boolean
-    get() = this[0] == this.last()
-
-fun List<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
-    if (this.size < 3) {
-        return 0.0
-    }
-    val diameter = earthRadius * 2
-    val circumference = diameter * Math.PI
-    val ySegment = ArrayList<Double>()
-    val xSegment = ArrayList<Double>()
-
-    // calculateArea segment x and y in degrees for each point
-    val latitudeRef = this[0].latitude
-    val longitudeRef = this[0].longitude
-    for (i in 1 until size) {
-        val latitude = this[i].latitude
-        val longitude = this[i].longitude
-        ySegment.add((latitude - latitudeRef) * circumference / 360.0)
-        xSegment.add(
-            (longitude - longitudeRef) * circumference * cos(latitude.toRadians()) / 360.0
-        )
-    }
-    // calculateArea areas for each triangle segment
-    val triangleArea = ArrayList<Double>()
-    for (i in 1 until xSegment.size) {
-        val x1 = xSegment[i - 1]
-        val y1 = ySegment[i - 1]
-        val x2 = xSegment[i]
-        val y2 = ySegment[i]
-        triangleArea.add((y1 * x2 - x1 * y2) / 2)
-    }
-    // get abolute value of area, it can't be negative
-    return abs(triangleArea.sum())
 }

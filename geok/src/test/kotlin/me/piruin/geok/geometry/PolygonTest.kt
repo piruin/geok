@@ -28,7 +28,6 @@ import me.piruin.geok.LatLng
 import me.piruin.geok.Utm
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
-import org.junit.Ignore
 import org.junit.Test
 import kotlin.math.roundToInt
 
@@ -69,10 +68,9 @@ class PolygonTest {
         )
     }
 
-    @Ignore
     @Test
     fun centroid() {
-        val boundary = Polygon(
+        val shape = Polygon(
             98.3432525117 to 7.82002427060229,
             98.3434401322 to 7.81997546731602,
             98.3436993774 to 7.81984612009375,
@@ -97,7 +95,6 @@ class PolygonTest {
             98.3430250791 to 7.82003262732049,
             98.3432525117 to 7.82002427060229
         )
-
-        boundary.centroid.toUtm() `should be equal to` Utm(47, 'N', 427634.2, 864397.6)
+        shape.centroid.toUtm() `should be equal to` Utm(47, 'N', 427636.0, 864394.9)
     }
 }

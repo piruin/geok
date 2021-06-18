@@ -23,7 +23,6 @@
 
 package me.piruin.geok
 
-import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.pow
@@ -111,32 +110,4 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         }
         return Utm(utmZone.toInt(), if (latRad > 0) 'N' else 'S', easting.round(1), northing.round(1))
     }
-}
-
-val Iterable<LatLng>.length: Double
-    get() {
-        var distance = 0.0
-        val iterator = iterator()
-        if (!iterator.hasNext())
-            return distance
-
-        var current = iterator.next()
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-            distance += current.distanceTo(next)
-            current = next
-        }
-        return distance
-    }
-
-fun Iterable<LatLng>.sortedClockwise(): Iterable<LatLng> {
-    val x = this.map { it.longitude }.average()
-    val y = this.map { it.latitude }.average()
-    return this.sortedBy { atan2(it.longitude - x, it.latitude - y) }
-}
-
-fun Iterable<LatLng>.sortedCounterClockwise(): Iterable<LatLng> {
-    val x = this.map { it.longitude }.average()
-    val y = this.map { it.latitude }.average()
-    return this.sortedBy { atan2(it.latitude - y, it.longitude - x) }
 }

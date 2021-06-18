@@ -17,7 +17,8 @@ class DistanceTest {
 
     @Test
     fun lineLength() {
-        PolygonTest().polygon.boundary.length.shouldEqual(72.07, 0.01)
-        PolygonTest().polygon.perimeter.shouldEqual(72.07, 0.01)
+        val polygon = PolygonTest().polygon
+        polygon.boundary.close().length
+        polygon.perimeter.shouldEqual(polygon.boundary.close().length, 0.01)
     }
 }

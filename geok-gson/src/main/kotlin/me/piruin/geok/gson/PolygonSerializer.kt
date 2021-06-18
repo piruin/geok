@@ -38,7 +38,7 @@ class PolygonSerializer : JsonSerializer<Polygon>, JsonDeserializer<Polygon> {
         coordinates.forEachIndexed { index, jsonElement ->
             when (index) {
                 0 -> polygon = Polygon(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
-                else -> polygon?.holes?.add(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
+                else -> polygon?.addHole(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
             }
         }
         return polygon!!
