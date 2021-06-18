@@ -26,6 +26,8 @@ package me.piruin.geok
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.max
+import kotlin.math.min
 
 fun Collection<LatLng>.close(): List<LatLng> {
     check(!isEmpty())
@@ -138,3 +140,80 @@ fun Collection<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Do
     // get abolute value of area, it can't be negative
     return abs(triangleArea.sum())
 }
+
+/**
+ * from https://www.swtestacademy.com/intersection-convex-polygons-algorithm/ `GetIntersectionPoint()`
+ */
+infix fun Pair<LatLng, LatLng>.intersectionPointWith(line2: Pair<LatLng, LatLng>): LatLng? {
+    val line1 = this
+    val a1 = line1.second.latitude - line1.first.latitude
+    val b1 = line1.first.longitude - line1.second.longitude
+    val c1 = a1 * line1.first.longitude + b1 * line1.first.latitude
+
+    val a2 = line2.second.latitude - line2.first.latitude
+    val b2 = line2.first.longitude - line2.second.longitude
+    val c2 = a2 * line2.first.longitude + b2 * line2.first.latitude
+
+    val det = a1 * b2 - a2 * b1
+    if (det.wholeNum == 0)
+        return null
+    val x = (b1 * c1 - b1 * c2) / det
+    val y = (a1 * c2 - a2 * c1) / det
+    val online1 = (
+            (
+                    min(line1.first.longitude, line1.second.longitude) < x || min(
+                        line1.first.longitude,
+                        line1.second.longitude
+                    ).equalsTo(x)
+                    ) &&
+                    (
+                            max(line1.first.longitude, line1.second.longitude) > x || max(
+                                line1.first.longitude,
+                                line1.second.longitude
+                            ).equalsTo(x)
+                            ) &&
+                    (
+                            min(line1.first.latitude, line1.second.latitude) < y || min(
+                                line1.first.latitude,
+                                line1.second.latitude
+                            ).equalsTo(y)
+                            ) &&
+                    (
+                            max(line1.first.latitude, line1.second.latitude) > y || max(
+                                line1.first.latitude,
+                                line1.second.latitude
+                            ).equalsTo(y)
+                            )
+            )
+    val online2 = (
+            (
+                    min(line2.first.longitude, line2.second.longitude) < x || min(
+                        line2.first.longitude,
+                        line2.second.longitude
+                    ).equalsTo(x)
+                    ) &&
+                    (
+                            max(line2.first.longitude, line2.second.longitude) > x || max(
+                                line2.first.longitude,
+                                line2.second.longitude
+                            ).equalsTo(x)
+                            ) &&
+                    (
+                            min(line2.first.latitude, line2.second.latitude) < y || min(
+                                line2.first.latitude,
+                                line2.second.latitude
+                            ).equalsTo(y)
+                            ) &&
+                    (
+                            max(line2.first.latitude, line2.second.latitude) > y || max(
+                                line2.first.latitude,
+                                line2.second.latitude
+                            ).equalsTo(y)
+                            )
+            )
+    return if (online1 && online2)
+        LatLng(x to y)
+    else null
+}
+
+private fun Double.equalsTo(other: Double): Boolean = abs(this - other) <= 0.000000001

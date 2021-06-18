@@ -24,6 +24,7 @@
 package me.piruin.geok
 
 import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should be`
 import org.junit.Test
 
 class LatLngTest {
@@ -94,5 +95,21 @@ class LatLngTest {
     @Test
     fun toUtm() {
         LatLng(16.423976, 102.841838).toUtm() `should be equal to` Utm(48, 'N', 269542.0, 1817061.8)
+    }
+
+    @Test
+    fun insertPoint() {
+        val line1 = LatLng(0.0 to 2.0) to LatLng(2.0 to 0.0)
+        val line2 = LatLng(0.0 to 0.0) to LatLng(2.0 to 2.0)
+
+        line1 intersectionPointWith line2 `should be equal to` LatLng(1.0 to 1.0)
+    }
+
+    @Test
+    fun insertPointOfParallel() {
+        val line1 = LatLng(0.0 to 2.0) to LatLng(2.0 to 2.0)
+        val line2 = LatLng(0.0 to 0.0) to LatLng(2.0 to 0.0)
+
+        line1 intersectionPointWith line2 `should be` null
     }
 }
