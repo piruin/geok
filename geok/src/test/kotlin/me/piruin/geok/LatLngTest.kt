@@ -112,4 +112,26 @@ class LatLngTest {
 
         line1 intersectionPointWith line2 `should be` null
     }
+
+    @Test
+    fun pointInsideOfBoundary() {
+        val boundary = listOf(
+            LatLng(0.0 to 0.0),
+            LatLng(0.0 to 2.0),
+            LatLng(2.0 to 2.0),
+            LatLng(2.0 to 0.0),
+            LatLng(0.0 to 0.0),
+        )
+
+        val point = LatLng(1.0 to 1.0)
+        point insideOf boundary `should be` true
+
+        val outsidePoint = LatLng(-1.0 to 0.0)
+        outsidePoint insideOf boundary `should be` false
+        val outsidePoint2 = LatLng(2.1 to 0.3)
+        outsidePoint2 insideOf boundary `should be` false
+
+        val onlinePoint = LatLng(0.0 to 0.5)
+        onlinePoint insideOf boundary `should be` true
+    }
 }

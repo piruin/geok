@@ -95,19 +95,39 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         M *= a // Arc length along standard meridian
 
         var northing = scale * (
-            M + N * tan(latRad) *
-                (
-                    A * A * (
-                        1.0 / 2.0 + A * A * (
-                            (5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
-                                * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720
-                            )
-                        )
-                    )
-            ) // Northing from equator
+                M + N * tan(latRad) *
+                        (
+                                A * A * (
+                                        1.0 / 2.0 + A * A * (
+                                                (5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
+                                                        * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720
+                                                )
+                                        )
+                                )
+                ) // Northing from equator
         if (this.latitude < 0) {
             northing += 10000000.0
         }
         return Utm(utmZone.toInt(), if (latRad > 0) 'N' else 'S', easting.round(1), northing.round(1))
+    }
+
+    /**
+     * from https://www.swtestacademy.com/intersection-convex-polygons-algorithm/ `IsPointInsidePoly()`
+     */
+    infix fun insideOf(points: List<LatLng>): Boolean {
+        var i = 0
+        var j = points.size - 1
+        var result = false
+
+        while (i < points.size) {
+            if (points[i].latitude > this.latitude != points[j].latitude > this.latitude &&
+                this.longitude < (points[j].longitude - points[i].longitude) * (this.latitude - points[i].latitude) /
+                (points[j].latitude - points[i].latitude) + points[i].longitude
+            ) {
+                result = !result
+            }
+            j = i++
+        }
+        return result
     }
 }

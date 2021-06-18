@@ -121,4 +121,10 @@ class PolygonTest {
         polygon.boundary `should not be equal to` boundary
         polygon.perimeter `should not be equal to` boundary.distance
     }
+
+    @Test
+    fun cover() {
+        polygon.cover(polygon.centroid) `should be` true
+        polygon.cover(Point(101.1234 to 15.0001)) `should be` false
+    }
 }

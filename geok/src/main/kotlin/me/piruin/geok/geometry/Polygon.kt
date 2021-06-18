@@ -84,4 +84,8 @@ data class Polygon(
             val bound = if (boundary.isClosed) boundary.open() else boundary
             return bound.centroid
         }
+
+    fun cover(point: Point) = cover(point.coordinates)
+
+    fun cover(point: LatLng): Boolean = point insideOf boundary
 }
