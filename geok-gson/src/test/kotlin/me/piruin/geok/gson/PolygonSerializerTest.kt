@@ -158,6 +158,6 @@ class PolygonSerializerTest {
         )
 
         polygon!!.boundary `should be equal to` expected.boundary
-        polygon!!.holes[0] `should be equal to` expected.holes[0]
+        polygon.holes[0] `should be equal to` expected.holes[0]
     }
 }

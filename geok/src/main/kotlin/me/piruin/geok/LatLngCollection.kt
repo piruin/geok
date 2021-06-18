@@ -146,88 +146,35 @@ fun Collection<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Do
  */
 infix fun Pair<LatLng, LatLng>.intersectionPointWith(line2: Pair<LatLng, LatLng>): LatLng? {
     val line1 = this
-    val a1 = line1.second.latitude - line1.first.latitude
-    val b1 = line1.first.longitude - line1.second.longitude
-    val c1 = a1 * line1.first.longitude + b1 * line1.first.latitude
+    val a1 = line1.second.y - line1.first.y
+    val b1 = line1.first.x - line1.second.x
+    val c1 = a1 * line1.first.x + b1 * line1.first.y
 
-    val a2 = line2.second.latitude - line2.first.latitude
-    val b2 = line2.first.longitude - line2.second.longitude
-    val c2 = a2 * line2.first.longitude + b2 * line2.first.latitude
+    val a2 = line2.second.y - line2.first.y
+    val b2 = line2.first.x - line2.second.x
+    val c2 = a2 * line2.first.x + b2 * line2.first.y
 
     val det = a1 * b2 - a2 * b1
     if (det.equalsTo(0.0)) {
-        println("$line1 x $line2 => null")
         return null
     }
     val x = (b1 * c1 - b1 * c2) / det
     val y = (a1 * c2 - a2 * c1) / det
-    val online1 = (
-        (
-            min(line1.first.longitude, line1.second.longitude) < x || min(
-                line1.first.longitude,
-                line1.second.longitude
-            ).equalsTo(x)
-            ) &&
-            (
-                max(line1.first.longitude, line1.second.longitude) > x || max(
-                    line1.first.longitude,
-                    line1.second.longitude
-                ).equalsTo(x)
-                ) &&
-            (
-                min(line1.first.latitude, line1.second.latitude) < y || min(
-                    line1.first.latitude,
-                    line1.second.latitude
-                ).equalsTo(y)
-                ) &&
-            (
-                max(line1.first.latitude, line1.second.latitude) > y || max(
-                    line1.first.latitude,
-                    line1.second.latitude
-                ).equalsTo(y)
-                )
-        )
-    val online2 = (
-        (
-            min(line2.first.longitude, line2.second.longitude) < x || min(
-                line2.first.longitude,
-                line2.second.longitude
-            ).equalsTo(x)
-            ) &&
-            (
-                max(line2.first.longitude, line2.second.longitude) > x || max(
-                    line2.first.longitude,
-                    line2.second.longitude
-                ).equalsTo(x)
-                ) &&
-            (
-                min(line2.first.latitude, line2.second.latitude) < y || min(
-                    line2.first.latitude,
-                    line2.second.latitude
-                ).equalsTo(y)
-                ) &&
-            (
-                max(line2.first.latitude, line2.second.latitude) > y || max(
-                    line2.first.latitude,
-                    line2.second.latitude
-                ).equalsTo(y)
-                )
-        )
-    return if (online1 && online2) {
-        println("$line1 x $line2 => ${LatLng(x to y)}")
-        LatLng(x to y)
-    } else {
-        println("$line1 x $line2 => null")
-        null
-    }
+    val online1 = (min(line1.first.x, line1.second.x) < x || min(line1.first.x, line1.second.x).equalsTo(x)) &&
+        (max(line1.first.x, line1.second.x) > x || max(line1.first.x, line1.second.x).equalsTo(x)) &&
+        (min(line1.first.y, line1.second.y) < y || min(line1.first.y, line1.second.y).equalsTo(y)) &&
+        (max(line1.first.y, line1.second.y) > y || max(line1.first.y, line1.second.y).equalsTo(y))
+    val online2 = (min(line2.first.x, line2.second.x) < x || min(line2.first.x, line2.second.x).equalsTo(x)) &&
+        (max(line2.first.x, line2.second.x) > x || max(line2.first.x, line2.second.x).equalsTo(x)) &&
+        (min(line2.first.y, line2.second.y) < y || min(line2.first.y, line2.second.y).equalsTo(y)) &&
+        (max(line2.first.y, line2.second.y) > y || max(line2.first.y, line2.second.y).equalsTo(y))
+    return if (online1 && online2) LatLng(x to y) else null
 }
 
-infix fun Pair<LatLng, LatLng>.intersectionPointsWith(poly: List<LatLng>): List<LatLng> {
-    val thisLine = this
+infix fun Pair<LatLng, LatLng>.intersectionPointsWith(polygon: List<LatLng>): List<LatLng> {
     val result = mutableListOf<LatLng>()
-    poly.forEachLine { line ->
-        print("------> inner line | ")
-        thisLine.intersectionPointWith(line)?.let { result.safeAdd(it) }
+    polygon.forEachLine {
+        this.intersectionPointWith(it)?.let { point -> result.addUnique(point) }
     }
     return result
 }
@@ -241,27 +188,16 @@ fun Collection<LatLng>.forEachLine(action: (Pair<LatLng, LatLng>) -> Unit) {
     }
 }
 
-infix fun Collection<LatLng>.intersectionPointsWith(other: List<LatLng>): List<LatLng>? {
-    val poly1 = this.close()
-    val poly2 = other.close()
-    val clippedCorners = mutableListOf<LatLng>()
+infix fun Collection<LatLng>.intersectionPointsWith(other: List<LatLng>): List<LatLng> {
+    val polygon1 = this.close()
+    val polygon2 = other.close()
+    val clippedPoint = mutableListOf<LatLng>()
 
-    poly1.forEach {
-        if (it insideOf poly2)
-            clippedCorners.safeAdd(it)
-    }
-    poly2.forEach {
-        if (it insideOf poly1)
-            clippedCorners.safeAdd(it)
-    }
-    poly1.forEachLine { line ->
-        println("poly1 $line")
-        clippedCorners.safeAdd(line intersectionPointsWith poly2)
-    }
-    if (clippedCorners.isEmpty())
-        return null
-    return clippedCorners.sortedClockwise()
+    polygon1.forEach { if (it insideOf polygon2) clippedPoint.addUnique(it) }
+    polygon2.forEach { if (it insideOf polygon1) clippedPoint.addUnique(it) }
+    polygon1.forEachLine { line -> clippedPoint.addUnique(line intersectionPointsWith polygon2) }
+
+    if (clippedPoint.isEmpty())
+        return clippedPoint
+    return clippedPoint.sortedClockwise()
 }
-
-private fun MutableCollection<LatLng>.safeAdd(vararg points: LatLng) { safeAdd(points.toList()) }
-private fun MutableCollection<LatLng>.safeAdd(points: List<LatLng>) { points.forEach { if (!contains(it)) add(it) } }

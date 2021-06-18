@@ -114,23 +114,25 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
     /**
      * from https://www.swtestacademy.com/intersection-convex-polygons-algorithm/ `IsPointInsidePoly()`
      */
-    infix fun insideOf(points: List<LatLng>): Boolean {
-        if (points.contains(this)) // Point of Polygon consider to be inside
+    infix fun insideOf(polygon: List<LatLng>): Boolean {
+        if (polygon.contains(this)) // Point of Polygon consider to be inside
             return true
 
         var i = 0
-        var j = points.size - 1
+        var j = polygon.size - 1
         var result = false
 
-        while (i < points.size) {
-            if (points[i].latitude > this.latitude != points[j].latitude > this.latitude &&
-                this.longitude < (points[j].longitude - points[i].longitude) * (this.latitude - points[i].latitude) /
-                (points[j].latitude - points[i].latitude) + points[i].longitude
-            ) {
-                result = !result
-            }
+        while (i < polygon.size) {
+            if (polygon[i].y > this.y != polygon[j].y > this.y &&
+                this.x < (polygon[j].x - polygon[i].x) * (this.y - polygon[i].y) /
+                (polygon[j].y - polygon[i].y) + polygon[i].x
+            ) result = !result
             j = i++
         }
         return result
     }
 }
+
+val LatLng.x get() = longitude
+val LatLng.y get() = latitude
+val LatLng.z get() = elevation
