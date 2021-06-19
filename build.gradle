@@ -1,15 +1,29 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.5.10"
     id "com.palantir.git-version" version "0.12.3"
-    id "maven-publish"
 }
 
-group = 'com.github.piruin'
-version = gitVersion()
-
 allprojects {
+    group = 'com.github.piruin'
+    version = '1.1.0'
     repositories {
         mavenCentral()
         maven { url 'https://jitpack.io' }
+    }
+}
+
+subprojects {
+    apply plugin: "maven-publish"
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/piruin/geok")
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
     }
 }
