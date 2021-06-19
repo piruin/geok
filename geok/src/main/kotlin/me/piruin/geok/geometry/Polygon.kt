@@ -68,7 +68,7 @@ data class Polygon(
     }
 
     /**
-     * @see contains
+     * @return Determines whether the specified point are inside this Polygon.
      */
     fun contains(point: Point): Boolean = contains(point.coordinates)
 
@@ -77,28 +77,40 @@ data class Polygon(
         this.holes = this.holes.toMutableList().apply { addAll(holesList) }
     }
 
-    fun area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
+    /**
+     * @return calculated area of polygon in square meter (m^2)
+     */
+    fun area(earthRadius: Double = Datum.WSG84.equatorialRad): Double {
         var area = boundary.area(earthRadius)
         holes.forEach { area -= it.area(earthRadius) }
         return area
     }
 
+    /**
+     * @return perimeter of Polygon in meter (m)
+     */
     val perimeter: Double
         get() {
             val bound = if (!boundary.isClosed) boundary.close() else boundary
             return bound.distance
         }
 
+    /**
+     * @return centroid coordination of this Polygon
+     */
     val centroid: LatLng
         get() {
             val bound = if (boundary.isClosed) boundary.open() else boundary
             return bound.centroid
         }
 
+    /**
+     * @return Intersection polygon with this polygon
+     */
     fun intersectionWith(other: Polygon): Polygon? {
-        val intersection = boundary.intersectionWith(other.boundary)
-        if (intersection.size < 3)
+        val result = boundary intersectionWith other.boundary
+        if (result.size < 3)
             return null
-        return Polygon(intersection)
+        return Polygon(result)
     }
 }

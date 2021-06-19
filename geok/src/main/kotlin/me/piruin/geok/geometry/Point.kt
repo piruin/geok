@@ -12,10 +12,12 @@ data class Point(val coordinates: LatLng) : Geometry {
     /**
      * return Determines whether this Point are inside of given Polygon.
      */
-    fun insideOf(polygon: Polygon) = coordinates.insideOf(polygon.boundary)
+    infix fun insideOf(polygon: Polygon) = coordinates.insideOf(polygon.boundary)
 
     /**
      * return Determines whether this Point are inside of given MultiPolygon.
      */
-    fun insideOf(polygons: MultiPolygon) = polygons.polygons.any { insideOf(it) }
+    infix fun insideOf(polygons: MultiPolygon) = polygons.polygons.any { insideOf(it) }
+
+    infix fun distanceTo(other: Point) = coordinates distanceTo other.coordinates
 }

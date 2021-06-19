@@ -33,12 +33,12 @@ interface DistanceCalculator {
     /**
      * Calculate distance between Latlng
      *
-     * @return distance in Meters
+     * @return distance in meter (m)
      */
     fun between(latLng1: LatLng, latlng2: LatLng): Double
 }
 
-fun distanceCalculator(datum: Datum = Datum.WSG48): DistanceCalculator = EllipsoidDistance(datum)
+fun distanceCalculator(datum: Datum = Datum.WSG84): DistanceCalculator = EllipsoidDistance(datum)
 
 private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
 

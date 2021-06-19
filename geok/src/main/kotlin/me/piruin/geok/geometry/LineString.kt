@@ -2,6 +2,7 @@ package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
 import me.piruin.geok.LatLng
+import me.piruin.geok.centroid
 import me.piruin.geok.distance
 
 data class LineString(val coordinates: List<LatLng>) : Geometry {
@@ -19,6 +20,15 @@ data class LineString(val coordinates: List<LatLng>) : Geometry {
     val length: Double
         get() = coordinates.distance
 
+    /**
+     * @return meter of distance from point to point in this LineString
+     */
     val distance: Double
         get() = coordinates.distance
+
+    /**
+     * @return centroid coordination of this Polygon
+     */
+    val centroid: LatLng
+        get() = coordinates.centroid
 }

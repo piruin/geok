@@ -31,6 +31,6 @@ data class Datum(val equatorialRad: Double, val polarRad: Double, val flat: Doub
     }
 
     companion object {
-        val WSG48 = Datum(6378137.0, 6356752.314247833, 298.257223563)
+        val WSG84 = Datum(6378137.0, 6356752.314247833, 298.257223563)
     }
 }

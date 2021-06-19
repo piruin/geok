@@ -36,8 +36,8 @@ data class FeatureCollection<T>(val features: List<Feature<T>>) {
     init {
         require(features.isNotEmpty()) { "Feature Collection should not empty" }
 
-        val latLng = features.toLatLngs()
-        bbox = if (latLng.size > 1) BBox.from(latLng) else null
+        val coordinates = features.toLatLngs()
+        bbox = if (coordinates.size > 1) BBox.from(coordinates) else null
     }
 
     private fun List<Feature<T>>.toLatLngs(): List<LatLng> {

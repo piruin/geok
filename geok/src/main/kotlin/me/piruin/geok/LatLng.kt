@@ -43,7 +43,10 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         assert(longitude between (-180.0 and 180.0)) { "longitude should between -180.0 and 180 [$longitude]" }
     }
 
-    fun distanceTo(latlng: LatLng) = distanceCalculator().between(this, latlng)
+    /**
+     * @return distance in meter (m)
+     */
+    infix fun distanceTo(latlng: LatLng) = distanceCalculator().between(this, latlng)
 
     override fun toString(): String {
         return "[$longitude, $latitude" + if (elevation != null) ", $elevation]" else "]"
@@ -56,7 +59,7 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
      * @see <a href="http://www.uwgb.edu/dutchs/UsefulData/UTMFormulas.HTM">Converting UTM to Latitude and Longitude (Or Vice Versa)</a>
      *
      */
-    fun toUtm(datum: Datum = Datum.WSG48): Utm {
+    fun toUtm(datum: Datum = Datum.WSG84): Utm {
         assert(latitude between (-80.0 to 84.0)) { "latitude $latitude is outside utm grid" }
 
         val a = datum.equatorialRad

@@ -72,6 +72,9 @@ val Iterable<LatLng>.length: Double
         return distance
     }
 
+/**
+ * @return meter (m) of distance from point to point in collection
+ */
 val Iterable<LatLng>.distance: Double
     get() {
         return foldIndexed(0.0) { index, distance, current ->
@@ -79,6 +82,9 @@ val Iterable<LatLng>.distance: Double
         }
     }
 
+/**
+ * @return centroid coordinate of points in collection
+ */
 val Iterable<LatLng>.centroid: LatLng
     get() {
         var latlngs = this
@@ -94,9 +100,9 @@ val Iterable<LatLng>.centroid: LatLng
     }
 
 /**
- * @return area of polygon in square meter
+ * @return area of polygon in square meter (m^2)
  */
-fun Collection<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
+fun Collection<LatLng>.area(earthRadius: Double = Datum.WSG84.equatorialRad): Double {
     if (size < 3) {
         return 0.0
     }
@@ -143,7 +149,8 @@ fun Iterable<LatLng>.sortedCounterClockwise(): List<LatLng> {
 }
 
 inline fun Collection<LatLng>.forEachLine(action: (Pair<LatLng, LatLng>) -> Unit) {
-    check(size > 1)
+    if (size < 2)
+        return
     forEachIndexed { index, latLng ->
         elementAtOrNull(index + 1)?.let {
             if (it != latLng) action(latLng to it)

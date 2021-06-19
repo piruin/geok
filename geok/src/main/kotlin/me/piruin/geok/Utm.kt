@@ -42,7 +42,7 @@ data class Utm(val zone: Int, val hemisphere: Char, val easting: Double, val nor
      * @see <a href="http://www.uwgb.edu/dutchs/UsefulData/UTMFormulas.HTM">Converting UTM to Latitude and Longitude (Or Vice Versa)</a>
      *
      */
-    fun toLatLng(datum: Datum = Datum.WSG48): LatLng {
+    fun toLatLng(datum: Datum = Datum.WSG84): LatLng {
         assert(easting between (160000.0 and 840000.0)) { "Outside permissible range of easting values" }
         assert(northing between (0.0 and 10000000.0)) { "Outside permissible range of northing values" }
 
