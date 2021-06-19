@@ -9,10 +9,10 @@ class BBoxTest {
     @Test
     fun fromLatLng() {
         val latlng = listOf(
-                LatLng(-10.0, -10.0),
-                LatLng(10.0, -10.0),
-                LatLng(10.0, 10.0),
-                LatLng(-10.0, -10.0)
+            LatLng(-10.0, -10.0),
+            LatLng(10.0, -10.0),
+            LatLng(10.0, 10.0),
+            LatLng(-10.0, -10.0)
         )
         val bbox = BBox.from(latlng)
 
@@ -27,10 +27,10 @@ class BBoxTest {
     @Test
     fun fromPolygon() {
         val polygon = Polygon(
-                LatLng(-20.0, -10.0),
-                LatLng(20.0, -10.0),
-                LatLng(20.0, 10.0),
-                LatLng(-20.0, -10.0)
+            LatLng(-20.0, -10.0),
+            LatLng(20.0, -10.0),
+            LatLng(20.0, 10.0),
+            LatLng(-20.0, -10.0)
         )
         val bbox = BBox.from(polygon.boundary)
 

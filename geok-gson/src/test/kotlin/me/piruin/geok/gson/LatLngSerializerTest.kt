@@ -28,14 +28,13 @@ import com.google.gson.GsonBuilder
 import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.LatLng
 import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should equal`
 import org.junit.Test
 
 class LatLngSerializerTest {
 
     private val gson: Gson = GsonBuilder()
-            .adapterFor<LatLng>(LatLngSerializer())
-            .create()
+        .adapterFor<LatLng>(LatLngSerializer())
+        .create()
 
     @Test
     fun serialiazeLatLng() {
@@ -55,21 +54,21 @@ class LatLngSerializerTest {
     fun deserialize() {
         val deserialize = gson.parse<LatLng>("[120.0,10.0]")!!
 
-        deserialize `should equal` LatLng(10.0, 120.0)
+        deserialize `should be equal to` LatLng(10.0, 120.0)
     }
 
     @Test
     fun deserialize2() {
         val deserialize = gson.parse<LatLng>("[102.5,0.5]")!!
 
-        deserialize `should equal` LatLng(0.5, 102.5)
+        deserialize `should be equal to` LatLng(0.5, 102.5)
     }
 
     @Test
     fun serializeLatLngList() {
         val latlngList = arrayListOf(
-                LatLng(0.0, 100.0),
-                LatLng(1.0, 101.0)
+            LatLng(0.0, 100.0),
+            LatLng(1.0, 101.0)
         )
 
         gson.toJson(latlngList) `should equal json` "[[100.0,0.0],[101.0,1.0]]"
@@ -79,9 +78,9 @@ class LatLngSerializerTest {
     fun deserializeLatLngList() {
         val deserialize = gson.parse<List<LatLng>>("[[100.0,0.0],[101.0,1.0]]")
 
-        deserialize `should equal` arrayListOf(
-                LatLng(0.0, 100.0),
-                LatLng(1.0, 101.0)
+        deserialize `should be equal to` arrayListOf(
+            LatLng(0.0, 100.0),
+            LatLng(1.0, 101.0)
         )
     }
 
@@ -93,14 +92,15 @@ class LatLngSerializerTest {
             {
                 "name":"NECTEC",
                 "coordinates":[100.601282,14.07776]
-            }""".trimIndent()
+            }
+        """.trimIndent()
     }
 
     @Test
     fun serializeObjWithNullLatLgn() {
         val place = Place("NECTEC")
 
-        gson.toJson(place) `should equal` """{"name":"NECTEC"}"""
+        gson.toJson(place) `should be equal to` """{"name":"NECTEC"}"""
     }
 
     class Place(val name: String, val coordinates: LatLng? = null)

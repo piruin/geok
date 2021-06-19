@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Piruin Panichphol
+ * Copyright (c) 2021 Piruin Panichphol
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,30 +21,7 @@
  *
  */
 
-package me.piruin.geok.gson
+package me.piruin.geok
 
-import com.google.gson.JsonArray
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
-import me.piruin.geok.LatLng
-import java.lang.reflect.Type
-
-class LatLngSerializer : JsonSerializer<LatLng>, JsonDeserializer<LatLng> {
-
-    override fun serialize(src: LatLng, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
-        return JsonArray(2).apply {
-            add(src.longitude)
-            add(src.latitude)
-        }
-    }
-
-    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): LatLng? {
-        return when (val jsonArray = json.asJsonArray) {
-            null -> null
-            else -> LatLng(jsonArray[1].asDouble, jsonArray[0].asDouble)
-        }
-    }
-}
+fun <T> MutableCollection<T>.addUnique(vararg elements: T) { addUnique(elements.toList()) }
+fun <T> MutableCollection<T>.addUnique(elements: List<T>) { elements.forEach { if (!contains(it)) add(it) } }

@@ -7,5 +7,5 @@ data class MultiPolygon(val polygons: List<Polygon>) : MultiGeometry {
     constructor(vararg polygons: Polygon) : this(polygons.toList())
 
     override val type: String = javaClass.simpleName
-    override val bbox: BBox = BBox.combine(polygons.mapNotNull { it.bbox })
+    override val bbox: BBox = BBox.combine(polygons.map { it.bbox })
 }

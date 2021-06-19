@@ -23,7 +23,20 @@
 
 package me.piruin.geok
 
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
+
 data class LatLng(val latitude: Double, val longitude: Double, val elevation: Double? = null) {
+
+    val x get() = longitude
+    val y get() = latitude
+    val z get() = elevation
+
+    constructor(xyPair: Pair<Number, Number>) : this(xyPair.second.toDouble(), xyPair.first.toDouble())
 
     init {
         assert(latitude between (-90.0 and 90.0)) { "latitude should between -90.0 and 90 [$latitude]" }
@@ -33,7 +46,7 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
     fun distanceTo(latlng: LatLng) = distanceCalculator().between(this, latlng)
 
     override fun toString(): String {
-        return "$latitude, $longitude" + if (elevation != null) ", $elevation" else ""
+        return "[$longitude, $latitude" + if (elevation != null) ", $elevation]" else "]"
     }
 
     /**
@@ -47,62 +60,80 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         assert(latitude between (-80.0 to 84.0)) { "latitude $latitude is outside utm grid" }
 
         val a = datum.equatorialRad
-        val f = 1.0 / datum.flat //polar flattening.
+        val f = 1.0 / datum.flat // polar flattening.
         val b = datum.polarRad
-        val e = Math.sqrt(1 - (b / a) * (b / a))//eccentricity
+        val e = sqrt(1 - (b / a) * (b / a)) // eccentricity
 
-        val scale = 0.9996 //scale on central meridian
+        val scale = 0.9996 // scale on central meridian
 
-        val latRad = latitude.toRadians()//Convert latitude to radians
-        val utmZone = 1 + Math.floor((longitude + 180) / 6)//calculate utm zone
-        var latZone = when { //Latitude zone: A-B S of -80, C-W -80 to +72, X 72-84, Y,Z N of 84
-            latitude > -80 && latitude < 72 -> (Math.floor((latitude + 80) / 8) + 2).toInt()
+        val latRad = latitude.toRadians() // Convert latitude to radians
+        val utmZone = 1 + floor((longitude + 180) / 6) // calculate utm zone
+        var latZone = when { // Latitude zone: A-B S of -80, C-W -80 to +72, X 72-84, Y,Z N of 84
+            latitude > -80 && latitude < 72 -> (floor((latitude + 80) / 8) + 2).toInt()
             latitude > 72 && latitude < 84 -> 21
             latitude > 84 -> 23
             else -> 0
         }
 
-        val zcm = 3 + 6 * (utmZone - 1) - 180//Central meridian of zone
-        val esq = (1 - (b / a) * (b / a))//e squared for use in expansions
-        val e0sq = e * e / (1 - e * e)// e0 squared - always even powers
-        val N = a / Math.sqrt(1 - Math.pow(e * Math.sin(latRad), 2.0))
+        val zcm = 3 + 6 * (utmZone - 1) - 180 // Central meridian of zone
+        val esq = (1 - (b / a) * (b / a)) // e squared for use in expansions
+        val e0sq = e * e / (1 - e * e) // e0 squared - always even powers
+        val N = a / sqrt(1 - (e * sin(latRad)).pow(2.0))
 
-        val T = Math.pow(Math.tan(latRad), 2.0)
-        val C = e0sq * Math.pow(Math.cos(latRad), 2.0)
-        val A = (longitude - zcm).toRadians() * Math.cos(latRad)
+        val T = tan(latRad).pow(2.0)
+        val C = e0sq * cos(latRad).pow(2.0)
+        val A = (longitude - zcm).toRadians() * cos(latRad)
 
-        var easting = scale * N * A * (1 + A * A * ((1 - T + C) / 6 + A * A
-                * (5 - 18 * T + T * T + 72 * C - 58 * e0sq) / 120))//Easting relative to Central meridian
+        var easting = scale * N * A * (
+            1 + A * A * (
+                (1 - T + C) / 6 + A * A
+                    * (5 - 18 * T + T * T + 72 * C - 58 * e0sq) / 120
+                )
+            ) // Easting relative to Central meridian
         easting += 500000
 
         var M = latRad * (1.0 - esq * (1.0 / 4.0 + esq * (3.0 / 64.0 + 5 * esq / 256)))
-        M -= Math.sin(2.0 * latRad) * (esq * (3.0 / 8.0 + esq * (3.0 / 32.0 + 45 * esq / 1024)))
-        M += Math.sin(4.0 * latRad) * (esq * esq * (15.0 / 256.0 + esq * 45.0 / 1024))
-        M -= Math.sin(6.0 * latRad) * (esq * esq * esq * (35.0 / 3072))
-        M *= a//Arc length along standard meridian
+        M -= sin(2.0 * latRad) * (esq * (3.0 / 8.0 + esq * (3.0 / 32.0 + 45 * esq / 1024)))
+        M += sin(4.0 * latRad) * (esq * esq * (15.0 / 256.0 + esq * 45.0 / 1024))
+        M -= sin(6.0 * latRad) * (esq * esq * esq * (35.0 / 3072))
+        M *= a // Arc length along standard meridian
 
-        var northing = scale * (M + N * Math.tan(latRad)
-                * (A * A * (1.0 / 2.0 + A * A * ((5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
-                * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720))))//Northing from equator
+        var northing = scale * (
+            M + N * tan(latRad) *
+                (
+                    A * A * (
+                        1.0 / 2.0 + A * A * (
+                            (5.0 - T + (9.0 * C) + (4.0 * C * C)) / 24.0 + A * A
+                                * (61.0 - (58.0 * T) + (T * T) + (600.0 * C) - (330.0 * e0sq)) / 720
+                            )
+                        )
+                    )
+            ) // Northing from equator
         if (this.latitude < 0) {
             northing += 10000000.0
         }
         return Utm(utmZone.toInt(), if (latRad > 0) 'N' else 'S', easting.round(1), northing.round(1))
     }
-}
 
-val Iterable<LatLng>.length: Double
-    get() {
-        var distance = 0.0
-        val iterator = iterator()
-        if (!iterator.hasNext())
-            return distance
+    /**
+     * @see <a href="https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html">PNPOLY - Point Inclusion in Polygon Test</a>
+     * @return Determines whether this LatLng are inside of given Polygon.
+     */
+    infix fun insideOf(polygon: List<LatLng>): Boolean {
+        if (polygon.contains(this)) // Point of Polygon consider to be inside
+            return true
 
-        var current = iterator.next()
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-            distance += current.distanceTo(next)
-            current = next
+        var i = 0
+        var j = polygon.size - 1
+        var result = false
+
+        while (i < polygon.size) {
+            if (polygon[i].y > this.y != polygon[j].y > this.y &&
+                this.x < (polygon[j].x - polygon[i].x) * (this.y - polygon[i].y) /
+                (polygon[j].y - polygon[i].y) + polygon[i].x
+            ) result = !result
+            j = i++
         }
-        return distance
+        return result
     }
+}

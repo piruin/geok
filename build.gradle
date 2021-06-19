@@ -1,6 +1,5 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version '1.2.31'
-    id "com.jfrog.bintray" version "1.7.3"
+    id "org.jetbrains.kotlin.jvm" version "1.5.10"
 }
 
 group 'me.piruin'
@@ -20,11 +19,6 @@ version = {->
 allprojects {
     repositories {
         mavenCentral()
-        jcenter()
+        maven { url 'https://jitpack.io' }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.5.1'
-    distributionUrl = distributionUrl.replace("bin", "all")
 }

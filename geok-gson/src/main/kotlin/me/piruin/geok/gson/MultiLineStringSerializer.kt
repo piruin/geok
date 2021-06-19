@@ -21,11 +21,14 @@ class MultiLineStringSerializer : JsonSerializer<MultiLineString>, JsonDeseriali
         return JsonObject().apply {
             add("type", JsonPrimitive(src.type))
             add("bbox", ctx.serialize(src.bbox))
-            add("coordinates", JsonArray().apply {
-                src.lines.forEach {
-                    add(ctx.serialize(it.coordinates))
+            add(
+                "coordinates",
+                JsonArray().apply {
+                    src.lines.forEach {
+                        add(ctx.serialize(it.coordinates))
+                    }
                 }
-            })
+            )
         }
     }
 
