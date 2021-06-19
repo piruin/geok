@@ -2,9 +2,6 @@ plugins {
     id "org.jetbrains.kotlin.jvm"
 }
 
-group 'me.piruin'
-version rootProject.version
-
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
