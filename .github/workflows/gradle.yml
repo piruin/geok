@@ -16,6 +16,5 @@ jobs:
       with:
         java-version: '8'
         distribution: adopt
-    - uses: srt32/git-actions@v0.0.3
     - run: chmod +x gradlew
     - run: ./gradlew build
