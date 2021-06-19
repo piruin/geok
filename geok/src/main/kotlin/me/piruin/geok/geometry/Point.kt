@@ -8,4 +8,16 @@ data class Point(val coordinates: LatLng) : Geometry {
     constructor(pair: Pair<Double, Double>) : this(LatLng(pair.second, pair.first))
 
     override val type: String = javaClass.simpleName
+
+    /**
+     * return Determines whether this Point are inside of given Polygon.
+     */
+    infix fun insideOf(polygon: Polygon) = coordinates.insideOf(polygon.boundary)
+
+    /**
+     * return Determines whether this Point are inside of given MultiPolygon.
+     */
+    infix fun insideOf(polygons: MultiPolygon) = polygons.polygons.any { insideOf(it) }
+
+    infix fun distanceTo(other: Point) = coordinates distanceTo other.coordinates
 }

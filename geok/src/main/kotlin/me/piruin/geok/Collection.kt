@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Piruin Panichphol
+ * Copyright (c) 2021 Piruin Panichphol
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,5 @@
 
 package me.piruin.geok
 
-data class Datum(val equatorialRad: Double, val polarRad: Double, val flat: Double) {
-
-    override fun toString(): String {
-        return "Equatorial Radius (meters) = $equatorialRad, Polar Radius (meters) = $polarRad," +
-            " Flattening = ${1.0 / flat} 1/Flattening = $flat"
-    }
-
-    companion object {
-        val WSG84 = Datum(6378137.0, 6356752.314247833, 298.257223563)
-    }
-}
+fun <T> MutableCollection<T>.addUnique(vararg elements: T) { addUnique(elements.toList()) }
+fun <T> MutableCollection<T>.addUnique(elements: List<T>) { elements.forEach { if (!contains(it)) add(it) } }

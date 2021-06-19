@@ -5,28 +5,29 @@ import com.google.gson.GsonBuilder
 import com.gregwoodfill.assert.`should equal json`
 import me.piruin.geok.geometry.MultiPoint
 import me.piruin.geok.geometry.Point
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.Test
 
 class MultiPointSerializerTest {
 
-    val gson: Gson = GsonBuilder()
-            .registerGeokTypeAdapter()
-            .create()
+    private val gson: Gson = GsonBuilder()
+        .registerGeokTypeAdapter()
+        .create()
 
-    val json = """
+    private val json = """
         {
             "type": "MultiPoint",
             "coordinates": [
                 [100.0, 0.0], [101.0, 1.0]
             ]
-        }""".trimIndent()
+        }
+    """.trimIndent()
 
     @Test
     fun serialize() {
         val points = MultiPoint(
-                Point(100.0 to 0.0),
-                Point(101.0 to 1.0)
+            Point(100.0 to 0.0),
+            Point(101.0 to 1.0)
         )
 
         gson.toJson(points) `should equal json` json
@@ -34,9 +35,9 @@ class MultiPointSerializerTest {
 
     @Test
     fun deserialize() {
-        gson.parse<MultiPoint>(json) `should equal` MultiPoint(
-                Point(100.0 to 0.0),
-                Point(101.0 to 1.0)
+        gson.parse<MultiPoint>(json) `should be equal to` MultiPoint(
+            Point(100.0 to 0.0),
+            Point(101.0 to 1.0)
         )
     }
 }

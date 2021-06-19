@@ -1,4 +1,6 @@
-apply plugin: 'kotlin'
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+}
 
 group 'me.piruin'
 version rootProject.version
@@ -12,13 +14,12 @@ compileTestKotlin {
 
 dependencies {
     implementation project(":geok")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "com.google.code.gson:gson:2.8.2"
+    implementation "com.google.code.gson:gson:2.8.7"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.10"
 
     testImplementation "junit:junit:4.12"
-    testImplementation "org.amshove.kluent:kluent:1.34"
-    testImplementation "com.gregwoodfill.assert:kotlin-json-assert:0.1.0"
+    testImplementation "org.amshove.kluent:kluent:1.66"
+    testImplementation 'com.github.piruin:kotlin-json-assert:v0.1.0'
 }
 
 apply from: "../ktlint.gradle"
-apply from: '../bintray.gradle'

@@ -20,10 +20,13 @@ class PolygonSerializer : JsonSerializer<Polygon>, JsonDeserializer<Polygon> {
         return JsonObject().apply {
             add("type", JsonPrimitive(src.type))
             add("bbox", ctx.serialize(src.bbox))
-            add("coordinates", JsonArray().apply {
-                add(ctx.serialize(src.boundary))
-                src.holes.forEach { add(ctx.serialize(it)) }
-            })
+            add(
+                "coordinates",
+                JsonArray().apply {
+                    add(ctx.serialize(src.boundary))
+                    src.holes.forEach { add(ctx.serialize(it)) }
+                }
+            )
         }
     }
 
@@ -35,7 +38,7 @@ class PolygonSerializer : JsonSerializer<Polygon>, JsonDeserializer<Polygon> {
         coordinates.forEachIndexed { index, jsonElement ->
             when (index) {
                 0 -> polygon = Polygon(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
-                else -> polygon?.holes?.add(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
+                else -> polygon?.addHole(ctx.deserialize<MutableList<LatLng>>(jsonElement, listLatLngType))
             }
         }
         return polygon!!

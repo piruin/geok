@@ -1,30 +1,14 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version '1.2.31'
-    id "com.jfrog.bintray" version "1.7.3"
+    id "org.jetbrains.kotlin.jvm" version "1.5.10"
+    id "com.palantir.git-version" version "0.12.3"
 }
 
 group 'me.piruin'
-version = {->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'describe', '--tags'
-        standardOutput = stdout
-    }
-    String tag = stdout.toString().trim();
-    if (tag.length() == 0)
-        tag = "0.0.0"
-    println "version $tag"
-    return tag
-}.call()
+version = gitVersion()
 
 allprojects {
     repositories {
         mavenCentral()
-        jcenter()
+        maven { url 'https://jitpack.io' }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.5.1'
-    distributionUrl = distributionUrl.replace("bin", "all")
 }

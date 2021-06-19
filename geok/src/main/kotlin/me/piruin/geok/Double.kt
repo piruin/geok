@@ -23,7 +23,9 @@
 
 package me.piruin.geok
 
+import kotlin.math.abs
 import kotlin.math.pow
+import kotlin.math.roundToLong
 
 infix fun Double.and(second: Double) = Pair(this, second)
 
@@ -41,5 +43,7 @@ val Double.wholeNum
 
 fun Double.round(digitLength: Int): Double {
     val pow = 10.0.pow(digitLength)
-    return Math.round(this * pow) / pow
+    return (this * pow).roundToLong() / pow
 }
+
+fun Double.equalsTo(other: Double, delta: Double = 0.000000001): Boolean = abs(this - other) <= delta

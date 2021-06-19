@@ -1,10 +1,11 @@
 package me.piruin.geok
 
 data class BBox(
-        val left: Double,
-        val bottom: Double,
-        val right: Double,
-        val top: Double) {
+    val left: Double,
+    val bottom: Double,
+    val right: Double,
+    val top: Double
+) {
 
     init {
         require(left <= right) { "left[$left] must less than or eq right[$right] " }
