@@ -1,9 +1,10 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.5.10"
     id "com.palantir.git-version" version "0.12.3"
+    id "maven-publish"
 }
 
-group 'me.piruin'
+group = 'com.github.piruin'
 version = gitVersion()
 
 allprojects {
