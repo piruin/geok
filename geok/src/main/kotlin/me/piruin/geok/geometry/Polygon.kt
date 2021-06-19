@@ -30,6 +30,7 @@ import me.piruin.geok.area
 import me.piruin.geok.centroid
 import me.piruin.geok.close
 import me.piruin.geok.distance
+import me.piruin.geok.intersectionWith
 import me.piruin.geok.isClosed
 import me.piruin.geok.open
 import me.piruin.geok.safeSortedClockwise
@@ -55,12 +56,21 @@ data class Polygon(
     val isClosed: Boolean
         get() = boundary.isClosed
 
+    /**
+     * @return Determines whether the specified coordinates are inside this Polygon.
+     */
     fun contains(coordinate: LatLng): Boolean {
-        if (boundary.contains(coordinate)) {
+        if (boundary.contains(coordinate) || holes.any { it.contains(coordinate) } ||
+            coordinate.insideOf(boundary) || holes.any { coordinate.insideOf(it) }
+        )
             return true
-        }
-        return holes.any { it.contains(coordinate) }
+        return false
     }
+
+    /**
+     * @see contains
+     */
+    fun contains(point: Point): Boolean = contains(point.coordinates)
 
     fun addHole(vararg holes: List<LatLng>) {
         val holesList = holes.map { it.safeSortedClockwise() }
@@ -85,7 +95,10 @@ data class Polygon(
             return bound.centroid
         }
 
-    fun cover(point: Point) = cover(point.coordinates)
-
-    fun cover(point: LatLng): Boolean = point insideOf boundary
+    fun intersectionWith(other: Polygon): Polygon? {
+        val intersection = boundary.intersectionWith(other.boundary)
+        if (intersection.size < 3)
+            return null
+        return Polygon(intersection)
+    }
 }

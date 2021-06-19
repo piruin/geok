@@ -50,10 +50,10 @@ class LatLngTest {
     @Test
     fun sortedClockwise() {
         val cw = listOf(
-            LatLng(1.0 to 0.0),
-            LatLng(1.0 to 1.0),
-            LatLng(2.0 to 1.0),
-            LatLng(2.0 to 0.0)
+            LatLng(1 to 0),
+            LatLng(1 to 1),
+            LatLng(2 to 1),
+            LatLng(2 to 0)
         )
 
         val ccw = listOf(
@@ -102,7 +102,7 @@ class LatLngTest {
         val line1 = LatLng(0.0 to 2.0) to LatLng(2.0 to 0.0)
         val line2 = LatLng(0.0 to 0.0) to LatLng(2.0 to 2.0)
 
-        line1 intersectionPointWith line2 `should be equal to` LatLng(1.0 to 1.0)
+        line1 intersectionWith line2 `should be equal to` LatLng(1.0 to 1.0)
     }
 
     @Test
@@ -110,7 +110,7 @@ class LatLngTest {
         val line1 = LatLng(0.0 to 2.0) to LatLng(2.0 to 2.0)
         val line2 = LatLng(0.0 to 0.0) to LatLng(2.0 to 0.0)
 
-        line1 intersectionPointWith line2 `should be` null
+        line1 intersectionWith line2 `should be` null
     }
 
     @Test
@@ -149,7 +149,7 @@ class LatLngTest {
         val line = LatLng(-1.0 to -1.0) to LatLng(3.0 to 3.0)
         val expected = listOf(LatLng(0.0 to 0.0), LatLng(2.0 to 2.0))
 
-        line intersectionPointsWith boundary `should be equal to` expected
+        line intersectionWith boundary `should be equal to` expected
     }
 
     @Test
@@ -177,26 +177,26 @@ class LatLngTest {
     @Test
     fun intersectionPointPolygon() {
         val polygon1 = listOf(
-            LatLng(0.0 to 1.0),
-            LatLng(1.0 to 2.0),
-            LatLng(3.0 to 2.0),
-            LatLng(4.0 to 1.0),
-            LatLng(3.0 to 0.0),
-            LatLng(1.0 to 0.0),
+            LatLng(0 to 1),
+            LatLng(1 to 2),
+            LatLng(3 to 2),
+            LatLng(4 to 1),
+            LatLng(3 to 0),
+            LatLng(1 to 0),
         )
 
         val polygon2 = listOf(
-            LatLng(2.0 to 1.0),
-            LatLng(3.0 to 1.9),
-            LatLng(3.9 to 1.0),
-            LatLng(3.0 to 0.1)
+            LatLng(2 to 1),
+            LatLng(3 to 1.9),
+            LatLng(3.9 to 1),
+            LatLng(3 to 0.1)
         )
 
-        polygon1 intersectionPointsWith polygon2 `should be equal to` listOf(
-            LatLng(2.0 to 1.0),
-            LatLng(3.0 to 1.9),
-            LatLng(3.9 to 1.0),
-            LatLng(3.0 to 0.1),
+        polygon1 intersectionWith polygon2 `should be equal to` listOf(
+            LatLng(2 to 1),
+            LatLng(3 to 1.9),
+            LatLng(3.9 to 1),
+            LatLng(3 to 0.1),
         )
     }
 
@@ -218,7 +218,7 @@ class LatLngTest {
             LatLng(3.2 to 1.0)
         )
 
-        polygon1 intersectionPointsWith polygon2 `should be equal to` listOf(
+        polygon1 intersectionWith polygon2 `should be equal to` listOf(
             LatLng(1.2 to 1.0),
             LatLng(1.0 to 2.0),
             LatLng(3.0 to 2.0),

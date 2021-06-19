@@ -32,7 +32,11 @@ import kotlin.math.tan
 
 data class LatLng(val latitude: Double, val longitude: Double, val elevation: Double? = null) {
 
-    constructor(xyPair: Pair<Double, Double>) : this(xyPair.second, xyPair.first)
+    val x get() = longitude
+    val y get() = latitude
+    val z get() = elevation
+
+    constructor(xyPair: Pair<Number, Number>) : this(xyPair.second.toDouble(), xyPair.first.toDouble())
 
     init {
         assert(latitude between (-90.0 and 90.0)) { "latitude should between -90.0 and 90 [$latitude]" }
@@ -112,7 +116,8 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
     }
 
     /**
-     * from https://www.swtestacademy.com/intersection-convex-polygons-algorithm/ `IsPointInsidePoly()`
+     * @see <a href="https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html">PNPOLY - Point Inclusion in Polygon Test</a>
+     * @return Determines whether this LatLng are inside of given Polygon.
      */
     infix fun insideOf(polygon: List<LatLng>): Boolean {
         if (polygon.contains(this)) // Point of Polygon consider to be inside
@@ -132,7 +137,3 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         return result
     }
 }
-
-val LatLng.x get() = longitude
-val LatLng.y get() = latitude
-val LatLng.z get() = elevation

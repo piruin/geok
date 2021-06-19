@@ -26,8 +26,6 @@ package me.piruin.geok
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
-import kotlin.math.max
-import kotlin.math.min
 
 fun Collection<LatLng>.close(): List<LatLng> {
     check(!isEmpty())
@@ -95,23 +93,9 @@ val Iterable<LatLng>.centroid: LatLng
         return LatLng(lat, lng)
     }
 
-fun Collection<LatLng>.safeSortedClockwise(): List<LatLng> {
-    val list = if (!isClosed) this else open()
-    return (list.sortedClockwise()).close()
-}
-
-fun Iterable<LatLng>.sortedClockwise(): List<LatLng> {
-    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call `open()` before" }
-    val center = centroid
-    return this.sortedBy { atan2(it.longitude - center.longitude, it.latitude - center.latitude) }
-}
-
-fun Iterable<LatLng>.sortedCounterClockwise(): List<LatLng> {
-    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call `open()` before" }
-    val center = centroid
-    return this.sortedBy { atan2(it.latitude - center.latitude, it.longitude - center.longitude) }
-}
-
+/**
+ * @return area of polygon in square meter
+ */
 fun Collection<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Double {
     if (size < 3) {
         return 0.0
@@ -141,63 +125,28 @@ fun Collection<LatLng>.area(earthRadius: Double = Datum.WSG48.equatorialRad): Do
     return abs(triangleArea.sum())
 }
 
-/**
- * from https://www.swtestacademy.com/intersection-convex-polygons-algorithm/ `GetIntersectionPoint()`
- */
-infix fun Pair<LatLng, LatLng>.intersectionPointWith(line2: Pair<LatLng, LatLng>): LatLng? {
-    val line1 = this
-    val a1 = line1.second.y - line1.first.y
-    val b1 = line1.first.x - line1.second.x
-    val c1 = a1 * line1.first.x + b1 * line1.first.y
-
-    val a2 = line2.second.y - line2.first.y
-    val b2 = line2.first.x - line2.second.x
-    val c2 = a2 * line2.first.x + b2 * line2.first.y
-
-    val det = a1 * b2 - a2 * b1
-    if (det.equalsTo(0.0)) {
-        return null
-    }
-    val x = (b1 * c1 - b1 * c2) / det
-    val y = (a1 * c2 - a2 * c1) / det
-    val online1 = (min(line1.first.x, line1.second.x) < x || min(line1.first.x, line1.second.x).equalsTo(x)) &&
-        (max(line1.first.x, line1.second.x) > x || max(line1.first.x, line1.second.x).equalsTo(x)) &&
-        (min(line1.first.y, line1.second.y) < y || min(line1.first.y, line1.second.y).equalsTo(y)) &&
-        (max(line1.first.y, line1.second.y) > y || max(line1.first.y, line1.second.y).equalsTo(y))
-    val online2 = (min(line2.first.x, line2.second.x) < x || min(line2.first.x, line2.second.x).equalsTo(x)) &&
-        (max(line2.first.x, line2.second.x) > x || max(line2.first.x, line2.second.x).equalsTo(x)) &&
-        (min(line2.first.y, line2.second.y) < y || min(line2.first.y, line2.second.y).equalsTo(y)) &&
-        (max(line2.first.y, line2.second.y) > y || max(line2.first.y, line2.second.y).equalsTo(y))
-    return if (online1 && online2) LatLng(x to y) else null
+fun Collection<LatLng>.safeSortedClockwise(): List<LatLng> {
+    val list = if (!isClosed) this else open()
+    return (list.sortedClockwise()).close()
 }
 
-infix fun Pair<LatLng, LatLng>.intersectionPointsWith(polygon: List<LatLng>): List<LatLng> {
-    val result = mutableListOf<LatLng>()
-    polygon.forEachLine {
-        this.intersectionPointWith(it)?.let { point -> result.addUnique(point) }
-    }
-    return result
+fun Iterable<LatLng>.sortedClockwise(): List<LatLng> {
+    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call `open()` before" }
+    val center = centroid
+    return this.sortedBy { atan2(it.longitude - center.longitude, it.latitude - center.latitude) }
 }
 
-fun Collection<LatLng>.forEachLine(action: (Pair<LatLng, LatLng>) -> Unit) {
+fun Iterable<LatLng>.sortedCounterClockwise(): List<LatLng> {
+    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call `open()` before" }
+    val center = centroid
+    return this.sortedBy { atan2(it.latitude - center.latitude, it.longitude - center.longitude) }
+}
+
+inline fun Collection<LatLng>.forEachLine(action: (Pair<LatLng, LatLng>) -> Unit) {
     check(size > 1)
     forEachIndexed { index, latLng ->
         elementAtOrNull(index + 1)?.let {
             if (it != latLng) action(latLng to it)
         }
     }
-}
-
-infix fun Collection<LatLng>.intersectionPointsWith(other: List<LatLng>): List<LatLng> {
-    val polygon1 = this.close()
-    val polygon2 = other.close()
-    val clippedPoint = mutableListOf<LatLng>()
-
-    polygon1.forEach { if (it insideOf polygon2) clippedPoint.addUnique(it) }
-    polygon2.forEach { if (it insideOf polygon1) clippedPoint.addUnique(it) }
-    polygon1.forEachLine { line -> clippedPoint.addUnique(line intersectionPointsWith polygon2) }
-
-    if (clippedPoint.isEmpty())
-        return clippedPoint
-    return clippedPoint.sortedClockwise()
 }

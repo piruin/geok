@@ -48,6 +48,7 @@ class PolygonTest {
     fun contain() {
         polygon.contains(LatLng(16.4268129901041, 102.8380009059)) `should be` true
         polygon.contains(LatLng(16.4268502721458, 102.8378330329)) `should be` true
+        polygon.contains(Point(LatLng(15.0001, 101.1234))) `should be` false
     }
 
     @Test
@@ -103,6 +104,7 @@ class PolygonTest {
             98.3432525117 to 7.82002427060229
         )
         shape.centroid.toUtm() `should be equal to` Utm(47, 'N', 427636.0, 864394.9)
+        shape.contains(shape.centroid) `should be` true
     }
 
     @Test
@@ -120,11 +122,5 @@ class PolygonTest {
         polygon.isClosed `should be` true
         polygon.boundary `should not be equal to` boundary
         polygon.perimeter `should not be equal to` boundary.distance
-    }
-
-    @Test
-    fun cover() {
-        polygon.cover(polygon.centroid) `should be` true
-        polygon.cover(Point(101.1234 to 15.0001)) `should be` false
     }
 }
