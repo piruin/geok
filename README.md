@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     def geokVersion = '1.+' //see download badge or latest released tag
-    
+
     implementation "com.github.piruin:geok:$geokVersion"
     implementation "com.github.piruin.geok-gson:$geokVersion" //for support geojson with gson library
 }
