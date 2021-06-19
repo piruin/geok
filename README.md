@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    def geokVersion = '1.+' //see download badge or latest released tag
+    def geokVersion = '1.1.0' //see download badge or latest released tag
 
     implementation "com.github.piruin:geok:$geokVersion"
     implementation "com.github.piruin.geok-gson:$geokVersion" //for support geojson with gson library
@@ -45,6 +45,8 @@ List of Supported Geometry type
 ```kotlin
   val point = Point(100.0 to 0.0)
 ```
+- `distanceTo(latlng: Point)` -- calculate distance between 2 Point in meter
+- `insideOf(polygon: Polygon)` -- Determines whether this LatLng are inside of given Polygon.
 
 #### LineString
 
@@ -55,7 +57,7 @@ List of Supported Geometry type
   )
 ```
 LineString come with
-- `length` -- calculate length of LineString in meter
+- `distance` -- calculate distance of LineString in meter
 
 #### Polygon
 
@@ -74,7 +76,8 @@ Polygon come with utilities such as
 - `area` -- calculate area of polygon in sq.meter
 - `centroid` -- calculate centroid point of Polygon
 - `perimeter` -- calculate perimeter of Polygon's boundary in meter
-- `contains(latlng: LatLng)`` -- check whether latlng is in bound of polygon
+- `contains(latlng: LatLng)` -- check whether latlng is in bound of polygon
+- `intersactionWith(other: Polygon)` -- get intersection with other polygon
 
 > Object creation support both LatLng styles and pair of X, Y value
 
@@ -115,7 +118,7 @@ And you may pack many `Feature` together with `FeatureCollection`
 
 ## License
 
-    Copyright (c) 2018 Piruin Panichphol
+    Copyright (c) 2018-2021 Piruin Panichphol
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
