@@ -1,7 +1,7 @@
 # GEOK
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Build Status](https://travis-ci.org/piruin/geok.svg?branch=master)](https://travis-ci.org/piruin/geok)
+[![build](https://github.com/piruin/geok/actions/workflows/build.yml/badge.svg)](https://github.com/piruin/geok/actions/workflows/build.yml)
 [![Download](https://jitpack.io/v/piruin/geok.svg)](https://jitpack.io/#piruin/geok)
 
 Small geometry library for Java and Kotlin. Contains useful basic utilities that require on most application.
