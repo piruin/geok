@@ -30,7 +30,7 @@ import me.piruin.geok.area
 import me.piruin.geok.centroid
 import me.piruin.geok.close
 import me.piruin.geok.distance
-import me.piruin.geok.intersectionWith
+import me.piruin.geok.intersectionsWith
 import me.piruin.geok.isClosed
 import me.piruin.geok.open
 import me.piruin.geok.safeSortedClockwise
@@ -42,7 +42,7 @@ data class Polygon(
 
     constructor(boundary: List<LatLng>, vararg holes: List<LatLng>) : this(boundary, holes.toList())
     constructor(vararg latlngs: LatLng) : this(latlngs.toList())
-    constructor(vararg xyPair: Pair<Double, Double>) : this(xyPair.map { LatLng(it.second, it.first) }.toList())
+    constructor(vararg xyPair: Pair<Double, Double>) : this(xyPair.map { LatLng(it.second, it.first) })
 
     override val type: String = javaClass.simpleName
     val bbox: BBox = BBox.from(boundary)
@@ -108,7 +108,7 @@ data class Polygon(
      * @return Intersection polygon with this polygon
      */
     fun intersectionWith(other: Polygon): Polygon? {
-        val result = boundary intersectionWith other.boundary
+        val result = boundary intersectionsWith other.boundary
         if (result.size < 3)
             return null
         return Polygon(result)

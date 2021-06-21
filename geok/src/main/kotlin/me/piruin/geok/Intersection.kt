@@ -23,49 +23,246 @@
 
 package me.piruin.geok
 
-import kotlin.math.max
+import kotlin.math.abs
 import kotlin.math.min
 
 /**
- *
- * @see <a href="https://www.swtestacademy.com/intersection-convex-polygons-algorithm/">Intersection Convex Polygons Algorithm<a>
- * @return Intersection point of 2 line, `null` when lines dose not cross each other.
+ * touches the other, they do intersect.
+ * @see <a href="https://martin-thoma.com/how-to-check-if-two-line-segments-intersect">How to check if two line segments intersect</a>
+ * @return value of the cross product
  */
-infix fun Pair<LatLng, LatLng>.intersectionWith(line2: Pair<LatLng, LatLng>): LatLng? {
-    val line1 = this
-    val a1 = line1.second.y - line1.first.y
-    val b1 = line1.first.x - line1.second.x
-    val c1 = a1 * line1.first.x + b1 * line1.first.y
+fun Pair<LatLng, LatLng>.crossProduct(): Double {
+    return first.x * second.y - second.x * first.y
+}
 
-    val a2 = line2.second.y - line2.first.y
-    val b2 = line2.first.x - line2.second.x
-    val c2 = a2 * line2.first.x + b2 * line2.first.y
+/**
+ * Check if bounding boxes do intersect. If one bounding box
+ * touches the other, they do intersect.
+ * @see <a href="https://martin-thoma.com/how-to-check-if-two-line-segments-intersect">How to check if two line segments intersect</a>
+ * @return <code>true</code> if they intersect,
+ *         <code>false</code> otherwise.
+ */
+infix fun Pair<LatLng, LatLng>.bboxIntersectWith(other: Pair<LatLng, LatLng>): Boolean {
+    return BBox.from(this).intersectWith(BBox.from(other))
+}
 
-    val det = a1 * b2 - a2 * b1
-    if (det.equalsTo(0.0)) {
-        return null
+/**
+ * Checks if a Point is on a given line
+ * @see <a href="https://martin-thoma.com/how-to-check-if-two-line-segments-intersect">How to check if two line segments intersect</a>
+ * @return <code>true</code> if point is on line,
+ *         otherwise <code>false</code>
+ */
+infix fun LatLng.ifOn(line: Pair<LatLng, LatLng>): Boolean {
+    // Move the image, so that line.first is on (0|0)
+    val tmpLine = LatLng(0 to 0) to LatLng(line.second.x - line.first.x to line.second.y - line.first.y)
+    val tmpPoint = LatLng(this.x - line.first.x, this.y - line.first.y)
+    val r = (tmpLine.second to tmpPoint).crossProduct()
+    return abs(r) < 0.00001
+}
+
+/**
+ * Checks if a point is right of a line. If the point is on the
+ * line, it is not right of the line.
+ * @see <a href="https://martin-thoma.com/how-to-check-if-two-line-segments-intersect">How to check if two line segments intersect</a>
+ * @return <code>true</code> if the point is right of the line,
+ *         <code>false</code> otherwise
+ */
+infix fun LatLng.isRightOf(line: Pair<LatLng, LatLng>): Boolean {
+    // Move the image, so that line.first is on (0|0)
+    val tmpLine = LatLng(0 to 0) to LatLng(line.second.x - line.first.x to line.second.y - line.first.y)
+    val tmpPoint = LatLng(this.x - line.first.x, this.y - line.first.y)
+    return (tmpLine.second to tmpPoint).crossProduct() < 0.0
+}
+
+/**
+ * Check if line segment first touches or crosses the line that is
+ * defined by line segment second.
+ * @see <a href="https://martin-thoma.com/how-to-check-if-two-line-segments-intersect">How to check if two line segments intersect</a>
+ * @return <code>true</code> if line segment first touches or crosses line second,
+ *         <code>false</code> otherwise.
+ */
+infix fun Pair<LatLng, LatLng>.segmentTouchesOrCrosses(other: Pair<LatLng, LatLng>): Boolean {
+    val thisLine = this
+    return other.first ifOn thisLine ||
+        other.second ifOn thisLine ||
+        (other.first isRightOf thisLine xor other.second.isRightOf(this))
+}
+
+/**
+ * Check if line segments intersect
+ * @return <code>true</code> if lines do intersect,
+ *         <code>false</code> otherwise
+ */
+infix fun Pair<LatLng, LatLng>.isIntersectWith(other: Pair<LatLng, LatLng>): Boolean {
+    return this bboxIntersectWith other &&
+        this segmentTouchesOrCrosses other &&
+        other segmentTouchesOrCrosses this
+}
+
+/**
+ * Get where that given 2 lines will be intersect with each other if both line have infinite length.
+ * Use <code>segmentIntersectionWith</code> for get intersection of finite line.
+ *
+ * @see segmentIntersectionWith
+ * @return the intersection point of 2 line, it might be a line or a single point.
+ * If it is a line, then x1 = x2 and y1 = y2.
+ */
+infix fun Pair<LatLng, LatLng>.intersectionWith(other: Pair<LatLng, LatLng>): Pair<LatLng, LatLng> {
+    var a = this
+    var b = other
+    val x1: Double
+    val y1: Double
+    val x2: Double
+    val y2: Double
+
+    if (a.first.x == a.second.x) {
+        // Case (A)
+        // As a is a perfect vertical line, it cannot be represented
+        // nicely in a mathematical way. But we directly know that
+        //
+        x1 = a.first.x
+        x2 = x1
+        if (b.first.x == b.second.x) {
+            // Case (AA): all x are the same!
+            // Normalize
+            if (a.first.y > a.second.y) {
+                a = a.swap()
+            }
+            if (b.first.y > b.second.y) {
+                b = b.swap()
+            }
+            if (a.first.y > b.first.y) {
+                a = b.also { b = a }
+            }
+
+            // Now we know that the y-value of a.first is the
+            // lowest of all 4 y values
+            // this means, we are either in case (AAA):
+            //   a: x--------------x
+            //   b:    x---------------x
+            // or in case (AAB)
+            //   a: x--------------x
+            //   b:    x-------x
+            // in both cases:
+            // get the relavant y intervall
+            y1 = b.first.y
+            y2 = Math.min(a.second.y, b.second.y)
+        } else {
+            // Case (AB)
+            // we can mathematically represent line b as
+            //     y = m*x + t <=> t = y - m*x
+            // m = (y1-y2)/(x1-x2)
+            var m = 0.0
+            var t = 0.0
+            m = (b.first.y - b.second.y) /
+                (b.first.x - b.second.x)
+            t = b.first.y - m * b.first.x
+            y1 = m * x1 + t
+            y2 = y1
+        }
+    } else if (b.first.x == b.second.x) {
+        // Case (B)
+        // essentially the same as Case (AB), but with
+        // a and b switched
+        x1 = b.first.x
+        x2 = x1
+
+        var tmp = a
+        a = b
+        b = tmp
+
+        var m = 0.0
+        var t = 0.0
+        m = (b.first.y - b.second.y) /
+            (b.first.x - b.second.x)
+        t = b.first.y - m * b.first.x
+        y1 = m * x1 + t
+        y2 = y1
+    } else {
+        // Case (C)
+        // Both lines can be represented mathematically
+        var ma = 0.0
+        var mb = 0.0
+        var ta = 0.0
+        var tb = 0.0
+        ma = (a.first.y - a.second.y) /
+            (a.first.x - a.second.x)
+        mb = (b.first.y - b.second.y) /
+            (b.first.x - b.second.x)
+        ta = a.first.y - ma * a.first.x
+        tb = b.first.y - mb * b.first.x
+        if (ma == mb) {
+            // Case (CA)
+            // both lines are in parallel. As we know that they
+            // intersect, the intersection could be a line
+            // when we rotated this, it would be the same situation
+            // as in case (AA)
+
+            // Normalize
+            if (a.first.x > a.second.x) {
+                a.swap()
+            }
+            if (b.first.x > b.second.x) {
+                b.swap()
+            }
+            if (a.first.x > b.first.x) {
+                a = b.also { b = a }
+            }
+
+            // get the relavant x intervall
+            x1 = b.first.x
+            x2 = min(a.second.x, b.second.x)
+            y1 = ma * x1 + ta
+            y2 = ma * x2 + ta
+        } else {
+            // Case (CB): only a point as intersection:
+            // y = ma*x+ta
+            // y = mb*x+tb
+            // ma*x + ta = mb*x + tb
+            // (ma-mb)*x = tb - ta
+            // x = (tb - ta)/(ma-mb)
+            x1 = (tb - ta) / (ma - mb)
+            y1 = ma * x1 + ta
+            x2 = x1
+            y2 = y1
+        }
     }
-    val x = (b1 * c1 - b1 * c2) / det
-    val y = (a1 * c2 - a2 * c1) / det
-    val online1 = (min(line1.first.x, line1.second.x) < x || min(line1.first.x, line1.second.x).equalsTo(x)) &&
-        (max(line1.first.x, line1.second.x) > x || max(line1.first.x, line1.second.x).equalsTo(x)) &&
-        (min(line1.first.y, line1.second.y) < y || min(line1.first.y, line1.second.y).equalsTo(y)) &&
-        (max(line1.first.y, line1.second.y) > y || max(line1.first.y, line1.second.y).equalsTo(y))
-    val online2 = (min(line2.first.x, line2.second.x) < x || min(line2.first.x, line2.second.x).equalsTo(x)) &&
-        (max(line2.first.x, line2.second.x) > x || max(line2.first.x, line2.second.x).equalsTo(x)) &&
-        (min(line2.first.y, line2.second.y) < y || min(line2.first.y, line2.second.y).equalsTo(y)) &&
-        (max(line2.first.y, line2.second.y) > y || max(line2.first.y, line2.second.y).equalsTo(y))
-    return if (online1 && online2) LatLng(x to y) else null
+    return LatLng(x1 to y1) to LatLng(x2 to y2)
+}
+
+val Pair<LatLng, LatLng>.isVerticalLine: Boolean get() = first.x == second.x
+val Pair<LatLng, LatLng>.isHorizontalLine: Boolean get() = first.y == second.y
+
+/**
+ * @return the intersection point of 2 line, it might be a line or a single point.
+ * If it is a line, then x1 = x2 and y1 = y2.
+ */
+infix fun Pair<LatLng, LatLng>.segmentIntersectionWith(other: Pair<LatLng, LatLng>): Pair<LatLng, LatLng>? {
+    if (this.isHorizontalLine || this.isVerticalLine ||
+        other.isHorizontalLine || other.isVerticalLine
+    ) {
+        // case of line of perfect vertical & perfect horizontal
+        val result = this.intersectionWith(other)
+        if (result.bboxIntersectWith(this) && result.bboxIntersectWith(other))
+            return result
+    }
+    if (!this.isIntersectWith(other))
+        return null
+    val result = intersectionWith(other)
+    // Make sure result is on both lines, this require for some case!!
+    if (result.bboxIntersectWith(this) && result.bboxIntersectWith(other))
+        return result
+    return null
 }
 
 /**
  * @see <a href="https://www.swtestacademy.com/intersection-convex-polygons-algorithm/">Intersection Convex Polygons Algorithm<a>
  * @return List of intersection points of this Line and Polygon
  */
-infix fun Pair<LatLng, LatLng>.intersectionWith(polygon: List<LatLng>): List<LatLng> {
+infix fun Pair<LatLng, LatLng>.intersectionsWith(polygon: Collection<LatLng>): List<LatLng> {
     val result = mutableListOf<LatLng>()
     polygon.forEachLine {
-        this.intersectionWith(it)?.let { point -> result.addUnique(point) }
+        this.segmentIntersectionWith(it)?.let { point -> result.addUnique(point.toList()) }
     }
     return result
 }
@@ -74,14 +271,17 @@ infix fun Pair<LatLng, LatLng>.intersectionWith(polygon: List<LatLng>): List<Lat
  * @see <a href="https://www.swtestacademy.com/intersection-convex-polygons-algorithm/">Intersection Convex Polygons Algorithm<a>
  * @return Intersection polygon of this and another polygon
  */
-infix fun Collection<LatLng>.intersectionWith(other: List<LatLng>): List<LatLng> {
+infix fun Collection<LatLng>.intersectionsWith(other: Collection<LatLng>): List<LatLng> {
     val polygon1 = this.close()
     val polygon2 = other.close()
     val clippedPoint = mutableListOf<LatLng>()
 
     polygon1.forEach { if (it insideOf polygon2) clippedPoint.addUnique(it) }
     polygon2.forEach { if (it insideOf polygon1) clippedPoint.addUnique(it) }
-    polygon1.forEachLine { line -> clippedPoint.addUnique(line intersectionWith polygon2) }
+    polygon1.forEachLine { line -> clippedPoint.addUnique(line intersectionsWith polygon2) }
+
+    // FIXME sometimes make intersection point more than it should be. but still better than less!
+    polygon2.forEachLine { line -> clippedPoint.addUnique(line intersectionsWith polygon1) }
 
     if (clippedPoint.isEmpty())
         return clippedPoint

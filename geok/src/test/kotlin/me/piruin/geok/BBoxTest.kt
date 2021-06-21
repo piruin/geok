@@ -2,6 +2,7 @@ package me.piruin.geok
 
 import me.piruin.geok.geometry.Polygon
 import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should be`
 import org.junit.Test
 
 class BBoxTest {
@@ -40,5 +41,16 @@ class BBoxTest {
             right `should be equal to` 10.0
             top `should be equal to` 20.0
         }
+    }
+
+    @Test
+    fun contains() {
+        val bbox = BBox.from(LatLng(-20.0 to -10.0) to LatLng(20.0 to 10.0))
+
+        bbox.contains(0 to 0) `should be` true
+        bbox.contains(-20.0 to -10.0) `should be` true
+        bbox.contains(20.0000000000 to 10.000000000) `should be` true
+
+        bbox.contains(20.0000000009 to 9.9987871245) `should be` false
     }
 }

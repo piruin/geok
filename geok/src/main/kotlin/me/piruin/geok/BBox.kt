@@ -46,6 +46,23 @@ data class BBox(
         }
 
         fun from(vararg latLngs: LatLng) = from(latLngs.toList())
+
+        fun from(line: Pair<LatLng, LatLng>) = from(listOf(line.first, line.second))
+    }
+
+    fun contains(coordinate: LatLng): Boolean {
+        val x = coordinate.x in left..right
+        val y = coordinate.y in bottom..top
+        return x && y
+    }
+
+    fun contains(coordinates: Pair<Number, Number>): Boolean = contains(LatLng(coordinates.first to coordinates.second))
+
+    infix fun intersectWith(other: BBox): Boolean {
+        return left <= other.right &&
+            right >= other.left &&
+            bottom <= other.top &&
+            top >= other.bottom
     }
 }
 

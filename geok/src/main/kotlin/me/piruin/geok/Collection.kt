@@ -25,3 +25,5 @@ package me.piruin.geok
 
 fun <T> MutableCollection<T>.addUnique(vararg elements: T) { addUnique(elements.toList()) }
 fun <T> MutableCollection<T>.addUnique(elements: List<T>) { elements.forEach { if (!contains(it)) add(it) } }
+
+fun <T> Pair<T, T>.swap(): Pair<T, T> = second to first
