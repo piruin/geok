@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Piruin Panichphol
+ * Copyright (c) 2021 Piruin Panichphol
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,33 +24,21 @@
 package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
-import me.piruin.geok.LatLng
 
-data class FeatureCollection<T>(val features: List<Feature<T>>) {
+interface GeometryCollection<T : Geometry> : Geometry, Collection<T> {
 
-    constructor(vararg features: Feature<T>) : this(features.toList())
+    val coordinates: List<T>
 
-    val type = "FeatureCollection"
-    val bbox: BBox?
+    val bbox: BBox
 
-    init {
-        require(features.isNotEmpty()) { "Feature Collection should not empty" }
+    override val size: Int
+        get() = coordinates.size
 
-        val coordinates = features.toLatLngs()
-        bbox = if (coordinates.size > 1) BBox.from(coordinates) else null
-    }
+    override fun contains(element: T): Boolean = coordinates.contains(element)
 
-    private fun List<Feature<T>>.toLatLngs(): List<LatLng> {
-        return flatMap {
-            when (it.geometry) {
-                is Point -> listOf(it.geometry.coordinates)
-                is LineString -> it.geometry.coordinates
-                is Polygon -> it.geometry.boundary
-                is MultiPoint -> it.geometry.coordinates.map { it.coordinates }
-                is MultiLineString -> it.geometry.coordinates.flatMap { it.coordinates }
-                is MultiPolygon -> it.geometry.coordinates.flatMap { it.boundary }
-                else -> throw IllegalStateException("Not support ${it.type}")
-            }
-        }
-    }
+    override fun containsAll(elements: Collection<T>): Boolean = coordinates.containsAll(elements)
+
+    override fun isEmpty(): Boolean = size == 0
+
+    override fun iterator(): Iterator<T> = coordinates.iterator()
 }

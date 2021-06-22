@@ -31,7 +31,7 @@ data class Feature<T>(val geometry: Geometry, var properties: T? = null) {
     val bbox: BBox? = when (geometry) {
         is LineString -> geometry.bbox
         is Polygon -> geometry.bbox
-        is MultiGeometry -> geometry.bbox
+        is GeometryCollection<*> -> geometry.bbox
         else -> null
     }
 }

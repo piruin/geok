@@ -24,7 +24,7 @@ class MultiPolygonSerializer : JsonSerializer<MultiPolygon>, JsonDeserializer<Mu
             add(
                 "coordinates",
                 JsonArray().apply {
-                    src.polygons.forEach {
+                    src.coordinates.forEach {
                         add(
                             JsonArray().apply {
                                 add(ctx.serialize(it.boundary))

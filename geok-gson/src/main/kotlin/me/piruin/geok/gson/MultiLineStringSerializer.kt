@@ -24,7 +24,7 @@ class MultiLineStringSerializer : JsonSerializer<MultiLineString>, JsonDeseriali
             add(
                 "coordinates",
                 JsonArray().apply {
-                    src.lines.forEach {
+                    src.coordinates.forEach {
                         add(ctx.serialize(it.coordinates))
                     }
                 }
