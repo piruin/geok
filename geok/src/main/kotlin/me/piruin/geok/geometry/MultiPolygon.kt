@@ -12,7 +12,7 @@ data class MultiPolygon(override val coordinates: List<Polygon>) : GeometryColle
     override val type: String = javaClass.simpleName
     override val bbox: BBox = BBox.combine(coordinates.map { it.bbox })
 
-    val polygon: List<Polygon>
+    val polygons: List<Polygon>
         get() = coordinates
 
     /**

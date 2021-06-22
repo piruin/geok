@@ -9,6 +9,6 @@ data class MultiLineString(override val coordinates: List<LineString>) : Geometr
     override val type: String = javaClass.simpleName
     override val bbox: BBox = BBox.from(coordinates.flatMap { it.coordinates })
 
-    val lineString: List<LineString>
+    val lineStrings: List<LineString>
         get() = coordinates
 }
