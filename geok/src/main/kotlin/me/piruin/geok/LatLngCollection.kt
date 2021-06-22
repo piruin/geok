@@ -39,7 +39,7 @@ fun Collection<LatLng>.open(): List<LatLng> {
     check(!isEmpty())
     if (!isClosed)
         return ArrayList(this)
-    return ArrayList(this).apply { remove(last()) }
+    return ArrayList(this).apply { removeAt(lastIndex) }
 }
 
 fun <T> Iterable<T>.count(): Int {

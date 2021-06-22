@@ -28,7 +28,7 @@ class DistanceTest {
 
         latlngs.distance `should be equal to` latlngs.length
         latlngs.distance `should be equal to` 72.07422073608048
-        latlngs.open().distance `should be equal to` 56.83458697665041
+        latlngs.open().distance `should be equal to` 49.03012467867233
         latlngs.close().distance `should be equal to` 72.07422073608048
     }
 }

@@ -23,6 +23,7 @@
 
 package me.piruin.geok
 
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.pow
@@ -139,4 +140,51 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
         }
         return result
     }
+
+    override fun hashCode(): Int {
+        var result = latitude.hashCode()
+        result = 31 * result + longitude.hashCode()
+        result = 31 * result + (elevation?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as LatLng
+
+        if (latitude `not equals to` other.latitude) return false
+        if (longitude `not equals to` other.longitude) return false
+        if ((elevation == null) and (other.elevation != null)) return false
+        elevation?.let { if (elevation `not equals to` other.elevation) return false }
+
+        return true
+    }
+
+    companion object {
+        /**
+         * Default precision value for comparing LatLng data,
+         * 6 decimal should be enough for more case (accurate at 11 cm).
+         *
+         * @see <a href="https://stackoverflow.com/a/22680065">Accuracy of digit</a>
+         * @see <a href="https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLng.toUrlValue>Google Maps API</a>
+         */
+        const val DEFAULT_PRECISION = 0.000001
+
+        var PRECISION = DEFAULT_PRECISION
+            set(value) {
+                if (value > 0.1)
+                    throw IllegalArgumentException("PRECISION value must not more than 0.1")
+                field = value
+            }
+    }
 }
+
+fun Double.equalsTo(other: Double?, delta: Double = LatLng.PRECISION): Boolean {
+    if (other == null)
+        return false
+    return abs(this - other) <= delta
+}
+
+infix fun Double.`not equals to`(other: Double?) = !this.equalsTo(other)

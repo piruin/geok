@@ -26,6 +26,8 @@ package me.piruin.geok
 import kotlin.math.abs
 import kotlin.math.min
 
+const val EPISILON = 0.00005
+
 /**
  * touches the other, they do intersect.
  * @see <a href="https://martin-thoma.com/how-to-check-if-two-line-segments-intersect">How to check if two line segments intersect</a>
@@ -57,7 +59,7 @@ infix fun LatLng.ifOn(line: Pair<LatLng, LatLng>): Boolean {
     val tmpLine = LatLng(0 to 0) to LatLng(line.second.x - line.first.x to line.second.y - line.first.y)
     val tmpPoint = LatLng(this.x - line.first.x, this.y - line.first.y)
     val r = (tmpLine.second to tmpPoint).crossProduct()
-    return abs(r) < 0.00001
+    return abs(r) < EPISILON
 }
 
 /**
@@ -280,7 +282,7 @@ infix fun Collection<LatLng>.intersectionsWith(other: Collection<LatLng>): List<
     polygon2.forEach { if (it insideOf polygon1) clippedPoint.addUnique(it) }
     polygon1.forEachLine { line -> clippedPoint.addUnique(line intersectionsWith polygon2) }
 
-    // FIXME sometimes make intersection point more than it should be. but still better than less!
+    // Require for some edge case, please don't worry about performance (dear Myself).
     polygon2.forEachLine { line -> clippedPoint.addUnique(line intersectionsWith polygon1) }
 
     if (clippedPoint.isEmpty())
