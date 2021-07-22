@@ -185,5 +185,3 @@ fun Double.equalsTo(other: Double?, delta: Double = LatLng.PRECISION): Boolean {
         return false
     return abs(this - other) <= delta
 }
-
-infix fun Double.`not equals to`(other: Double?) = !this.equalsTo(other)

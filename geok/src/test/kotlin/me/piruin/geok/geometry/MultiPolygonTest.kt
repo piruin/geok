@@ -1,8 +1,8 @@
 package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
-import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be`
+import me.piruin.geok.`should be equal to`
+import me.piruin.geok.`should be`
 import kotlin.test.Test
 
 class MultiPolygonTest {

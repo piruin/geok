@@ -24,9 +24,9 @@
 package me.piruin.geok.geometry
 
 import me.piruin.geok.*
-import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be`
-import org.amshove.kluent.`should not be equal to`
+import me.piruin.geok.`should be equal to`
+import me.piruin.geok.`should be`
+import me.piruin.geok.`should not be equal to`
 import kotlin.test.Test
 import kotlin.math.roundToInt
 

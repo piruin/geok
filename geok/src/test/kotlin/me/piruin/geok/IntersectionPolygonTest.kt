@@ -1,7 +1,6 @@
 package me.piruin.geok
 
 import me.piruin.geok.geometry.Polygon
-import org.amshove.kluent.`should be equal to`
 import kotlin.test.Test
 
 class IntersectionPolygonTest {

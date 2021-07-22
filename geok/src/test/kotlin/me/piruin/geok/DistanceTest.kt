@@ -1,6 +1,5 @@
 package me.piruin.geok
 
-import org.amshove.kluent.`should be equal to`
 import kotlin.test.Test
 
 class DistanceTest {

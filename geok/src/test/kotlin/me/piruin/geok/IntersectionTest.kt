@@ -1,7 +1,5 @@
 package me.piruin.geok
 
-import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be`
 import kotlin.math.abs
 import kotlin.random.Random
 import kotlin.test.Test

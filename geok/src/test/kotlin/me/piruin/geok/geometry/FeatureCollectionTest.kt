@@ -1,8 +1,8 @@
 package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
-import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should not be`
+import me.piruin.geok.`should be equal to`
+import me.piruin.geok.`should not be`
 import kotlin.test.*
 
 class FeatureCollectionTest {

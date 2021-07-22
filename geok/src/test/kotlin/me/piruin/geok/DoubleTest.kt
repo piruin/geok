@@ -23,7 +23,6 @@
 
 package me.piruin.geok
 
-import org.amshove.kluent.`should be equal to`
 import kotlin.math.floor
 import kotlin.math.roundToLong
 import kotlin.test.Test

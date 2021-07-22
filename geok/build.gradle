@@ -11,7 +11,6 @@ compileTestKotlin {
 
 dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test"
-    testImplementation "org.amshove.kluent:kluent:1.66"
 }
 
 apply from: "../ktlint.gradle"

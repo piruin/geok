@@ -23,8 +23,6 @@
 
 package me.piruin.geok
 
-import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be`
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
