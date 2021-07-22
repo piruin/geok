@@ -8,7 +8,7 @@ data class MultiPoint(override val coordinates: List<Point>) : GeometryCollectio
 
     constructor(vararg point: Point) : this(point.toList())
 
-    override val type: String = javaClass.simpleName
+    override val type: String = this::class.simpleName!!
     override val bbox: BBox = BBox.from(coordinates.map { it.coordinates })
 
     val points: List<Point>

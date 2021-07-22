@@ -44,7 +44,7 @@ data class Polygon(
     constructor(vararg latlngs: LatLng) : this(latlngs.toList())
     constructor(vararg xyPair: Pair<Double, Double>) : this(xyPair.map { LatLng(it.second, it.first) })
 
-    override val type: String = javaClass.simpleName
+    override val type: String = this::class.simpleName!!
     val bbox: BBox = BBox.from(boundary)
 
     init {

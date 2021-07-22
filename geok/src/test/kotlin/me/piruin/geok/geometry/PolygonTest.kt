@@ -23,14 +23,11 @@
 
 package me.piruin.geok.geometry
 
-import me.piruin.geok.BBox
-import me.piruin.geok.LatLng
-import me.piruin.geok.Utm
-import me.piruin.geok.distance
+import me.piruin.geok.*
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should not be equal to`
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.math.roundToInt
 
 class PolygonTest {

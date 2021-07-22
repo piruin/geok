@@ -23,11 +23,7 @@
 
 package me.piruin.geok
 
-import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.sqrt
-import kotlin.math.tan
+import kotlin.math.*
 
 data class Utm(val zone: Int, val hemisphere: Char, val easting: Double, val northing: Double) {
 
@@ -43,8 +39,8 @@ data class Utm(val zone: Int, val hemisphere: Char, val easting: Double, val nor
      *
      */
     fun toLatLng(datum: Datum = Datum.WSG84): LatLng {
-        assert(easting between (160000.0 and 840000.0)) { "Outside permissible range of easting values" }
-        assert(northing between (0.0 and 10000000.0)) { "Outside permissible range of northing values" }
+        require(easting between (160000.0 and 840000.0)) { "Outside permissible range of easting values" }
+        require(northing between (0.0 and 10000000.0)) { "Outside permissible range of northing values" }
 
         val a = datum.equatorialRad
 
@@ -87,7 +83,7 @@ data class Utm(val zone: Int, val hemisphere: Char, val easting: Double, val nor
             (61.0 + 90.0 * T1 + 298.0 * C1 + 45.0 * T1 * T1 - 252.0 * e0sq - 3.0 * C1 * C1) / 720.0
         phi = phi1 - (N1 * tan(phi1) / R1) * phi
 
-        val drad = Math.PI / 180.0
+        val drad = PI / 180.0
         val latd = phi / drad
 
         val lng = D * (

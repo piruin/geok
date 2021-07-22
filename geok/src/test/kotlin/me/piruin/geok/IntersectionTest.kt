@@ -1,9 +1,11 @@
 package me.piruin.geok
 
-import junit.framework.Assert.assertEquals
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
-import org.junit.Test
+import kotlin.math.abs
+import kotlin.random.Random
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class IntersectionTest {
 
@@ -15,15 +17,15 @@ class IntersectionTest {
         l.add(LatLng(0 to 0))
         l.add(LatLng(1 to 1))
         for (i in 0..49) {
-            l.add(LatLng(Math.random() to Math.random()))
+            l.add(LatLng(Random.nextDouble() to Random.nextDouble()))
         }
 
         for (p1 in l) {
             for (p2 in l) {
                 val r1: Double = (p1 to p2).crossProduct()
                 val r2: Double = (p2 to p1).crossProduct()
-                val isAntisymmetric: Boolean = Math.abs(r1 + r2) < EPSILON
-                assertEquals("[ $p1, $p2]", true, isAntisymmetric)
+                val isAntisymmetric: Boolean = abs(r1 + r2) < EPSILON
+                assertEquals(true, isAntisymmetric, "[ $p1, $p2]")
             }
         }
     }

@@ -9,7 +9,7 @@ data class MultiPolygon(override val coordinates: List<Polygon>) : GeometryColle
 
     constructor(vararg polygons: Polygon) : this(polygons.toList())
 
-    override val type: String = javaClass.simpleName
+    override val type: String = this::class.simpleName!!
     override val bbox: BBox = BBox.combine(coordinates.map { it.bbox })
 
     val polygons: List<Polygon>

@@ -10,7 +10,7 @@ compileTestKotlin {
 }
 
 dependencies {
-    testImplementation "junit:junit:4.12"
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
     testImplementation "org.amshove.kluent:kluent:1.66"
 }
 

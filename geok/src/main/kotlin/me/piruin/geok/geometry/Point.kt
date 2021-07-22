@@ -7,7 +7,7 @@ data class Point(val coordinates: LatLng) : Geometry {
     constructor(latitude: Double, longitude: Double) : this(LatLng(latitude, longitude))
     constructor(pair: Pair<Double, Double>) : this(LatLng(pair.second, pair.first))
 
-    override val type: String = javaClass.simpleName
+    override val type: String = this::class.simpleName!!
 
     /**
      * return Determines whether this Point are inside of given Polygon.

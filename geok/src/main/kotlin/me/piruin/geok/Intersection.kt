@@ -148,7 +148,7 @@ infix fun Pair<LatLng, LatLng>.intersectionWith(other: Pair<LatLng, LatLng>): Pa
             // in both cases:
             // get the relavant y intervall
             y1 = b.first.y
-            y2 = Math.min(a.second.y, b.second.y)
+            y2 = min(a.second.y, b.second.y)
         } else {
             // Case (AB)
             // we can mathematically represent line b as

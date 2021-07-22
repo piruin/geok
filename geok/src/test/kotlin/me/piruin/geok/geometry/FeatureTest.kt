@@ -25,7 +25,7 @@ package me.piruin.geok.geometry
 
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should not be`
-import org.junit.Test
+import kotlin.test.Test
 
 class FeatureTest {
 

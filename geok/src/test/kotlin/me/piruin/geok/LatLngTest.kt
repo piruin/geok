@@ -25,18 +25,23 @@ package me.piruin.geok
 
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertFailsWith
 
 class LatLngTest {
 
-    @Test(expected = AssertionError::class)
+    @Test
     fun invalidLat() {
-        LatLng(-90.1, 0.0)
+        assertFailsWith<IllegalArgumentException> {
+            LatLng(-90.1, 0.0)
+        }
     }
 
-    @Test(expected = AssertionError::class)
+    @Test
     fun invalidLng() {
-        LatLng(0.0, -180.1)
+        assertFailsWith<IllegalArgumentException> {
+            LatLng(0.0, -180.1)
+        }
     }
 
     @Test

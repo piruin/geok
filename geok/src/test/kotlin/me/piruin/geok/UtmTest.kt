@@ -24,7 +24,7 @@
 package me.piruin.geok
 
 import org.amshove.kluent.`should be equal to`
-import org.junit.Test
+import kotlin.test.Test
 
 class UtmTest {
 

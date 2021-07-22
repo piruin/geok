@@ -23,6 +23,7 @@
 
 package me.piruin.geok
 
+import kotlin.math.PI
 import kotlin.math.pow
 import kotlin.math.roundToLong
 
@@ -32,7 +33,7 @@ infix fun Double.between(values: Pair<Double, Double>): Boolean {
     return values.first <= this && this <= values.second
 }
 
-fun Double.toRadians() = Math.toRadians(this)
+fun Double.toRadians() = this / 180.0 * PI
 
 val Double.fractional
     get() = this - this.toInt()

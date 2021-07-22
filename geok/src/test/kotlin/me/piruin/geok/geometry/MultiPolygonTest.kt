@@ -3,7 +3,7 @@ package me.piruin.geok.geometry
 import me.piruin.geok.BBox
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
-import org.junit.Test
+import kotlin.test.Test
 
 class MultiPolygonTest {
 

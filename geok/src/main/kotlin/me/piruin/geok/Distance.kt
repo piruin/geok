@@ -52,9 +52,9 @@ private class EllipsoidDistance(datum: Datum) : DistanceCalculator {
         val lat2 = latlng2.latitude
         val lon2 = latlng2.longitude
 
-        val l = Math.toRadians(lon2 - lon1)
-        val u1 = atan((1 - f) * tan(Math.toRadians(lat1)))
-        val u2 = atan((1 - f) * tan(Math.toRadians(lat2)))
+        val l = (lon2 - lon1).toRadians()
+        val u1 = atan((1 - f) * tan(lat1.toRadians()))
+        val u2 = atan((1 - f) * tan(lat2.toRadians()))
         val sinU1 = sin(u1)
         val cosU1 = cos(u1)
         val sinU2 = sin(u2)

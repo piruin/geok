@@ -40,8 +40,8 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
     constructor(xyPair: Pair<Number, Number>) : this(xyPair.second.toDouble(), xyPair.first.toDouble())
 
     init {
-        assert(latitude between (-90.0 and 90.0)) { "latitude should between -90.0 and 90 [$latitude]" }
-        assert(longitude between (-180.0 and 180.0)) { "longitude should between -180.0 and 180 [$longitude]" }
+        require(latitude between (-90.0 and 90.0)) { "latitude should between -90.0 and 90 [$latitude]" }
+        require(longitude between (-180.0 and 180.0)) { "longitude should between -180.0 and 180 [$longitude]" }
     }
 
     /**
@@ -61,7 +61,7 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
      *
      */
     fun toUtm(datum: Datum = Datum.WSG84): Utm {
-        assert(latitude between (-80.0 to 84.0)) { "latitude $latitude is outside utm grid" }
+        require(latitude between (-80.0 to 84.0)) { "latitude $latitude is outside utm grid" }
 
         val a = datum.equatorialRad
         val f = 1.0 / datum.flat // polar flattening.
@@ -150,14 +150,13 @@ data class LatLng(val latitude: Double, val longitude: Double, val elevation: Do
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null || this::class != other::class) return false
 
         other as LatLng
 
-        if (latitude `not equals to` other.latitude) return false
-        if (longitude `not equals to` other.longitude) return false
-        if ((elevation == null) and (other.elevation != null)) return false
-        elevation?.let { if (elevation `not equals to` other.elevation) return false }
+        if (latitude != other.latitude) return false
+        if (longitude != other.longitude) return false
+        if (elevation != other.elevation) return false
 
         return true
     }

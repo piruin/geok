@@ -23,6 +23,7 @@
 
 package me.piruin.geok
 
+import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -107,7 +108,7 @@ fun Collection<LatLng>.area(earthRadius: Double = Datum.WSG84.equatorialRad): Do
         return 0.0
     }
     val diameter = earthRadius * 2
-    val circumference = diameter * Math.PI
+    val circumference = diameter * PI
     val ySegment = ArrayList<Double>()
     val xSegment = ArrayList<Double>()
 
