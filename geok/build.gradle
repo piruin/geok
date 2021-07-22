@@ -5,6 +5,17 @@ plugins {
 kotlin {
     jvm()
 
+    linuxX64()
+
+    macosX64()
+    iosX64()
+    iosArm64()
+
+    js {
+        browser()
+        nodejs()
+    }
+
     sourceSets {
         commonTest {
             dependencies {
