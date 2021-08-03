@@ -5,27 +5,26 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNotSame
 import kotlin.test.assertSame
 
-
-infix fun Any?.`should be equal to`(expected: Any?) {
+infix fun Any?.shouldBeEqualTo(expected: Any?) {
     assertEquals(expected, this)
 }
 
-infix fun Any?.`should not be equal to`(expected: Any?) {
+infix fun Any?.shouldNotBeEqualTo(expected: Any?) {
     assertNotEquals(expected, this)
 }
 
-infix fun Any?.`should be`(expected: Any?) {
+infix fun Any?.shouldBe(expected: Any?) {
     assertSame(expected, this)
 }
 
-infix fun Any?.`should not be`(expected: Any?) {
+infix fun Any?.shouldNotBe(expected: Any?) {
     assertNotSame(expected, this)
 }
 
-infix fun Double.`should be equal to`(expected: Double?) {
+infix fun Double.shouldBeEqualTo(expected: Double?) {
     this.equalsTo(expected)
 }
 
-infix fun Double.`should not be equal to`(expected: Double?) {
+infix fun Double.shouldNotBeEqualTo(expected: Double?) {
     !this.equalsTo(expected)
 }

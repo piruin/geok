@@ -23,7 +23,12 @@
 
 package me.piruin.geok
 
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
 
 data class Utm(val zone: Int, val hemisphere: Char, val easting: Double, val northing: Double) {
 

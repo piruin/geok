@@ -138,13 +138,13 @@ fun Collection<LatLng>.safeSortedClockwise(): List<LatLng> {
 }
 
 fun Iterable<LatLng>.sortedClockwise(): List<LatLng> {
-    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call `open()` before" }
+    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call open() before" }
     val center = centroid
     return this.sortedBy { atan2(it.longitude - center.longitude, it.latitude - center.latitude) }
 }
 
 fun Iterable<LatLng>.sortedCounterClockwise(): List<LatLng> {
-    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call `open()` before" }
+    require(!isClosed) { "LatLng must not be closed to perform sorting, Try call open() before" }
     val center = centroid
     return this.sortedBy { atan2(it.latitude - center.latitude, it.longitude - center.longitude) }
 }

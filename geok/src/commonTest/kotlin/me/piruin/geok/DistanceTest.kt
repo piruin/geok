@@ -11,7 +11,7 @@ class DistanceTest {
 
         val distance = distanceCalculator()
 
-        distance.between(latlng1, latlng2) `should be equal to` 126748.67058978828
+        distance.between(latlng1, latlng2) shouldBeEqualTo 126748.67058978828
     }
 
     @Test
@@ -25,9 +25,9 @@ class DistanceTest {
             LatLng(16.4268129901041, 102.8380009059)
         )
 
-        latlngs.distance `should be equal to` latlngs.length
-        latlngs.distance `should be equal to` 72.07422073608048
-        latlngs.open().distance `should be equal to` 49.03012467867233
-        latlngs.close().distance `should be equal to` 72.07422073608048
+        latlngs.distance shouldBeEqualTo latlngs.length
+        latlngs.distance shouldBeEqualTo 72.07422073608048
+        latlngs.open().distance shouldBeEqualTo 49.03012467867233
+        latlngs.close().distance shouldBeEqualTo 72.07422073608048
     }
 }

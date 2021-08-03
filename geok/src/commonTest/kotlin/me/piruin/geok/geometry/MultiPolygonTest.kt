@@ -1,8 +1,8 @@
 package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
-import me.piruin.geok.`should be equal to`
-import me.piruin.geok.`should be`
+import me.piruin.geok.shouldBe
+import me.piruin.geok.shouldBeEqualTo
 import kotlin.test.Test
 
 class MultiPolygonTest {
@@ -26,8 +26,8 @@ class MultiPolygonTest {
             )
         )
 
-        polygons.type `should be equal to` "MultiPolygon"
-        polygons.bbox `should be equal to` BBox(left = 100.0, bottom = 0.0, right = 103.0, top = 3.0)
-        polygons.size `should be` 2
+        polygons.type shouldBeEqualTo "MultiPolygon"
+        polygons.bbox shouldBeEqualTo BBox(left = 100.0, bottom = 0.0, right = 103.0, top = 3.0)
+        polygons.size shouldBe 2
     }
 }

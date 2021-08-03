@@ -23,8 +23,8 @@
 
 package me.piruin.geok.geometry
 
-import me.piruin.geok.`should be equal to`
-import me.piruin.geok.`should not be`
+import me.piruin.geok.shouldBeEqualTo
+import me.piruin.geok.shouldNotBe
 import kotlin.test.Test
 
 class FeatureTest {
@@ -42,10 +42,10 @@ class FeatureTest {
         val feature = Feature(polygon, Properties())
 
         with(feature) {
-            type `should be equal to` "Feature"
-            geometry `should be equal to` polygon
-            bbox `should not be` null
-            properties `should be equal to` Properties()
+            type shouldBeEqualTo "Feature"
+            geometry shouldBeEqualTo polygon
+            bbox shouldNotBe null
+            properties shouldBeEqualTo Properties()
         }
     }
 

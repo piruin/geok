@@ -23,12 +23,15 @@
 
 package me.piruin.geok.geometry
 
-import me.piruin.geok.*
-import me.piruin.geok.`should be equal to`
-import me.piruin.geok.`should be`
-import me.piruin.geok.`should not be equal to`
-import kotlin.test.Test
+import me.piruin.geok.BBox
+import me.piruin.geok.LatLng
+import me.piruin.geok.Utm
+import me.piruin.geok.distance
+import me.piruin.geok.shouldBe
+import me.piruin.geok.shouldBeEqualTo
+import me.piruin.geok.shouldNotBeEqualTo
 import kotlin.math.roundToInt
+import kotlin.test.Test
 
 class PolygonTest {
 
@@ -43,24 +46,24 @@ class PolygonTest {
 
     @Test
     fun contain() {
-        polygon.contains(LatLng(16.4268129901041, 102.8380009059)) `should be` true
-        polygon.contains(LatLng(16.4268502721458, 102.8378330329)) `should be` true
-        polygon.contains(Point(LatLng(15.0001, 101.1234))) `should be` false
+        polygon.contains(LatLng(16.4268129901041, 102.8380009059)) shouldBe true
+        polygon.contains(LatLng(16.4268502721458, 102.8378330329)) shouldBe true
+        polygon.contains(Point(LatLng(15.0001, 101.1234))) shouldBe false
     }
 
     @Test
     fun isClose() {
-        polygon.isClosed `should be` true
+        polygon.isClosed shouldBe true
     }
 
     @Test
     fun area() {
-        polygon.area().roundToInt() `should be equal to` 268
+        polygon.area().roundToInt() shouldBeEqualTo 268
     }
 
     @Test
     fun bbox() {
-        polygon.bbox `should be equal to` BBox(
+        polygon.bbox shouldBeEqualTo BBox(
             left = 102.8378020293,
             bottom = 16.4266819930293,
             right = 102.8380009059,
@@ -70,7 +73,7 @@ class PolygonTest {
 
     @Test
     fun perimeter() {
-        polygon.perimeter `should be equal to` polygon.boundary.distance
+        polygon.perimeter shouldBeEqualTo polygon.boundary.distance
     }
 
     @Test
@@ -100,8 +103,8 @@ class PolygonTest {
             98.3430250791 to 7.82003262732049,
             98.3432525117 to 7.82002427060229
         )
-        shape.centroid.toUtm() `should be equal to` Utm(47, 'N', 427636.0, 864394.9)
-        shape.contains(shape.centroid) `should be` true
+        shape.centroid.toUtm() shouldBeEqualTo Utm(47, 'N', 427636.0, 864394.9)
+        shape.contains(shape.centroid) shouldBe true
     }
 
     @Test
@@ -116,8 +119,8 @@ class PolygonTest {
         )
         val polygon = Polygon(boundary)
 
-        polygon.isClosed `should be` true
-        polygon.boundary `should not be equal to` boundary
-        polygon.perimeter `should not be equal to` boundary.distance
+        polygon.isClosed shouldBe true
+        polygon.boundary shouldNotBeEqualTo boundary
+        polygon.perimeter shouldNotBeEqualTo boundary.distance
     }
 }

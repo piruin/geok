@@ -135,6 +135,6 @@ class IntersectionLineTest {
         line2: Pair<LatLng, LatLng>,
         exprectedLine: Pair<LatLng, LatLng>?
     ) {
-        line1.segmentIntersectionWith(line2) `should be equal to` exprectedLine
+        line1.segmentIntersectionWith(line2) shouldBeEqualTo exprectedLine
     }
 }

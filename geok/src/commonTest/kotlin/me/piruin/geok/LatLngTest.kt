@@ -66,8 +66,8 @@ class LatLngTest {
             LatLng(1.0 to 1.0)
         )
 
-        ccw.sortedClockwise() `should be equal to` cw
-        cw.sortedCounterClockwise() `should be equal to` ccw
+        ccw.sortedClockwise() shouldBeEqualTo cw
+        cw.sortedCounterClockwise() shouldBeEqualTo ccw
     }
 
     @Test
@@ -86,18 +86,18 @@ class LatLngTest {
             LatLng(-1.0 to 1.0)
         )
 
-        ccw.sortedClockwise() `should be equal to` cw
-        cw.sortedCounterClockwise() `should be equal to` ccw
+        ccw.sortedClockwise() shouldBeEqualTo cw
+        cw.sortedCounterClockwise() shouldBeEqualTo ccw
     }
 
     @Test
     fun toStringNotShowElevationWhenNaN() {
-        LatLng(16.423976, 102.841838).toString() `should be equal to` "[102.841838, 16.423976]"
+        LatLng(16.423976, 102.841838).toString() shouldBeEqualTo "[102.841838, 16.423976]"
     }
 
     @Test
     fun toUtm() {
-        LatLng(16.423976, 102.841838).toUtm() `should be equal to` Utm(48, 'N', 269542.0, 1817061.8)
+        LatLng(16.423976, 102.841838).toUtm() shouldBeEqualTo Utm(48, 'N', 269542.0, 1817061.8)
     }
 
     @Test
@@ -111,17 +111,17 @@ class LatLngTest {
         )
 
         val point = LatLng(1.0 to 1.0)
-        point insideOf boundary `should be` true
+        point insideOf boundary shouldBe true
 
         val outsidePoint = LatLng(-1.0 to 0.0)
-        outsidePoint insideOf boundary `should be` false
+        outsidePoint insideOf boundary shouldBe false
         val outsidePoint2 = LatLng(2.1 to 0.3)
-        outsidePoint2 insideOf boundary `should be` false
+        outsidePoint2 insideOf boundary shouldBe false
 
         val onlinePoint = LatLng(0.0 to 0.5)
-        onlinePoint insideOf boundary `should be` true
+        onlinePoint insideOf boundary shouldBe true
 
-        boundary.forEach { it insideOf boundary `should be` true }
+        boundary.forEach { it insideOf boundary shouldBe true }
     }
 
     @Test
@@ -137,10 +137,10 @@ class LatLngTest {
         var index = 0
         boundary.forEachLine { line ->
             when (index++) {
-                0 -> line `should be equal to` (LatLng(0.0 to 0.0) to LatLng(0.0 to 2.0))
-                1 -> line `should be equal to` (LatLng(0.0 to 2.0) to LatLng(2.0 to 2.0))
-                2 -> line `should be equal to` (LatLng(2.0 to 2.0) to LatLng(2.0 to 0.0))
-                3 -> line `should be equal to` (LatLng(2.0 to 0.0) to LatLng(0.0 to 0.0))
+                0 -> line shouldBeEqualTo (LatLng(0.0 to 0.0) to LatLng(0.0 to 2.0))
+                1 -> line shouldBeEqualTo (LatLng(0.0 to 2.0) to LatLng(2.0 to 2.0))
+                2 -> line shouldBeEqualTo (LatLng(2.0 to 2.0) to LatLng(2.0 to 0.0))
+                3 -> line shouldBeEqualTo (LatLng(2.0 to 0.0) to LatLng(0.0 to 0.0))
                 4 -> throw AssertionError()
             }
         }

@@ -30,7 +30,7 @@ class BBoxIntersectTest {
     }
 
     private fun doTest(line1: Pair<LatLng, LatLng>, line2: Pair<LatLng, LatLng>, asExpected: Boolean) {
-        line1 bboxIntersectWith line2 `should be` asExpected
-        BBox.from(line1) intersectWith BBox.from(line2) `should be` asExpected
+        line1 bboxIntersectWith line2 shouldBe asExpected
+        BBox.from(line1) intersectWith BBox.from(line2) shouldBe asExpected
     }
 }

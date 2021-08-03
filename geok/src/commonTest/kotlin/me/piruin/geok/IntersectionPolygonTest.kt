@@ -81,6 +81,6 @@ class IntersectionPolygonTest {
     }
 
     private fun doTest(other: Polygon, result: Polygon?) {
-        main.intersectionWith(other) `should be equal to` result
+        main.intersectionWith(other) shouldBeEqualTo result
     }
 }

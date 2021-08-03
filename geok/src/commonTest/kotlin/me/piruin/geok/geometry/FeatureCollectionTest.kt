@@ -1,9 +1,9 @@
 package me.piruin.geok.geometry
 
 import me.piruin.geok.BBox
-import me.piruin.geok.`should be equal to`
-import me.piruin.geok.`should not be`
-import kotlin.test.*
+import me.piruin.geok.shouldBeEqualTo
+import me.piruin.geok.shouldNotBe
+import kotlin.test.Test
 
 class FeatureCollectionTest {
 
@@ -46,9 +46,9 @@ class FeatureCollectionTest {
 
     @Test
     fun bbox() {
-        collection.bbox `should be equal to` BBox(left = 100.0, bottom = 0.0, right = 103.0, top = 3.0)
+        collection.bbox shouldBeEqualTo BBox(left = 100.0, bottom = 0.0, right = 103.0, top = 3.0)
         collection.features.filterNot { it.geometry is Point }.forEach {
-            it.bbox `should not be` null
+            it.bbox shouldNotBe null
         }
     }
 }

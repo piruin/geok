@@ -12,7 +12,11 @@ kotlin {
     iosArm64()
 
     js {
-        browser()
+        browser {
+            testTask {
+                enabled = false
+            }
+        }
         nodejs()
     }
 
@@ -28,6 +32,11 @@ kotlin {
                 implementation "org.jetbrains.kotlin:kotlin-test-junit"
             }
         }
+        jsTest {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-test-js"
+            }
+        }
     }
 }
 
@@ -37,4 +46,4 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     }
 }
 
-//apply from: "../ktlint.gradle"
+apply from: "../ktlint.gradle"

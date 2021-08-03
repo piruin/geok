@@ -32,14 +32,14 @@ class DoubleTest {
 
     @Test
     fun roundDigit() {
-        1816560.792879214.round(1) `should be equal to` 1816560.8
-        1816560.792879214.round(2) `should be equal to` 1816560.79
-        1816560.792879214.round(3) `should be equal to` 1816560.793
+        1816560.792879214.round(1) shouldBeEqualTo 1816560.8
+        1816560.792879214.round(2) shouldBeEqualTo 1816560.79
+        1816560.792879214.round(3) shouldBeEqualTo 1816560.793
     }
 
     @Test
     fun wholeNumber() {
-        102.841838.wholeNum `should be equal to` 102
+        102.841838.wholeNum shouldBeEqualTo 102
     }
 
     @Test
@@ -50,18 +50,18 @@ class DoubleTest {
 
     @Test
     fun round() {
-        102.841838.roundToLong() `should be equal to` 103L
+        102.841838.roundToLong() shouldBeEqualTo 103L
     }
 
     @Test
     fun floor() {
-        floor(102.841838) `should be equal to` 102.0
+        floor(102.841838) shouldBeEqualTo 102.0
     }
 
     @Test
     fun div() {
-        (3 / 4).`should be equal to`(0)
-        (3.0 / 4.0).`should be equal to`(0.75)
+        (3 / 4).shouldBeEqualTo(0)
+        (3.0 / 4.0).shouldBeEqualTo(0.75)
     }
 }
 

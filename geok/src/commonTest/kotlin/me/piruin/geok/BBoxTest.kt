@@ -16,10 +16,10 @@ class BBoxTest {
         val bbox = BBox.from(latlng)
 
         with(bbox) {
-            left `should be equal to` -10.0
-            bottom `should be equal to` -10.0
-            right `should be equal to` 10.0
-            top `should be equal to` 10.0
+            left shouldBeEqualTo -10.0
+            bottom shouldBeEqualTo -10.0
+            right shouldBeEqualTo 10.0
+            top shouldBeEqualTo 10.0
         }
     }
 
@@ -34,10 +34,10 @@ class BBoxTest {
         val bbox = BBox.from(polygon.boundary)
 
         with(bbox) {
-            left `should be equal to` -10.0
-            bottom `should be equal to` -20.0
-            right `should be equal to` 10.0
-            top `should be equal to` 20.0
+            left shouldBeEqualTo -10.0
+            bottom shouldBeEqualTo -20.0
+            right shouldBeEqualTo 10.0
+            top shouldBeEqualTo 20.0
         }
     }
 
@@ -45,10 +45,10 @@ class BBoxTest {
     fun contains() {
         val bbox = BBox.from(LatLng(-20.0 to -10.0) to LatLng(20.0 to 10.0))
 
-        bbox.contains(0 to 0) `should be` true
-        bbox.contains(-20.0 to -10.0) `should be` true
-        bbox.contains(20.0000000000 to 10.000000000) `should be` true
+        bbox.contains(0 to 0) shouldBe true
+        bbox.contains(-20.0 to -10.0) shouldBe true
+        bbox.contains(20.0000000000 to 10.000000000) shouldBe true
 
-        bbox.contains(20.0000000009 to 9.9987871245) `should be` false
+        bbox.contains(20.0000000009 to 9.9987871245) shouldBe false
     }
 }
