@@ -154,11 +154,9 @@ infix fun Pair<LatLng, LatLng>.intersectionWith(other: Pair<LatLng, LatLng>): Pa
             // we can mathematically represent line b as
             //     y = m*x + t <=> t = y - m*x
             // m = (y1-y2)/(x1-x2)
-            var m = 0.0
-            var t = 0.0
-            m = (b.first.y - b.second.y) /
-                (b.first.x - b.second.x)
-            t = b.first.y - m * b.first.x
+            val m = (b.first.y - b.second.y) /
+                    (b.first.x - b.second.x)
+            val t = b.first.y - m * b.first.x
             y1 = m * x1 + t
             y2 = y1
         }
@@ -169,30 +167,23 @@ infix fun Pair<LatLng, LatLng>.intersectionWith(other: Pair<LatLng, LatLng>): Pa
         x1 = b.first.x
         x2 = x1
 
-        var tmp = a
+        val tmp = a
         a = b
         b = tmp
-
-        var m = 0.0
-        var t = 0.0
-        m = (b.first.y - b.second.y) /
-            (b.first.x - b.second.x)
-        t = b.first.y - m * b.first.x
+        val m = (b.first.y - b.second.y) /
+                (b.first.x - b.second.x)
+        val t = b.first.y - m * b.first.x
         y1 = m * x1 + t
         y2 = y1
     } else {
         // Case (C)
         // Both lines can be represented mathematically
-        var ma = 0.0
-        var mb = 0.0
-        var ta = 0.0
-        var tb = 0.0
-        ma = (a.first.y - a.second.y) /
-            (a.first.x - a.second.x)
-        mb = (b.first.y - b.second.y) /
-            (b.first.x - b.second.x)
-        ta = a.first.y - ma * a.first.x
-        tb = b.first.y - mb * b.first.x
+        val ma = (a.first.y - a.second.y) /
+                (a.first.x - a.second.x)
+        val mb = (b.first.y - b.second.y) /
+                (b.first.x - b.second.x)
+        val ta = a.first.y - ma * a.first.x
+        val tb = b.first.y - mb * b.first.x
         if (ma == mb) {
             // Case (CA)
             // both lines are in parallel. As we know that they
