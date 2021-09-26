@@ -8,17 +8,29 @@ Small geometry library for Java and Kotlin. Contains useful basic utilities that
 Designed to support data exchange between client (such as Android) and Restful api server with [GeoJSON](http://geojson.org/) Spec
 
 ## Download
-
 ```groovy
+def geokVersion = '1.2.0' //see download badge or latest released tag
+
 repositories {
     maven { url 'https://jitpack.io' }
 }
 
-dependencies {
-    def geokVersion = '1.1.0' //see download badge or latest released tag
+// For multiplatform projects
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation "com.github.piruin.geok:geok:$geokVersion"
+            }
+        }
+    }
+}
 
-    implementation "com.github.piruin:geok:$geokVersion"
-    implementation "com.github.piruin.geok-gson:$geokVersion" //for support geojson with gson library
+dependencies {
+    // For JVM or JS 
+    implementation "com.github.piruin.geok:geok:$geokVersion"
+    // For JVM only
+    implementation "com.github.piruin.geok.geok-gson:$geokVersion" // for work with `gson` library 
 }
 ```
 
@@ -139,5 +151,8 @@ And you may pack many `Feature` together with `FeatureCollection`
     SOFTWARE.
 
 ### Notice
-[Convert Between Geographic and UTM Coordinates](http://www.uwgb.edu/dutchs/UsefulData/ConvertUTMNoOZ.HTM) by [Professor Steven Dutch](http://www.uwgb.edu/dutchs/index.htm)
-[Intersection of Convex Polygons Algorithm](https://www.swtestacademy.com/intersection-convex-polygons-algorithm/) by [Sinan Oz](https://www.swtestacademy.com/author/sinanoz/)
+
+- [Convert Between Geographic and UTM Coordinates](http://www.uwgb.edu/dutchs/UsefulData/ConvertUTMNoOZ.HTM)
+  by [Professor Steven Dutch](http://www.uwgb.edu/dutchs/index.htm)
+- [Intersection of Convex Polygons Algorithm](https://www.swtestacademy.com/intersection-convex-polygons-algorithm/)
+  by [Sinan Oz](https://www.swtestacademy.com/author/sinanoz/)
