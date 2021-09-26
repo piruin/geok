@@ -27,10 +27,10 @@ kotlin {
 }
 
 dependencies {
-    // For JVM or JS 
+    // For JVM or JS
     implementation "com.github.piruin.geok:geok:$geokVersion"
     // For JVM only
-    implementation "com.github.piruin.geok.geok-gson:$geokVersion" // for work with `gson` library 
+    implementation "com.github.piruin.geok.geok-gson:$geokVersion" // for work with `gson` library
 }
 ```
 

@@ -155,7 +155,7 @@ infix fun Pair<LatLng, LatLng>.intersectionWith(other: Pair<LatLng, LatLng>): Pa
             //     y = m*x + t <=> t = y - m*x
             // m = (y1-y2)/(x1-x2)
             val m = (b.first.y - b.second.y) /
-                    (b.first.x - b.second.x)
+                (b.first.x - b.second.x)
             val t = b.first.y - m * b.first.x
             y1 = m * x1 + t
             y2 = y1
