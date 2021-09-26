@@ -171,7 +171,7 @@ infix fun Pair<LatLng, LatLng>.intersectionWith(other: Pair<LatLng, LatLng>): Pa
         a = b
         b = tmp
         val m = (b.first.y - b.second.y) /
-                (b.first.x - b.second.x)
+            (b.first.x - b.second.x)
         val t = b.first.y - m * b.first.x
         y1 = m * x1 + t
         y2 = y1
@@ -179,9 +179,9 @@ infix fun Pair<LatLng, LatLng>.intersectionWith(other: Pair<LatLng, LatLng>): Pa
         // Case (C)
         // Both lines can be represented mathematically
         val ma = (a.first.y - a.second.y) /
-                (a.first.x - a.second.x)
+            (a.first.x - a.second.x)
         val mb = (b.first.y - b.second.y) /
-                (b.first.x - b.second.x)
+            (b.first.x - b.second.x)
         val ta = a.first.y - ma * a.first.x
         val tb = b.first.y - mb * b.first.x
         if (ma == mb) {
