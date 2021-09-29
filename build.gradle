@@ -56,8 +56,10 @@ subprojects {
                 name = "sonatype"
                 url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
                 credentials {
-                    username = ossrhUsername
-                    password = ossrhPassword
+                    if (hasSecrets) {
+                        username = ossrhUsername
+                        password = ossrhPassword
+                    }
                 }
             }
         }
