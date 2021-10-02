@@ -124,3 +124,7 @@ gradle-app.setting
 
 
 # End of https://www.gitignore.io/api/java,gradle,kotlin,intellij
+
+local.properties
+secret.properties
+*.pgp

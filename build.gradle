@@ -1,35 +1,77 @@
-plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.5.10"
-    id 'com.palantir.git-version' version '0.12.3'
-}
-
-allprojects {
-    group = 'com.github.piruin'
-    version = gitVersion()
+buildscript {
     repositories {
+        gradlePluginPortal()
+        google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
     }
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+File secretPropsFile = project.rootProject.file('secret.properties')
+Boolean hasSecrets = false
+if (secretPropsFile.exists()) {
+    hasSecrets = true
+    Properties p = new Properties()
+    new FileInputStream(secretPropsFile).withCloseable { is -> p.load(is) }
+    p.each { name, value -> ext[name] = value }
+}
+
 subprojects {
-    apply plugin: "java"
+    group = "com.github.piruin"
+    version = "1.2.0"
+
     apply plugin: "maven-publish"
+    apply plugin: "signing"
+
     publishing {
+        publications {
+            maven(MavenPublication) {
+                pom {
+                    name = "GEOK"
+                    description = "Kotlin geometry library"
+                    url = "https://github.com/piruin/geok"
+                    licenses {
+                        license {
+                            name = "MIT"
+                            url = "https://opensource.org/licenses/MIT"
+                        }
+                    }
+                    scm {
+                        url = "https://github.com/piruin/geok"
+                    }
+                }
+            }
+        }
+
         repositories {
             maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/piruin/geok")
+                name = "sonatype"
+                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
                 credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                    if (hasSecrets) {
+                        username = ossrhUsername
+                        password = ossrhPassword
+                    }
                 }
             }
-            publications {
-                gpr(MavenPublication) {
-                    from(components.java)
-                }
-            }
+        }
+    }
+
+    signing {
+        sign publishing.publications
+    }
+
+    tasks {
+        withType(Sign) {
+            onlyIf { hasSecrets }
         }
     }
 }

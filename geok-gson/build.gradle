@@ -9,6 +9,24 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+repositories {
+    //for com.github.piruin:kotlin-json-assert
+    maven { url "https://jitpack.io" }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
 dependencies {
     implementation project(":geok")
     implementation "com.google.code.gson:gson:2.8.7"

@@ -46,4 +46,15 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     }
 }
 
+task emptyJavadocs(type: Jar) {
+    archiveClassifier.set("javadoc")
+}
+
+publishing {
+    //MavenCentral requires JavaDoc file
+    publications.withType(MavenPublication).all {
+        artifact emptyJavadocs
+    }
+}
+
 apply from: "../ktlint.gradle"
