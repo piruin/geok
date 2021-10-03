@@ -1,6 +1,6 @@
 plugins {
     id "org.jetbrains.kotlin.jvm"
-    id "publication"
+    id "jvm.publication"
 }
 
 compileKotlin {
@@ -13,11 +13,6 @@ compileTestKotlin {
 repositories {
     //for com.github.piruin:kotlin-json-assert
     maven { url "https://jitpack.io" }
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
 }
 
 dependencies {

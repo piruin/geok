@@ -40,12 +40,12 @@ signing.password=...
 5. apply publication plug-in to each of your library module
 
 <details>
-<summary>Java/Kotlin</summary>
+<summary>JVM</summary>
 
 ```groovy
 plugins {
     id "org.jetbrains.kotlin.jvm" // or "java"
-    id "publication"
+    id "jvm.publication"
 }
 ```
 

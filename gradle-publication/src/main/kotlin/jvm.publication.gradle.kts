@@ -1,6 +1,7 @@
 import java.util.Properties
 
 plugins {
+    java
     `maven-publish`
     signing
 }
@@ -30,11 +31,12 @@ if (secretPropsFile.exists()) {
     ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
 }
 
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-}
-
 fun getExtraString(name: String) = ext[name]?.toString()
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 publishing {
     // Configure maven central repository
@@ -53,9 +55,7 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             artifactId = project.name
-            // Stub javadoc.jar artifact
-            artifact(javadocJar.get())
-
+            from(components["java"])
             // Provide artifacts information requited by Maven Central
             pom {
                 name.set("Geok")
