@@ -25,7 +25,7 @@ if (secretPropsFile.exists()) {
 }
 
 subprojects {
-    group = "com.github.piruin"
+    group = "io.github.piruin"
     version = "1.2.0"
 
     apply plugin: "maven-publish"
@@ -47,6 +47,13 @@ subprojects {
                     scm {
                         url = "https://github.com/piruin/geok"
                     }
+                    developers {
+                        developer {
+                            id = "piruin"
+                            name = "Piruin Panichphol"
+                            url = "https://github.com/piruin"
+                        }
+                    }
                 }
             }
         }
@@ -54,7 +61,7 @@ subprojects {
         repositories {
             maven {
                 name = "sonatype"
-                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                 credentials {
                     if (hasSecrets) {
                         username = ossrhUsername
