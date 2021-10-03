@@ -9,6 +9,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.palantir.git-version' version '0.12.3'
+}
+
 allprojects {
     repositories {
         mavenCentral()
@@ -17,5 +21,5 @@ allprojects {
 
 subprojects {
     group = "io.github.piruin"
-    version = "1.2.0"
+    version = gitVersion()
 }
