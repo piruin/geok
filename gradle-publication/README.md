@@ -63,8 +63,18 @@ plugins {
 </details>
 
 6. edit POM in `src/main/kotlin/publication.gradle.kts` and/or `src/main/kotlin/kmm.publication.gradle.kts`
-7. run  `./gradlew publishMavenPublicationToSonatypeRepository`
-8. after that go to the Sonatype site and release! 😄
+7. set artifact `group` and `version` for your module. such as set at root `build.gradle` like the following
+
+```groovy
+subprojects {
+    group = "io.github.piruin"
+    version = "1.0.0"
+}
+```
+
+8. run  `./gradlew publishMavenPublicationToSonatypeRepository`
+9. after that go to the [Sonatype](https://s01.oss.sonatype.org/#welcome) site, Login -> menu `Staging Repositories`
+   -> `close` then `release`! 😄
 
 ## Reference
 
