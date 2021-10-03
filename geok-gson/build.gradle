@@ -19,11 +19,14 @@ java {
     withSourcesJar()
 }
 
+task emptyJavadocs(type: Jar) {
+    archiveClassifier.set("javadoc")
+}
+
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
+    //MavenCentral requires JavaDoc file
+    publications.withType(MavenPublication).all {
+        artifact emptyJavadocs
     }
 }
 
