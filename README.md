@@ -3,42 +3,81 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![build](https://github.com/piruin/geok/actions/workflows/build.yml/badge.svg)](https://github.com/piruin/geok/actions/workflows/build.yml)
 [![Download](https://jitpack.io/v/piruin/geok.svg)](https://jitpack.io/#piruin/geok)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.piruin/geok)
 
-Small geometry library for Java and Kotlin. Contains useful basic utilities that require on most application.
-Designed to support data exchange between client (such as Android) and Restful api server with [GeoJSON](http://geojson.org/) Spec
+Small geometry library for Java and Kotlin. Contains useful basic utilities that require on most application. Designed
+to support data exchange between client (such as Android) and Restful api server with [GeoJSON](http://geojson.org/)
+Spec
 
 ## Download
+
+<details>
+<summary>MavenCentral</summary>
+
 ```groovy
 def geokVersion = '1.2.0' //see download badge or latest released tag
 
 repositories {
-    maven { url 'https://jitpack.io' }
+  mavenCentral()
 }
 
 // For multiplatform projects
 kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation "com.github.piruin.geok:geok:$geokVersion"
-            }
-        }
+  sourceSets {
+    commonMain {
+      dependencies {
+        implementation "io.github.piruin:geok:$geokVersion"
+      }
     }
+  }
 }
 
 dependencies {
-    // For JVM or JS
-    implementation "com.github.piruin.geok:geok:$geokVersion"
-    // For JVM only
-    implementation "com.github.piruin.geok.geok-gson:$geokVersion" // for work with `gson` library
+  // For JVM or JS
+  implementation "io.github.piruin:geok:$geokVersion"
+  // For JVM only
+  implementation "io.github.piruin:geok-gson:$geokVersion" // for work with `gson` library
 }
 ```
+
+</details>
+<details>
+<summary>Jitpack</summary>
+
+```groovy
+def geokVersion = '1.2.0' //see download badge or latest released tag
+
+repositories {
+  maven { url 'https://jitpack.io' }
+}
+
+// For multiplatform projects
+kotlin {
+  sourceSets {
+    commonMain {
+      dependencies {
+        implementation "com.github.piruin.geok:geok:$geokVersion"
+      }
+    }
+  }
+}
+
+dependencies {
+  // For JVM or JS
+  implementation "com.github.piruin.geok:geok:$geokVersion"
+  // For JVM only
+  implementation "com.github.piruin.geok:geok-gson:$geokVersion" // for work with `gson` library
+}
+```
+
+</details>
 
 ## Usage
 
 ### LatLng
 
 LatLng is base class of this library to build up any Geometry you want. It come with utilities such as
+
 - `toUtm()` -- convert to Utm type that widely use on GPS handheld system (also support create Latlng form Utm)
 - `distanceTo(latlng: LatLng)` -- calculate distance between 2 Latlng in meter
 

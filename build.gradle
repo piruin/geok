@@ -9,69 +9,17 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.palantir.git-version' version '0.12.3'
+}
+
 allprojects {
     repositories {
         mavenCentral()
     }
 }
 
-File secretPropsFile = project.rootProject.file('secret.properties')
-Boolean hasSecrets = false
-if (secretPropsFile.exists()) {
-    hasSecrets = true
-    Properties p = new Properties()
-    new FileInputStream(secretPropsFile).withCloseable { is -> p.load(is) }
-    p.each { name, value -> ext[name] = value }
-}
-
 subprojects {
-    group = "com.github.piruin"
-    version = "1.2.0"
-
-    apply plugin: "maven-publish"
-    apply plugin: "signing"
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                pom {
-                    name = "GEOK"
-                    description = "Kotlin geometry library"
-                    url = "https://github.com/piruin/geok"
-                    licenses {
-                        license {
-                            name = "MIT"
-                            url = "https://opensource.org/licenses/MIT"
-                        }
-                    }
-                    scm {
-                        url = "https://github.com/piruin/geok"
-                    }
-                }
-            }
-        }
-
-        repositories {
-            maven {
-                name = "sonatype"
-                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-                credentials {
-                    if (hasSecrets) {
-                        username = ossrhUsername
-                        password = ossrhPassword
-                    }
-                }
-            }
-        }
-    }
-
-    signing {
-        sign publishing.publications
-    }
-
-    tasks {
-        withType(Sign) {
-            onlyIf { hasSecrets }
-        }
-    }
+    group = "io.github.piruin"
+    version = gitVersion()
 }

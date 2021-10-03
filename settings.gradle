@@ -1,3 +1,4 @@
 rootProject.name = 'geok-project'
 include 'geok'
 include 'geok-gson'
+includeBuild("gradle-publication")
