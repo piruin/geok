@@ -50,39 +50,42 @@ publishing {
     }
 
     // Configure all publications
-    publications.withType<MavenPublication> {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            artifactId = project.name
+            // Stub javadoc.jar artifact
+            artifact(javadocJar.get())
 
-        // Stub javadoc.jar artifact
-        artifact(javadocJar.get())
-
-        // Provide artifacts information requited by Maven Central
-        pom {
-            name.set("Geok")
-            description.set("Kotlin geometry library")
-            url.set("https://github.com/piruin/geok")
-
-            licenses {
-                license {
-                    name.set("MIT")
-                    url.set("https://opensource.org/licenses/MIT")
-                }
-            }
-            developers {
-                developer {
-                    id.set("piruin")
-                    name.set("Piruin Panichphol")
-                    email.set("piruin.p@gmail.com")
-                    url.set("https://github.com/piruin")
-                }
-            }
-            scm {
+            // Provide artifacts information requited by Maven Central
+            pom {
+                name.set("Geok")
+                description.set("Kotlin geometry library")
                 url.set("https://github.com/piruin/geok")
+
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("piruin")
+                        name.set("Piruin Panichphol")
+                        email.set("piruin.p@gmail.com")
+                        url.set("https://github.com/piruin")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/piruin/geok")
+                    connection.set("https://github.com/piruin/geok.git")
+                }
             }
         }
     }
 }
-// Signing artifacts. Signing.* extra properties values will be used
 
+// Signing artifacts. Signing.* extra properties values will be used
 signing {
     sign(publishing.publications)
 }

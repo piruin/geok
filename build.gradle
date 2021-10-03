@@ -15,15 +15,6 @@ allprojects {
     }
 }
 
-File secretPropsFile = project.rootProject.file('secret.properties')
-Boolean hasSecrets = false
-if (secretPropsFile.exists()) {
-    hasSecrets = true
-    Properties p = new Properties()
-    new FileInputStream(secretPropsFile).withCloseable { is -> p.load(is) }
-    p.each { name, value -> ext[name] = value }
-}
-
 subprojects {
     group = "io.github.piruin"
     version = "1.2.0"
