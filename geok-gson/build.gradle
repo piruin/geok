@@ -23,13 +23,6 @@ task emptyJavadocs(type: Jar) {
     archiveClassifier.set("javadoc")
 }
 
-publishing {
-    //MavenCentral requires JavaDoc file
-    publications.withType(MavenPublication).all {
-        artifact emptyJavadocs
-    }
-}
-
 dependencies {
     implementation project(":geok")
     implementation "com.google.code.gson:gson:2.8.7"
@@ -38,6 +31,54 @@ dependencies {
     testImplementation "junit:junit:4.12"
     testImplementation "org.amshove.kluent:kluent:1.66"
     testImplementation 'com.github.piruin:kotlin-json-assert:v0.1.0'
+}
+
+
+apply plugin: "maven-publish"
+apply plugin: "signing"
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact emptyJavadocs
+            pom {
+                name = "GEOK"
+                description = "Kotlin geometry library"
+                url = "https://github.com/piruin/geok"
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://opensource.org/licenses/MIT"
+                    }
+                }
+                scm {
+                    url = "https://github.com/piruin/geok"
+                }
+                developers {
+                    developer {
+                        id = "piruin"
+                        name = "Piruin Panichphol"
+                        url = "https://github.com/piruin"
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "sonatype"
+            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications
 }
 
 apply from: "../ktlint.gradle"
