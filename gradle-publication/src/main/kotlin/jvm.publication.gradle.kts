@@ -38,6 +38,14 @@ java {
     withSourcesJar()
 }
 
+fun safeProperty(propertyName: String): String? {
+    return try {
+        property(propertyName).toString()
+    } catch (missingProperties: Exception) {
+        null
+    }
+}
+
 publishing {
     // Configure maven central repository
     repositories {
@@ -58,27 +66,28 @@ publishing {
             from(components["java"])
             // Provide artifacts information requited by Maven Central
             pom {
-                name.set("Geok")
-                description.set("Kotlin geometry library")
-                url.set("https://github.com/piruin/geok")
+                name.set(property("pom.name")?.toString())
+                description.set(property("pom.description").toString())
+                url.set(property("pom.url").toString())
 
                 licenses {
                     license {
-                        name.set("MIT")
-                        url.set("https://opensource.org/licenses/MIT")
+                        name.set(property("pom.license.name").toString())
+                        url.set(property("pom.license.url").toString())
                     }
                 }
+
                 developers {
                     developer {
-                        id.set("piruin")
-                        name.set("Piruin Panichphol")
-                        email.set("piruin.p@gmail.com")
-                        url.set("https://github.com/piruin")
+                        id.set(property("pom.developer.id").toString())
+                        name.set(property("pom.developer.name").toString())
+                        email.set(property("pom.developer.email").toString())
                     }
                 }
                 scm {
-                    url.set("https://github.com/piruin/geok")
-                    connection.set("https://github.com/piruin/geok.git")
+                    url.set(safeProperty("pom.smc.url") ?: "${property("pom.url")}")
+                    connection.set(safeProperty("pom.smc.connection") ?: "${property("pom.url")}.git")
+                    developerConnection.set(safeProperty("pom.smc.developerConnection") ?: "${property("pom.url")}.git")
                 }
             }
         }
