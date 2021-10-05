@@ -16,7 +16,7 @@ jobs:
         distribution: adopt
     - run: ./gradlew publishAllPublicationsToSonatypeRepository --max-workers 1
       env:
-        SIGNING_ID: ${{ secrets.SIGNING_KEY_ID }}
+        SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
         SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
