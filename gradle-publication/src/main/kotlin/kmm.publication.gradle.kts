@@ -59,6 +59,16 @@ publishing {
                 password = getExtraString("ossrhPassword")
             }
         }
+        safeProperty("githubRepo")?.let {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/$it")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
     }
 
     // Configure all publications
