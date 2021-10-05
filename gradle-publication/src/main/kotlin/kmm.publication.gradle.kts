@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._0607a36d3513e553f3ed3baa6e448a97.ext
+import gradle.kotlin.dsl.accessors._0607a36d3513e553f3ed3baa6e448a97.publishing
 import java.util.Properties
 
 plugins {
@@ -94,5 +96,7 @@ publishing {
 
 // Signing artifacts. Signing.* extra properties values will be used
 signing {
-    sign(publishing.publications)
+    getExtraString("signing.keyId")?.let {
+        sign(publishing.publications)
+    }
 }

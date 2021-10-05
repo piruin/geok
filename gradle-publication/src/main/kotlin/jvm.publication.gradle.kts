@@ -96,5 +96,7 @@ publishing {
 
 // Signing artifacts. Signing.* extra properties values will be used
 signing {
-    sign(publishing.publications)
+    getExtraString("signing.keyId")?.let {
+        sign(publishing.publications)
+    }
 }
